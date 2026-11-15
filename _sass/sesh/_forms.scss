@@ -1,0 +1,45 @@
+// Form fields shared by login, signup, profile and contact (PRC components/_forms.scss)
+
+.form { display: grid; gap: 16px; }
+
+.field {
+  display: grid;
+  gap: 6px;
+  font-weight: 500;
+  font-size: .92rem;
+
+  small { font-weight: 400; color: $muted; }
+}
+
+.form input,
+.form textarea,
+.form select,
+.input {
+  width: 100%;
+  border: 1px solid $line;
+  border-radius: $radius;
+  padding: 9px 12px;
+  background: $white;
+  font-weight: 400;
+
+  &:focus { outline: none; border-color: $ink; box-shadow: 0 0 0 1px $ink; }
+  &[readonly] { background: $mist; color: $muted; }
+}
+
+.form textarea { min-height: 120px; resize: vertical; }
+
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.field-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @include sm { grid-template-columns: 1fr; }
+}

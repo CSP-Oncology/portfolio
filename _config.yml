@@ -14,12 +14,12 @@
 #   in _config.yml. It will appear in your document head meta (for Google search
 #   results) and in your feed.xml site description.
 
-title: Open Coding 
-description: "Class of 2026"
+title: Sesh
+description: "Precision immuno-oncology: improving treatment outcomes for cancer patients"
 owner_name: John Mortensen
 github_username: jm1021 
 github_repo: "portfolio" 
-baseurl: "/portfolio" 
+baseurl: ""  # GitHub Pages deploy sets its own (/portfolio) in .github/workflows/jekyll-gh-pages.yml
 future: true
 
 # Build settings
@@ -109,6 +109,13 @@ minima:
     - { platform: github, user_url: "https://github.com/open-coding-society" }
     - { platform: x, user_url: "https://x.com/Open_Coding" }
     - { platform: youtube, user_url: "https://www.youtube.com/@OpenCodingSociety" } 
-  nav_pages:
-    - navigation/search.md
-    - navigation/about.md
+  nav_pages:  # Sesh pages (index.md is the Sesh home; the template's home is navigation/portfolio-home.md)
+    - sesh/about.md
+    - sesh/reload.md
+    - sesh/science.md
+    - sesh/faq.md
+    - sesh/contact.md
+    - sesh/news.md
+
+# No Java (Spring) backend: login, logout and the navbar talk only to the Flask API
+spring: false

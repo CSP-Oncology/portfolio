@@ -1,0 +1,43 @@
+# Glossary terms (also used by the matching game)
+- term: Biomarker
+  short: A measurable sign of disease
+  def: Something in the body that can be measured and tells you about a disease, like a gene change or protein level.
+- term: cfDNA
+  short: DNA floating freely in the blood
+  def: Cell-free DNA. Small pieces of DNA released into the blood when cells die, including tumor cells.
+- term: HLA
+  short: The cell's "ID badge" genes
+  def: Human leukocyte antigen. Genes for proteins that show pieces of a cell's proteins to immune cells so they can check if the cell is healthy.
+- term: LOH
+  short: Losing one of two gene copies
+  def: Loss of heterozygosity. A cell loses one of its two different copies of a gene.
+- term: HLA LOH
+  short: Tumor loses an HLA gene copy
+  def: When a tumor loses one copy of its HLA genes, so immune cells may have a harder time recognizing it. A predictive biomarker for immunotherapy.
+- term: Immunotherapy
+  short: Treatment that uses the immune system
+  def: Cancer treatment that helps the patient's own immune system find and attack cancer cells.
+- term: Liquid biopsy
+  short: Testing tumor DNA from blood
+  def: A test that looks for tumor DNA or cells in a blood sample instead of taking a piece of tissue.
+- term: Tissue biopsy
+  short: Removing a piece of the tumor
+  def: Taking a small sample of tissue with surgery or a needle so it can be studied in a lab.
+- term: NGS
+  short: Reading lots of DNA at once
+  def: Next-generation sequencing. Lab technology that reads the order of millions of DNA pieces at the same time.
+- term: Tumor heterogeneity
+  short: Different parts of a tumor differ
+  def: Different parts of the same tumor can have different mutations, so one tissue sample might miss some.
+- term: Predictive biomarker
+  short: Hints whether a treatment will work
+  def: A biomarker that helps predict how a patient will respond to a specific treatment.
+- term: T cell
+  short: Immune cell that attacks bad cells
+  def: A white blood cell that checks other cells' HLA "badges" and destroys cells that look abnormal.
+- term: Precision oncology
+  short: Treatment matched to the tumor
+  def: Choosing cancer treatment based on the specific genes and biomarkers of a patient's tumor.
+- term: Serial monitoring
+  short: Testing again and again over time
+  def: Repeating a test over time to track how a tumor and its treatment response change.

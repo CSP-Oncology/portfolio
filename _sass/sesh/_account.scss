@@ -1,0 +1,160 @@
+// Log in, sign up and profile pages, including the admin section (PRC pages/_account.scss)
+
+.auth {
+  display: grid;
+  place-items: center;
+  padding: 56px 16px 0;
+}
+
+.auth__card {
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+
+  h1 { @include display-font; font-size: 1.8rem; margin-bottom: 4px; }
+  .form { margin-top: 20px; }
+
+  border-top: 1px solid $ink;
+
+  @include sm { padding: 24px 20px; }
+}
+
+.auth__submit { width: 100%; }
+.auth__alt { text-align: center; margin: 16px 0 0; }
+
+.profile-main { display: grid; gap: 18px; }
+.profile-main .card h2 { font-size: 1.25rem; }
+
+.password-panel summary { cursor: pointer; font-weight: 700; color: $ocean; }
+.password-panel[open] summary { margin-bottom: 16px; }
+
+.shortcut-list { display: grid; gap: 8px; }
+
+#logout { width: 100%; }
+
+.admin-block { margin-top: 24px; }
+
+.message {
+  @include panel(18px 20px);
+  margin-bottom: 12px;
+
+  &.is-handled { opacity: .65; }
+  p { margin: 4px 0; white-space: pre-wrap; }
+}
+
+.table-scroll { overflow-x: auto; @include panel(0); }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .92rem;
+
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid $line; white-space: nowrap; }
+  th { @include label; color: $muted; background: $mist; }
+  tbody tr:last-child td { border-bottom: 0; }
+}
+
+// Settings page
+.step-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 6px;
+  border-radius: $radius;
+  background: $ink;
+  color: $white;
+  font-family: $font-mono;
+  font-size: .8rem;
+  vertical-align: 2px;
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+
+  @include md { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @include sm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+// Each swatch carries its own data-theme, so it shows that theme's real colors
+.theme-swatch {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: $radius;
+  background: var(--bg);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color .15s, transform .15s;
+
+  input { position: absolute; opacity: 0; pointer-events: none; }
+
+  &:hover { transform: translateY(-2px); }
+  &:has(input:checked) { border-color: var(--teal); box-shadow: 0 0 0 2px var(--teal); }
+  &:has(input:focus-visible) { outline: 2px solid var(--teal); outline-offset: 3px; }
+}
+
+.theme-swatch__sample { @include display-font; font-size: 1.6rem; }
+.theme-swatch__name { font-weight: 700; font-size: .9rem; }
+
+.theme-swatch__dots {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+
+  i { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--line); }
+  i:nth-child(1) { background: var(--surface); }
+  i:nth-child(2) { background: var(--teal); }
+  i:nth-child(3) { background: var(--sand); }
+}
+
+.setting-rows { display: grid; gap: 14px; }
+
+.setting {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 16px;
+  margin: 0;
+  padding: 0 0 14px;
+  border: 0;
+  border-bottom: 1px solid $line;
+
+  &:last-child { border-bottom: 0; padding-bottom: 0; }
+
+  legend { float: left; padding: 0; font-weight: 700; }
+
+  @include sm { grid-template-columns: 1fr; }
+}
+
+// Row of options where one is picked (PRC's radio "chips")
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  input { position: absolute; opacity: 0; pointer-events: none; }
+
+  span {
+    @include base-button;
+    display: inline-flex;
+    padding: 6px 14px;
+    border-radius: $radius;
+    font-size: .92rem;
+    font-weight: 600;
+  }
+
+  input:checked + span { background: $ink; border-color: $ink; color: var(--surface); }
+  input:focus-visible + span { outline: 2px solid $teal; outline-offset: 2px; }
+}
+
+.form-row__buttons { display: inline-flex; flex-wrap: wrap; gap: 8px; }
+
+.preview {
+  h3 { margin: 4px 0; }
+  p { color: $ink; }
+}

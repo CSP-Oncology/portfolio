@@ -1,0 +1,156 @@
+// Theme tokens: colors (as CSS custom properties, so Settings can swap themes), type, sizes, breakpoints
+
+$light: (
+  "bg": #f7f7f4,
+  "surface": #ffffff,
+  "ink": #141821,
+  "muted": #5c6370,
+  "mist": #f0efe9,
+  "line": #e1e0d8,
+  "ocean": #a8351f,
+  "teal": #c8432b,
+  "sand": #3346c8,
+  "red": #b3261e,
+  "red-soft": #fbeceb,
+  "green": #1f7a4a,
+  "green-soft": #e7f3ec,
+  "header": rgba(255, 255, 255, .98)
+);
+
+$dark: (
+  "bg": #0f1117,
+  "surface": #171a22,
+  "ink": #e9eaee,
+  "muted": #a0a6b2,
+  "mist": #1f2330,
+  "line": #2c3140,
+  "ocean": #ff9b84,
+  "teal": #ff7a5c,
+  "sand": #93a3ff,
+  "red": #ff8a80,
+  "red-soft": #3a1d1c,
+  "green": #6fd49a,
+  "green-soft": #16301f,
+  "header": rgba(23, 26, 34, .98)
+);
+
+$sepia: (
+  "bg": #f4ecd8,
+  "surface": #fbf6e9,
+  "ink": #3b2f20,
+  "muted": #6e5d45,
+  "mist": #efe3c6,
+  "line": #dfd0ad,
+  "ocean": #7a4b16,
+  "teal": #8a5a1c,
+  "sand": #c99a3a,
+  "red": #a23a2a,
+  "red-soft": #f6e3d8,
+  "green": #4f6b22,
+  "green-soft": #e9eccf,
+  "header": rgba(251, 246, 233, .97)
+);
+
+$ocean: (
+  "bg": #0b1730,
+  "surface": #12213f,
+  "ink": #e2ebff,
+  "muted": #a3b5d8,
+  "mist": #1a2c50,
+  "line": #2a416d,
+  "ocean": #9cc8ff,
+  "teal": #74b4ff,
+  "sand": #ffd27a,
+  "red": #ff9a8d,
+  "red-soft": #3a1f2a,
+  "green": #7fd6a0,
+  "green-soft": #173a33,
+  "header": rgba(18, 33, 63, .97)
+);
+
+$contrast: (
+  "bg": #000000,
+  "surface": #000000,
+  "ink": #ffffff,
+  "muted": #e8e8e8,
+  "mist": #1c1c1c,
+  "line": #ffffff,
+  "ocean": #ffe14d,
+  "teal": #ffe14d,
+  "sand": #ffe14d,
+  "red": #ff7b7b,
+  "red-soft": #2a0000,
+  "green": #7dff9e,
+  "green-soft": #002a10,
+  "header": rgba(0, 0, 0, .98)
+);
+
+// Each theme: [palette, color-scheme]
+$themes: (
+  "light": ($light, light),
+  "dark": ($dark, dark),
+  "sepia": ($sepia, light),
+  "ocean": ($ocean, dark),
+  "contrast": ($contrast, dark)
+);
+
+@mixin theme($palette) {
+  @each $name, $value in $palette {
+    --#{$name}: #{$value};
+  }
+}
+
+$bg: var(--bg);
+$white: var(--surface);
+$ink: var(--ink);
+$muted: var(--muted);
+$mist: var(--mist);
+$line: var(--line);
+$ocean: var(--ocean);
+$teal: var(--teal);
+$sand: var(--sand);
+$red: var(--red);
+$green: var(--green);
+
+
+$font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-display: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+$wrap: 1120px;
+$radius: 4px;
+$header-height: 60px;
+$shadow: 0 2px 0 rgba(20, 24, 33, .06);
+
+$bp-md: 980px;
+$bp-sm: 480px;
+
+@mixin md {
+  @media (max-width: $bp-md) { @content; }
+}
+
+@mixin sm {
+  @media (max-width: $bp-sm) { @content; }
+}
+
+@mixin display-font {
+  font-family: var(--display-font);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+
+// Small uppercase mono label (section numbers, kickers)
+@mixin label {
+  font-family: $font-mono;
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+@mixin panel($padding: 24px) {
+  background: $white;
+  border: 1px solid $line;
+  border-radius: $radius;
+  padding: $padding;
+}

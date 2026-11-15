@@ -1,0 +1,77 @@
+// Page title band, sections and two-column layouts
+
+.page-head {
+  background: var(--surface);
+  border-bottom: 1px solid $line;
+  padding: 22px 0 18px;
+
+  h1 { @include display-font; font-size: clamp(1.8rem, 3.4vw, 2.5rem); margin: 0 0 4px; }
+  p { color: $muted; max-width: 720px; margin: 0; }
+}
+
+.crumbs {
+  @include label;
+  margin-bottom: 6px;
+  color: $muted;
+
+  a { color: $teal; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+}
+
+.section { padding-top: 24px; }
+
+.section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $ink;
+
+  h2 { @include display-font; font-size: 1.3rem; margin: 0; }
+  span { @include label; color: $teal; }
+}
+
+.with-sidebar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 20px;
+  align-items: start;
+
+  @include md { grid-template-columns: 1fr; }
+}
+
+.sidebar { display: grid; gap: 14px; position: sticky; top: $header-height + 20px; }
+
+@include md { .sidebar { position: static; } }
+
+// Topic pages: each idea in its own cell, two per row
+.idea-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid $line;
+  border-left: 1px solid $line;
+  background: var(--surface);
+
+  @include sm { grid-template-columns: 1fr; }
+
+  .card {
+    padding: 16px 18px;
+    border: 0;
+    border-right: 1px solid $line;
+    border-bottom: 1px solid $line;
+    border-radius: 0;
+  }
+
+  h2 { font-size: 1.05rem; margin-bottom: 6px; }
+  ul { padding-left: 18px; margin: 0; }
+  li { margin-bottom: 4px; }
+  li::marker { color: $teal; }
+}
+
+.next-link {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}

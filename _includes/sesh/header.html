@@ -1,0 +1,14 @@
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="{{ '/' | relative_url }}"><b>sesh</b><span>oncology capstone</span></a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      {%- for item in site.data.sesh_nav %}
+      <a class="site-nav__link" href="{{ item.url | relative_url }}"{% if page.nav == item.key %} aria-current="page"{% endif %}>{{ item.title }}</a>
+      {%- endfor %}
+    </nav>
+    <div class="site-tools">
+      <a class="sesh__btn small solid" href="{{ '/login' | relative_url }}" data-account-link>Log in</a>
+      <button class="sesh__btn small nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    </div>
+  </div>
+</header>

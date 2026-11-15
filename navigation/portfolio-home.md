@@ -1,6 +1,7 @@
 ---
 layout: post 
 title: Portfolio Home 
+permalink: /portfolio-home/
 hide: true
 show_reading_time: false
 ---

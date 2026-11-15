@@ -1,0 +1,62 @@
+// Buttons: flat, squared, one solid style for the main action
+
+@mixin base-button {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--pref-font-family);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color .15s, border-color .15s, color .15s;
+
+  &:hover { border-color: var(--ink); }
+  &:focus { outline: none; }
+  &:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+}
+
+.sesh__btn {
+  @include base-button;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 7px 14px;
+  border-radius: $radius;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}
+
+.sesh__btn.small { min-height: 30px; padding: 4px 10px; font-size: .875rem; }
+.sesh__btn.medium { min-height: 36px; padding: 6px 14px; font-size: .94rem; }
+.sesh__btn.large { min-height: 46px; padding: 10px 18px; font-size: 1.02rem; }
+
+// Outline in the accent color
+.sesh__btn.accent { border-color: $teal; color: $teal; }
+.sesh__btn.accent:hover { background: $teal; color: var(--surface); }
+
+// Solid: the one main action on a screen
+.sesh__btn.accent.fill,
+.sesh__btn.solid {
+  background: $ink;
+  border-color: $ink;
+  color: var(--surface);
+
+  &:hover { background: $teal; border-color: $teal; color: #fff; }
+}
+
+.sesh__btn.alert-red { border-color: $red; color: $red; }
+
+// Full-width row with the label left and an arrow right
+.sesh__btn.block {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  text-align: left;
+  white-space: normal;
+
+  &:hover { border-color: $teal; color: $teal; }
+}

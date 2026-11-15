@@ -1,0 +1,102 @@
+// Header: wordmark, section links, account button
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--header);
+  border-bottom: 1px solid $ink;
+}
+
+.site-header__inner {
+  height: $header-height;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-right: auto;
+  color: $ink;
+  text-decoration: none;
+  white-space: nowrap;
+
+  b {
+    font-family: var(--display-font);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -.04em;
+  }
+
+  b::after { content: "."; color: $teal; }
+
+  span { @include label; color: $muted; }
+
+  @include sm { span { display: none; } }
+}
+
+.site-nav {
+  display: flex;
+  align-items: stretch;
+  align-self: stretch;
+}
+
+.site-nav__link {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: $ink;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: .95rem;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+
+  &:hover { color: $teal; }
+
+  &[aria-current="page"] {
+    color: $teal;
+    border-bottom-color: $teal;
+  }
+}
+
+.site-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-toggle { display: none; }
+
+@include md {
+  .nav-toggle { display: inline-flex; }
+
+  .site-nav {
+    display: none;
+    position: absolute;
+    top: $header-height;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    padding: 8px 16px 12px;
+    background: var(--surface);
+    border-bottom: 1px solid $ink;
+
+    &.is-open { display: flex; }
+  }
+
+  .site-nav__link {
+    padding: 12px 4px;
+    border-bottom: 1px solid $line;
+    margin: 0;
+
+    &[aria-current="page"] { border-bottom-color: $line; }
+  }
+}
+
+@include sm {
+  .site-tools [data-account-link] { display: none; }
+}

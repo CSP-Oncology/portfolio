@@ -1,0 +1,33 @@
+// Home: title band with the three-step summary, then the index of every section
+
+.home-head {
+  background: var(--surface);
+  border-bottom: 1px solid $line;
+}
+
+.home-head__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+  padding-top: 32px;
+  padding-bottom: 28px;
+
+  @include md { grid-template-columns: 1fr; gap: 20px; padding-top: 24px; padding-bottom: 20px; }
+}
+
+.home-head__kicker { @include label; color: $teal; display: block; margin-bottom: 10px; }
+
+.home-head h1 {
+  @include display-font;
+  font-size: clamp(2.2rem, 4.6vw, 3.4rem);
+  margin: 0 0 12px;
+}
+
+.home-head p { color: $muted; font-size: 1.05rem; margin: 0; max-width: 520px; }
+
+.home-head .steps {
+  border-top: 1px solid $ink;
+}
+
+.home-index { padding-top: 24px; }

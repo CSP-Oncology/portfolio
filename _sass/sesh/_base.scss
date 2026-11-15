@@ -1,0 +1,98 @@
+// Reset, theme properties, typography (PRC base/_base.scss)
+
+:root {
+  @include theme($light);
+  color-scheme: light;
+  // Names the PRC/OCS buttons read
+  --pref-bg-color: var(--surface);
+  --pref-text-color: var(--ink);
+  --pref-accent-color: var(--teal);
+  --pref-font-family: #{$font};
+  --display-font: #{$font-display};
+  --pref-font-size: 1rem;
+  --ui-border: var(--line);
+  --panel-mid: var(--mist);
+}
+
+// Themes from the Settings page. Any element can carry data-theme (the Settings live preview does).
+@each $name, $theme in $themes {
+  [data-theme="#{$name}"] {
+    @include theme(nth($theme, 1));
+    color-scheme: nth($theme, 2);
+  }
+}
+
+// Text size, font, spacing and motion from the Settings page (set on <html>)
+html[data-size="small"] { font-size: 87.5%; }
+html[data-size="large"] { font-size: 112.5%; }
+html[data-size="larger"] { font-size: 125%; }
+
+html[data-font="readable"] { --pref-font-family: "Atkinson Hyperlegible", #{$font}; --display-font: "Atkinson Hyperlegible", #{$font}; }
+html[data-font="serif"] { --pref-font-family: Georgia, "Times New Roman", serif; --display-font: Georgia, "Times New Roman", serif; }
+
+html[data-spacing="relaxed"] body { line-height: 1.85; letter-spacing: .02em; word-spacing: .06em; }
+
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  transition: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-padding-top: $header-height + 16px; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: $bg;
+  color: $ink;
+  font-family: var(--pref-font-family);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+main { flex: 1; }
+
+img, svg, video { max-width: 100%; }
+
+::selection { background: $teal; color: #fff; }
+
+a { color: $ocean; }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+
+h1, h2, h3, h4 { font-family: var(--display-font); line-height: 1.2; margin: 0 0 .5em; letter-spacing: -.01em; }
+h1 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 600; }
+h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0 0 1em; }
+
+[hidden] { display: none !important; }
+
+.wrap { width: 100%; max-width: $wrap + 32px; padding: 0 16px; margin-inline: auto; }
+.wide { width: calc(100% - 48px); margin-inline: auto; @include sm { width: calc(100% - 32px); } }
+
+.muted { color: $muted; }
+.small { font-size: .875rem; }
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 100;
+  background: $ink;
+  color: $white;
+  padding: 10px 14px;
+  border-radius: 6px;
+
+  &:focus { top: 12px; }
+}
+
+
+.label { @include label; color: $muted; display: block; }
