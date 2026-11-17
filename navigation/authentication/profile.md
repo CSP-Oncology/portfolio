@@ -63,6 +63,7 @@ show_reading_time: false
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/learn">Games &amp; quizzes <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/glossary">Glossary <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/about">Contact us <span aria-hidden="true">→</span></a>
+            <a class="sesh__btn block" href="{{site.baseurl}}/sesh/survey">Take a quick survey <span aria-hidden="true">→</span></a>
           </div>
         </nav>
         <a class="sesh__btn alert-red" id="logout" href="{{site.baseurl}}/logout">Log out</a>
