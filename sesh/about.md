@@ -33,9 +33,14 @@ permalink: /sesh/about
         <p>A CSP capstone about precision oncology, built by the CSP-Oncology team.</p>
       </div>
       <div class="note">
-        <h2>Team</h2>
-        <!-- Add team members here -->
-      </div>
+  <h2>Team</h2>
+  <ul>
+    <li>Salma Zaghloul · Scrum Master · zaghloulsalma@hotmail.com</li>
+    <li>Anika Seksaria · Product Owner · anika.seksaria@gmail.com</li>
+    <li>Aashi Hegu · System Architect · aashihegu1@gmail.com</li>
+    <li>Jailene Tang · Education Liaison · tangjailene@gmail.com</li>
+  </ul>
+</div>
       <a class="sesh__btn block" href="{{ '/sesh/background' | relative_url }}">About Sesh <span aria-hidden="true">→</span></a>
       <a class="sesh__btn block" href="{{ '/sesh/news' | relative_url }}">News <span aria-hidden="true">→</span></a>
     </aside>
