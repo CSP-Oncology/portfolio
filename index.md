@@ -2,7 +2,33 @@
 layout: sesh
 title: Home
 ---
+<style>
+.home-head { position: relative; overflow: hidden; }
+.home-head__inner { position: relative; z-index: 1; }
+.dna {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+[data-theme="dark"] .dna, .dark .dna {
+  opacity: 0.3;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dna { display: none; }
+}
+</style>
 <section class="home-head">
+  <video class="dna" autoplay muted loop playsinline aria-hidden="true" tabindex="-1">
+    <source src="{{ site.baseurl }}/images/webdev/dna.mp4" type="video/mp4">
+  </video>
+  <script>
+    document.querySelector('.dna').playbackRate = 0.75;
+  </script>
   <div class="wrap home-head__inner">
     <div>
       <span class="home-head__kicker">Precision immuno-oncology</span>
