@@ -1,17 +1,22 @@
 ---
 layout: sesh
 title: News
-nav: about
+nav: news
 heading: News
-parent: About & Contact
-parent_url: /sesh/about
+intro: Updates on Sesh's research, funding and company milestones.
 permalink: /sesh/news
 ---
-<section class="section wrap">
+<section class="section wrap" aria-label="Company updates">
   <ol class="steps news-list">
-    <!-- Add updates here, newest first -->
-    <li><div><strong>Connect Cool Companies 2026</strong><span>Sesh was named a Connect Cool Company.</span></div></li>
-    <li><div><strong>EvoNexus portfolio company</strong><span>Sesh is part of the EvoNexus portfolio.</span></div></li>
-    <li><div><strong>2026 SDSU San Diego Angel Conference</strong><span>Sesh won 1st place and a $200,000 investment at the 2026 SDSU San Diego Angel Conference in June 2026, as well as the Golden Ticket Award at the San Diego Innovation Council Showcase</span></div></li>
+    {% for item in site.data.sesh_news %}
+    <li>
+      <article>
+        <p class="news-list__meta"><time datetime="{{ item.datetime }}">{{ item.date }}</time> · {{ item.category }}</p>
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.summary }}</p>
+      </article>
+    </li>
+    {% endfor %}
   </ol>
+  <p class="news-source">Summaries based on Sesh's official updates. <a href="https://www.oncologysesh.com/news" target="_blank" rel="noopener noreferrer">Read the original news ↗</a></p>
 </section>
