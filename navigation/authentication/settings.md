@@ -155,7 +155,15 @@ search_exclude: true
       try {
         saved = { ...DEFAULTS, ...(await saveToAccount(prefs)) };
         say('Saved to your account.');
-      } catch (err) { say(`Saved in this browser, but not to your account: ${err.message}`, true); }
+        if (prefs.language !== (user.preferences?.language || 'en')) {
+          window.location.reload();
+        }
+      } catch (err) {
+        say(`Saved in this browser, but not to your account: ${err.message}`, true);
+        if (prefs.language !== (user.preferences?.language || 'en')) {
+          window.location.reload();
+        }
+      }
     });
 
     // Leaving without saving puts the saved settings back

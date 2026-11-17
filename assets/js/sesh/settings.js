@@ -23,7 +23,7 @@ export function apply(prefs, root = document.documentElement) {
 }
 
 export function applyLanguage(language) {
-  const lang = language === 'es' ? 'es' : '';
+  const lang = language === 'es' ? 'es' : 'en';
   rootSetLanguage(lang);
 }
 
@@ -45,14 +45,19 @@ function rootSetLanguage(language) {
 
   clearTranslationCookies();
 
-  if (!language) {
+  if (language === 'en') {
+    document.documentElement.setAttribute('lang', 'en');
     const select = document.querySelector('.goog-te-combo');
     if (select) {
-      select.value = '';
+      select.value = 'en';
       select.dispatchEvent(new Event('change'));
+    } else if (document.documentElement.classList.contains('translated-ltr')) {
+      window.location.reload();
     }
     return;
   }
+
+  document.documentElement.setAttribute('lang', 'es');
 
   const domain = window.location.hostname;
   document.cookie = `googtrans=/en/${language}; path=/;`;

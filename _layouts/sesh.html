@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if page.title and page.title != "Home" %}{{ page.title }} | {% endif %}Oncology Sesh</title>
   <meta name="description" content="{{ page.intro | default: 'A student capstone about precision oncology and liquid biopsy.' }}">
+  <style>
+    .goog-te-banner-frame,
+    .goog-te-balloon-frame,
+    #goog-gt-tt,
+    .goog-te-gadget,
+    #google_translate_element,
+    .skiptranslate { display: none !important; }
+    body { top: 0 !important; position: static !important; }
+  </style>
   <!-- Apply the visitor's Settings (theme, text size, font, spacing, motion) before the page paints.
        They're saved in this browser and, when logged in, to the account (see assets/js/sesh/settings.js). -->
   <script>
@@ -14,6 +23,13 @@
       var root = document.documentElement;
       root.setAttribute('data-theme', prefs.theme || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
       ['size', 'font', 'spacing', 'motion'].forEach(function (key) { if (prefs[key]) root.setAttribute('data-' + key, prefs[key]); });
+      if (prefs.language === 'es') {
+        root.setAttribute('lang', 'es');
+        root.setAttribute('data-translate-lang', 'es');
+        document.cookie = 'googtrans=/en/es; path=/';
+      } else {
+        root.setAttribute('lang', 'en');
+      }
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,6 +56,27 @@
 
   {% include sesh/footer.html %}
 
+  {% raw %}
+  <div id="google_translate_element" hidden></div>
+  {% endraw %}
+  <script>
+    (function () {
+      var prefs = {};
+      try { prefs = JSON.parse(localStorage.getItem('sesh-settings') || '{}') || {}; } catch (e) {}
+      if (prefs.language !== 'es') return;
+      window.googleTranslateElementInit = function () {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,es',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+      };
+      var script = document.createElement('script');
+      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      document.body.appendChild(script);
+    })();
+  </script>
   <script type="module" src="{{ '/assets/js/sesh/main.js' | relative_url }}"></script>
 </body>
 </html>
