@@ -75,3 +75,14 @@
   gap: 10px;
   margin-top: 16px;
 }
+
+// Company updates reuse the site's numbered rows and compact typography.
+.news-list {
+  border-top: 1px solid $line;
+  li { padding: 22px 0; }
+  article { min-width: 0; }
+  h2 { font-size: 1.15rem; margin: 0 0 6px; }
+  p { margin: 0; color: $muted; max-width: 760px; }
+  .news-list__meta { @include label; color: $teal; margin-bottom: 8px; }
+}
+.news-source { color: $muted; font-size: .85rem; margin-top: 20px; }

@@ -1,15 +1,15 @@
 // Theme tokens: colors (as CSS custom properties, so Settings can swap themes), type, sizes, breakpoints
 
 $light: (
-  "bg": #f7f7f4,
+  "bg": #f5f9fc,
   "surface": #ffffff,
   "ink": #141821,
   "muted": #5c6370,
-  "mist": #f0efe9,
-  "line": #e1e0d8,
-  "ocean": #a8351f,
-  "teal": #c8432b,
-  "sand": #3346c8,
+  "mist": #eaf3fa,
+  "line": #d6e4ee,
+  "ocean": #005d96,
+  "teal": #0074b9,
+  "sand": #eadb00,
   "red": #b3261e,
   "red-soft": #fbeceb,
   "green": #1f7a4a,
@@ -18,20 +18,20 @@ $light: (
 );
 
 $dark: (
-  "bg": #0f1117,
-  "surface": #171a22,
+  "bg": #0b1420,
+  "surface": #111f30,
   "ink": #e9eaee,
   "muted": #a0a6b2,
-  "mist": #1f2330,
-  "line": #2c3140,
-  "ocean": #ff9b84,
-  "teal": #ff7a5c,
-  "sand": #93a3ff,
+  "mist": #192c40,
+  "line": #2b4158,
+  "ocean": #91d1ff,
+  "teal": #6bc4ff,
+  "sand": #fff000,
   "red": #ff8a80,
   "red-soft": #3a1d1c,
   "green": #6fd49a,
   "green-soft": #16301f,
-  "header": rgba(23, 26, 34, .98)
+  "header": rgba(17, 31, 48, .98)
 );
 
 $sepia: (

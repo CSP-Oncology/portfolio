@@ -31,3 +31,14 @@
 }
 
 .home-index { padding-top: 24px; }
+
+// A small yellow detail echoes the cells in the Sesh logo.
+.home-head__kicker::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: $sand;
+}

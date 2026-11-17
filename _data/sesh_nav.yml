@@ -1,7 +1,8 @@
 # Header links. Each opens its own page; a page sets `nav:` to the key to be underlined.
-# About also holds Contact, About Sesh (Background) and News.
+# About also holds Contact and About Sesh (Background).
 - { key: reload, title: RELOAD, url: /sesh/reload }
 - { key: science, title: Science, url: /sesh/science }
 - { key: learn, title: Learn, url: /sesh/learn }
 - { key: faq, title: FAQ, url: /sesh/faq }
+- { key: news, title: News, url: /sesh/news }
 - { key: about, title: About & Contact, url: /sesh/about }
