@@ -71,15 +71,6 @@ search_exclude: true
     </form>
 
     <aside class="sidebar">
-      <div class="card preview">
-        <span class="label">Live preview</span>
-        <h3>Liquid biopsy</h3>
-        <p>A blood test that reads tumor DNA. See the <a href="{{ '/sesh/science/liquid-biopsy' | relative_url }}">topic page</a> before the quiz.</p>
-        <span class="form-row__buttons">
-          <span class="sesh__btn small accent fill">Start quiz</span>
-          <span class="sesh__btn small accent">Next topic</span>
-        </span>
-      </div>
       <div class="note">
         <h2>Contrast check</h2>
         <ul class="check-list" id="contrast-list"></ul>
