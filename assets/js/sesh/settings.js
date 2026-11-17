@@ -47,12 +47,12 @@ function rootSetLanguage(language) {
 
   if (language === 'en') {
     document.documentElement.setAttribute('lang', 'en');
+    document.cookie = 'googtrans=/en/en; path=/;';
+    document.cookie = `googtrans=/en/en; path=/; domain=${domain};`;
     const select = document.querySelector('.goog-te-combo');
     if (select) {
-      select.value = 'en';
+      select.value = '';
       select.dispatchEvent(new Event('change'));
-    } else if (document.documentElement.classList.contains('translated-ltr')) {
-      window.location.reload();
     }
     return;
   }

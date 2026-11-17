@@ -150,17 +150,18 @@ search_exclude: true
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const prefs = current();
+      const previousLanguage = loadLocal().language || 'en';
       saveLocal(prefs);
       say('Saving…');
       try {
         saved = { ...DEFAULTS, ...(await saveToAccount(prefs)) };
         say('Saved to your account.');
-        if (prefs.language !== (user.preferences?.language || 'en')) {
+        if (prefs.language !== previousLanguage) {
           window.location.reload();
         }
       } catch (err) {
         say(`Saved in this browser, but not to your account: ${err.message}`, true);
-        if (prefs.language !== (user.preferences?.language || 'en')) {
+        if (prefs.language !== previousLanguage) {
           window.location.reload();
         }
       }
