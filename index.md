@@ -11,10 +11,8 @@ title: Home
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: rgba(255, 255, 255, 0.45);
-}
-[data-theme="dark"] .home-head::after, .dark .home-head::after {
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--bg);
+  opacity: 0.45;
 }
 .dna {
   position: absolute;
