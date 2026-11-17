@@ -58,6 +58,13 @@ search_exclude: true
               <label><input type="radio" name="motion" value="off"><span>Off</span></label>
             </div>
           </fieldset>
+          <fieldset class="setting">
+            <legend>Language</legend>
+            <div class="segmented">
+              <label><input type="radio" name="language" value="en"><span>English</span></label>
+              <label><input type="radio" name="language" value="es"><span>Español</span></label>
+            </div>
+          </fieldset>
         </div>
       </section>
 
@@ -112,10 +119,11 @@ search_exclude: true
     };
     function checkContrast() {
       const style = getComputedStyle(document.body);
-      const probe = document.querySelector('.preview a');
+      const probe = document.querySelector('a');
+      const linkStyle = probe ? getComputedStyle(probe) : style;
       const rows = [
         ['Text is readable', ratio(style.color, style.backgroundColor)],
-        ['Links and buttons stand out', ratio(getComputedStyle(probe).color, style.backgroundColor)]
+        ['Links and buttons stand out', ratio(linkStyle.color, style.backgroundColor)]
       ];
       document.getElementById('contrast-list').replaceChildren(...rows.map(([label, value]) => {
         const li = document.createElement('li');
