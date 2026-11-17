@@ -1,21 +1,73 @@
-// Footer: one line with the disclaimer
-
+// Shared footer: always-visible content at the bottom of every Sesh page.
 .site-footer {
+  --footer-bg: #0065a3;
+  --footer-ink: #ffffff;
+  --footer-muted: #e1f1ff;
+  --footer-line: #ffffff45;
+  --footer-accent: #fff000;
   flex-shrink: 0;
-  margin-top: 32px;
-  padding: 14px 0;
-  border-top: 1px solid $ink;
-  background: var(--surface);
-  color: $muted;
-  font-size: .85rem;
+  margin-top: 48px;
+  padding: 44px 0 20px;
+  border-top: 4px solid var(--footer-accent);
+  background: var(--footer-bg);
+  color: var(--footer-ink);
+  font-size: .95rem;
 
-  p { margin: 0; }
-  a { color: $ink; }
+  h2 { font-size: 1.2rem; margin: 0 0 16px; color: var(--footer-ink); }
+  p { margin: 0 0 16px; color: var(--footer-muted); }
+  a {
+    color: var(--footer-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    overflow-wrap: anywhere;
+    &:hover { color: var(--footer-accent); }
+    &:focus-visible { outline: 2px solid var(--footer-accent); outline-offset: 5px; }
+  }
+  ul { list-style: none; padding: 0; margin: 0; }
+  li + li { margin-top: 10px; }
+}
+
+[data-theme="dark"] .site-footer,
+[data-theme="ocean"] .site-footer {
+  --footer-bg: #092c49;
+  --footer-muted: #c1daee;
+  --footer-line: #8dbfe345;
+}
+
+[data-theme="contrast"] .site-footer {
+  --footer-bg: #000000;
+  --footer-line: #ffffff;
+  --footer-muted: #ffffff;
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 36px;
+  > section { min-width: 0; }
+  @include md { gap: 28px; }
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    > section + section { padding-top: 24px; border-top: 1px solid var(--footer-line); }
+  }
+}
+
+.site-footer__intro {
+  h2 { font-size: 1.65rem; }
+  h2 span { color: var(--footer-accent); }
+  > a { font-weight: 600; }
 }
 
 .site-footer__row {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 4px 16px;
+  align-items: baseline;
+  gap: 12px 24px;
+  border-top: 1px solid var(--footer-line);
+  padding-top: 20px;
+  font-size: .8rem;
+  p { margin: 0; }
 }
