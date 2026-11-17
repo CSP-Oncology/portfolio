@@ -39,7 +39,7 @@ function rootSetLanguage(language) {
   if (!document.getElementById('google-translate-hide-css')) {
     const style = document.createElement('style');
     style.id = 'google-translate-hide-css';
-    style.textContent = '.goog-te-banner-frame,.goog-te-balloon-frame{display:none!important}body{top:0!important;position:static!important}.goog-te-gadget,#google_translate_element{display:none!important}';
+    style.textContent = '.goog-te-banner-frame,iframe.goog-te-banner-frame,.goog-te-balloon-frame,#goog-gt-tt,.goog-te-gadget,#google_translate_element,body>.skiptranslate,.skiptranslate iframe{display:none!important;visibility:hidden!important;height:0!important}html,body,html.translated-ltr,html.translated-rtl{top:0!important;position:static!important;margin-top:0!important}';
     document.head.appendChild(style);
   }
 
