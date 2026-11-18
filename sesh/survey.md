@@ -6,29 +6,6 @@ heading: Survey
 intro: Take a quick survey to give us helpful feedback on our code!
 permalink: /sesh/survey
 ---
-<style>
-.survey { max-width: 760px; padding-top: 40px; padding-bottom: 64px; }
-.survey [hidden] { display: none !important; }
-.survey__intro { color: var(--muted); margin-bottom: 8px; }
-.survey__note { color: var(--muted); font-size: .9rem; margin-bottom: 28px; }
-.survey .req { color: var(--red); font-weight: 700; }
-.survey__section { margin: 40px 0 16px; }
-.survey .q { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 20px 24px; margin: 0 0 20px; min-width: 0; }
-.survey legend, .survey .q__label { font-weight: 600; padding: 0 6px 0 0; margin-bottom: 8px; display: block; }
-.survey legend { float: left; width: 100%; padding: 0; margin-bottom: 8px; }
-.survey legend + * { clear: both; }
-.survey .hint { color: var(--muted); font-size: .85rem; margin: 0 0 8px; }
-.survey .opt { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 4px; cursor: pointer; }
-.survey .opt:hover { background: var(--mist); }
-.survey .opt input[type="radio"], .survey .opt input[type="checkbox"] { accent-color: var(--ocean); width: 18px; height: 18px; flex: none; }
-.survey .opt--other input[type="text"] { flex: 1; min-width: 0; }
-.survey textarea, .survey input[type="text"] { width: 100%; font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; }
-.survey textarea:focus, .survey input[type="text"]:focus, .survey .opt input:focus-visible { outline: 2px solid var(--ocean); outline-offset: 2px; }
-.survey .opt input:disabled + *, .survey input:disabled { opacity: .5; }
-.survey__submit { font: inherit; font-weight: 600; color: var(--bg); background: var(--ocean); border: 0; border-radius: 4px; padding: 12px 28px; cursor: pointer; }
-.survey__submit:hover { filter: brightness(1.1); }
-.survey__thanks { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 32px; }
-</style>
 <section class="wrap survey">
 <h1>Website Prototype Feedback</h1>
 <p class="survey__intro">Tell us what you think of our prototype for our website and any feedback!</p>
