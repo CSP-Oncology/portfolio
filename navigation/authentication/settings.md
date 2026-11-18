@@ -145,7 +145,7 @@ search_exclude: true
 
     // Every change shows right away on the whole page; Save keeps it
     function preview() {
-      apply(current());
+      apply({ ...current(), language: saved.language });
       checkContrast();
       const changed = JSON.stringify(current()) !== JSON.stringify(saved);
       say(changed ? 'Not saved yet.' : '');

@@ -14,7 +14,11 @@ $light: (
   "red-soft": #fbeceb,
   "green": #1f7a4a,
   "green-soft": #e7f3ec,
-  "header": rgba(255, 255, 255, .98)
+  "header": rgba(255, 255, 255, .98),
+  "on-accent": #ffffff,
+  "footer-bg": #0065a3,
+  "footer-muted": #e1f1ff,
+  "footer-line": rgba(255, 255, 255, .27)
 );
 
 $dark: (
@@ -31,7 +35,11 @@ $dark: (
   "red-soft": #3a1d1c,
   "green": #6fd49a,
   "green-soft": #16301f,
-  "header": rgba(17, 31, 48, .98)
+  "header": rgba(17, 31, 48, .98),
+  "on-accent": #0b1420,
+  "footer-bg": #092c49,
+  "footer-muted": #c1daee,
+  "footer-line": rgba(141, 191, 227, .27)
 );
 
 $sepia: (
@@ -48,7 +56,11 @@ $sepia: (
   "red-soft": #f6e3d8,
   "green": #4f6b22,
   "green-soft": #e9eccf,
-  "header": rgba(251, 246, 233, .97)
+  "header": rgba(251, 246, 233, .97),
+  "on-accent": #ffffff,
+  "footer-bg": #5a3a12,
+  "footer-muted": #f1e2c6,
+  "footer-line": rgba(255, 255, 255, .27)
 );
 
 $ocean: (
@@ -65,7 +77,11 @@ $ocean: (
   "red-soft": #3a1f2a,
   "green": #7fd6a0,
   "green-soft": #173a33,
-  "header": rgba(18, 33, 63, .97)
+  "header": rgba(18, 33, 63, .97),
+  "on-accent": #0b1730,
+  "footer-bg": #092c49,
+  "footer-muted": #c1daee,
+  "footer-line": rgba(141, 191, 227, .27)
 );
 
 $contrast: (
@@ -82,7 +98,11 @@ $contrast: (
   "red-soft": #2a0000,
   "green": #7dff9e,
   "green-soft": #002a10,
-  "header": rgba(0, 0, 0, .98)
+  "header": rgba(0, 0, 0, .98),
+  "on-accent": #000000,
+  "footer-bg": #000000,
+  "footer-muted": #ffffff,
+  "footer-line": #ffffff
 );
 
 // Each theme: [palette, color-scheme]
@@ -111,6 +131,7 @@ $teal: var(--teal);
 $sand: var(--sand);
 $red: var(--red);
 $green: var(--green);
+$on-accent: var(--on-accent);
 
 
 $font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;

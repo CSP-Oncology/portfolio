@@ -30,7 +30,7 @@ permalink: /sesh/about
     <aside class="sidebar">
       <div class="note">
         <h2>The project</h2>
-        <p>A CSP capstone about precision oncology, built by the Del Norte High School AP CSP class 2026-2027 oncology sesh team.</p>
+        <p>A CSP capstone about precision oncology, built by the CSP-Oncology team.</p>
       </div>
       <div class="note">
   <h2>Team</h2>
