@@ -537,6 +537,7 @@
             layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false,
           }, 'google_translate_element');
+          setTimeout(() => TranslationLanguageManager._selectLanguage(langCode), 0);
         };
       }
 
@@ -555,15 +556,19 @@
         document.head.appendChild(script);
       }
 
-      // Poll until the combo-box appears, then trigger the switch
-      const attemptTranslation = (attempts = 0) => {
-        if (attempts > 100) return;
+      TranslationLanguageManager._selectLanguage(langCode);
+    }
+
+    /** Select a language after the asynchronously-created Google widget is ready. */
+    static _selectLanguage(langCode, attempts = 0) {
+      if (attempts > 100) return;
+      const attemptTranslation = () => {
         const select = document.querySelector('.goog-te-combo');
         if (select) {
           select.value = langCode;
           select.dispatchEvent(new Event('change'));
         } else {
-          setTimeout(() => attemptTranslation(attempts + 1), 50);
+          setTimeout(() => TranslationLanguageManager._selectLanguage(langCode, attempts + 1), 50);
         }
       };
       attemptTranslation();
