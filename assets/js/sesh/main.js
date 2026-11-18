@@ -2,9 +2,7 @@
 ---
 // Site-wide behavior: mobile menu and "Log in" → "My profile" when logged in
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
-import { loadLocal, apply, syncFromAccount } from '{{ site.baseurl }}/assets/js/sesh/settings.js';
-
-apply(loadLocal());
+import { syncFromAccount } from '{{ site.baseurl }}/assets/js/sesh/settings.js';
 
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.getElementById('site-nav');

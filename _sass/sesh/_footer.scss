@@ -1,10 +1,6 @@
 // Shared footer: always-visible content at the bottom of every Sesh page.
 .site-footer {
-  --footer-bg: #0065a3;
-  --footer-ink: #ffffff;
-  --footer-muted: #e1f1ff;
-  --footer-line: #ffffff45;
-  --footer-accent: #fff000;
+  // --footer-* colors: the Sesh palette (_tokens.scss), or the Settings theme (_theme.scss)
   flex-shrink: 0;
   margin-top: 48px;
   padding: 44px 0 20px;
@@ -24,19 +20,6 @@
   }
   ul { list-style: none; padding: 0; margin: 0; }
   li + li { margin-top: 10px; }
-}
-
-[data-theme="dark"] .site-footer,
-[data-theme="ocean"] .site-footer {
-  --footer-bg: #092c49;
-  --footer-muted: #c1daee;
-  --footer-line: #8dbfe345;
-}
-
-[data-theme="contrast"] .site-footer {
-  --footer-bg: #000000;
-  --footer-line: #ffffff;
-  --footer-muted: #ffffff;
 }
 
 .site-footer__grid {

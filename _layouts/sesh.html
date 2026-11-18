@@ -1,25 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme-engine="sass">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if page.title and page.title != "Home" %}{{ page.title }} | {% endif %}Oncology Sesh</title>
   <meta name="description" content="{{ page.intro | default: 'A student capstone about precision oncology and liquid biopsy.' }}">
-  <!-- Apply the visitor's Settings (theme, text size, font, spacing, motion) before the page paints.
-       They're saved in this browser and, when logged in, to the account (see assets/js/sesh/settings.js). -->
+  <!-- Preferences (Settings page), as on Open Coding Society: assets/js/user-preferences.js applies
+       the saved theme and language on every page. data-theme-engine="sass" above means it only sets
+       CSS variables; _sass/sesh/_theme.scss styles the site from them. -->
   <script>
+    window.SITE_THEME_DEFAULT = {{ site.data.sesh_theme | jsonify }};
+    // Paint the saved colors before the page shows, so it doesn't flash the default look first
     (function () {
-      var prefs = {};
-      try { prefs = JSON.parse(localStorage.getItem('sesh-settings') || '{}') || {}; } catch (e) {}
-      var root = document.documentElement;
-      root.setAttribute('data-theme', prefs.theme || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-      ['size', 'font', 'spacing', 'motion'].forEach(function (key) { if (prefs[key]) root.setAttribute('data-' + key, prefs[key]); });
-      root.setAttribute('lang', prefs.language || 'en');
+      try {
+        if (localStorage.getItem('preferencesReset') === 'true') return;
+        var p = JSON.parse(localStorage.getItem('sitePreferences') || 'null');
+        if (!p || !(p.bg || p.text)) return;
+        var root = document.documentElement, d = window.SITE_THEME_DEFAULT;
+        var set = function (name, value) { if (value) root.style.setProperty(name, value); };
+        set('--pref-bg-color', p.bg || d.bg);
+        set('--pref-text-color', p.text || d.text);
+        set('--pref-accent-color', p.accent || d.accent);
+        set('--pref-selection-color', p.selectionColor || p.accent || d.accent);
+        set('--pref-font-family', p.font || d.font);
+        set('--pref-font-size', (p.size || d.size) + 'px');
+        root.classList.add('user-theme-active');
+        if (p.language) root.setAttribute('lang', p.language);
+      } catch (e) {}
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@400;600&family=Lato:wght@400;700&family=Montserrat:wght@400;600&family=Open+Sans:wght@400;600&family=Roboto:wght@400;500&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/sesh.css' | relative_url }}">
 </head>
 <body>

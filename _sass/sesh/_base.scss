@@ -10,34 +10,9 @@
   --pref-font-family: #{$font};
   --display-font: #{$font-display};
   --pref-font-size: 1rem;
+  --pref-selection-color: var(--teal);
   --ui-border: var(--line);
   --panel-mid: var(--mist);
-}
-
-// Themes from the Settings page. Any element can carry data-theme (the Settings live preview does).
-@each $name, $theme in $themes {
-  [data-theme="#{$name}"] {
-    @include theme(nth($theme, 1));
-    color-scheme: nth($theme, 2);
-  }
-}
-
-// Text size, font, spacing and motion from the Settings page (set on <html>)
-html[data-size="small"] { font-size: 87.5%; }
-html[data-size="large"] { font-size: 112.5%; }
-html[data-size="larger"] { font-size: 125%; }
-
-html[data-font="readable"] { --pref-font-family: "Atkinson Hyperlegible", #{$font}; --display-font: "Atkinson Hyperlegible", #{$font}; }
-html[data-font="serif"] { --pref-font-family: Georgia, "Times New Roman", serif; --display-font: Georgia, "Times New Roman", serif; }
-
-html[data-spacing="relaxed"] body { line-height: 1.85; letter-spacing: .02em; word-spacing: .06em; }
-
-html[data-motion="off"] *,
-html[data-motion="off"] *::before,
-html[data-motion="off"] *::after {
-  transition: none !important;
-  animation: none !important;
-  transform: none !important;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -61,7 +36,7 @@ main { flex: 1; }
 
 img, svg, video { max-width: 100%; }
 
-::selection { background: $teal; color: #fff; }
+::selection { background: var(--pref-selection-color); color: var(--on-selection, #{$on-accent}); }
 
 a { color: $ocean; }
 

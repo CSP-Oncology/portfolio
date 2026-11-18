@@ -56,7 +56,7 @@ show_reading_time: false
         <nav class="note" aria-label="Shortcuts">
           <h2>Shortcuts</h2>
           <div class="shortcut-list">
-            <a class="sesh__btn block" href="{{site.baseurl}}/settings">Settings: theme, text size <span aria-hidden="true">→</span></a>
+            <a class="sesh__btn block" href="{{site.baseurl}}/settings">Settings: theme, language, voice <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/student/calendar">Calendar <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/reload">RELOAD <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/science">Science topics <span aria-hidden="true">→</span></a>
