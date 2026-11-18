@@ -35,7 +35,7 @@ permalink: /sesh/survey
 <p class="survey__note"><span class="req">*</span> Indicates required question</p>
 <form id="survey">
   <fieldset class="q">
-    <legend>How well do you think our website fits the goals of Oncology and Kids?<span class="req" aria-hidden="true"> *</span></legend>
+    <legend>How well do you think our website fits the goals of Oncologysesh?<span class="req" aria-hidden="true"> *</span></legend>
     <label class="opt"><input type="radio" name="fit_goals" value="Very Well" required> <span>Very Well</span></label>
     <label class="opt"><input type="radio" name="fit_goals" value="Somewhat Well" required> <span>Somewhat Well</span></label>
     <label class="opt"><input type="radio" name="fit_goals" value="Neutral" required> <span>Neutral</span></label>
@@ -43,7 +43,7 @@ permalink: /sesh/survey
     <label class="opt"><input type="radio" name="fit_goals" value="Poorly" required> <span>Poorly</span></label>
   </fieldset>
   <fieldset class="q">
-    <legend>Do you think our website is easy and fun for kids with cancer to use?<span class="req" aria-hidden="true"> *</span></legend>
+    <legend>Do you think our website is easy and fun for people to use?<span class="req" aria-hidden="true"> *</span></legend>
     <label class="opt"><input type="radio" name="easy_fun" value="Agree" required> <span>Agree</span></label>
     <label class="opt"><input type="radio" name="easy_fun" value="Somewhat Agree" required> <span>Somewhat Agree</span></label>
     <label class="opt"><input type="radio" name="easy_fun" value="Neutral" required> <span>Neutral</span></label>
@@ -51,31 +51,19 @@ permalink: /sesh/survey
     <label class="opt"><input type="radio" name="easy_fun" value="Disagree" required> <span>Disagree</span></label>
   </fieldset>
   <fieldset class="q">
-    <legend>Do you think daily check-ins and mentor chats would help kids feel less alone and connect with others?<span class="req" aria-hidden="true"> *</span></legend>
-    <label class="opt"><input type="radio" name="checkins" value="Agree" required> <span>Agree</span></label>
-    <label class="opt"><input type="radio" name="checkins" value="Somewhat Agree" required> <span>Somewhat Agree</span></label>
-    <label class="opt"><input type="radio" name="checkins" value="Neutral" required> <span>Neutral</span></label>
-    <label class="opt"><input type="radio" name="checkins" value="Somewhat Disagree" required> <span>Somewhat Disagree</span></label>
-    <label class="opt"><input type="radio" name="checkins" value="Disagree" required> <span>Disagree</span></label>
-  </fieldset>
-  <div class="q">
-    <label class="q__label" for="safety_rules">What safety rules could we put in place for when kids chat with other users or mentors?<span class="req" aria-hidden="true"> *</span></label>
-    <textarea id="safety_rules" name="safety_rules" rows="4" required></textarea>
-  </div>
-  <fieldset class="q">
-    <legend>Which feature do you think kids would enjoy most? If you&#x27;re unsure, check more than one box.<span class="req" aria-hidden="true"> *</span></legend>
-    <label class="opt"><input type="checkbox" name="enjoy" value="Games"> <span>Games</span></label>
+    <legend>Which feature do you think best fit Oncologysesh? If you&#x27;re unsure, check more than one box.<span class="req" aria-hidden="true"> *</span></legend>
+    <label class="opt"><input type="checkbox" name="enjoy" value="Games"> <span>Educational Games</span></label>
     <label class="opt"><input type="checkbox" name="enjoy" value="Puzzles"> <span>Puzzles</span></label>
     <label class="opt"><input type="checkbox" name="enjoy" value="Coloring pages"> <span>Coloring pages</span></label>
     <label class="opt"><input type="checkbox" name="enjoy" value="custom themes (changing website style and colors)"> <span>custom themes (changing website style and colors)</span></label>
-    <label class="opt"><input type="checkbox" name="enjoy" value="daily check-ins"> <span>daily check-ins</span></label>
+    <label class="opt"><input type="checkbox" name="enjoy" value="daily check-ins"> <span>Educational Modules (Body Map, Cell Lab)</span></label>
   </fieldset>
   <div class="q">
-    <label class="q__label" for="easier_changes">What changes could make the website easier for all kids to use?<span class="req" aria-hidden="true"> *</span></label>
+    <label class="q__label" for="easier_changes">What changes could we make to the site to make it more accessible, in your opinion?<span class="req" aria-hidden="true"> *</span></label>
     <textarea id="easier_changes" name="easier_changes" rows="4" required></textarea>
   </div>
   <div class="q">
-    <label class="q__label" for="accuracy">How can we ensure the cancer information and body map are accurate and easy for kids to understand?<span class="req" aria-hidden="true"> *</span></label>
+    <label class="q__label" for="accuracy">How can we ensure information about cancer on our website is accurate and up to date?<span class="req" aria-hidden="true"> *</span></label>
     <textarea id="accuracy" name="accuracy" rows="4" required></textarea>
   </div>
   <fieldset class="q">
@@ -84,7 +72,6 @@ permalink: /sesh/survey
     <label class="opt"><input type="checkbox" name="features" value="Daily poll/check-in"> <span>Daily poll/check-in</span></label>
     <label class="opt"><input type="checkbox" name="features" value="Body map"> <span>Body map</span></label>
     <label class="opt"><input type="checkbox" name="features" value="Cell lab"> <span>Cell lab</span></label>
-    <label class="opt"><input type="checkbox" name="features" value="Article reading level filter"> <span>Article reading level filter</span></label>
     <label class="opt"><input type="checkbox" name="features" value="Online game hub"> <span>Online game hub</span></label>
     <label class="opt"><input type="checkbox" name="features" value="Mentors"> <span>Mentors</span></label>
     <label class="opt opt--other"><input type="checkbox" name="features" value="Other" id="feat-other"> <span>Other:</span>
@@ -111,7 +98,7 @@ permalink: /sesh/survey
 </form>
 <div id="survey-thanks" class="survey__thanks" hidden>
   <h2>Thank you!</h2>
-  <p>Your feedback helps us make the website better for kids.</p>
+  <p>Your feedback helps us make the website better.</p>
 </div>
 </section>
 <script>
