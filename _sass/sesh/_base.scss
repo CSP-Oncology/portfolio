@@ -61,7 +61,7 @@ main { flex: 1; }
 
 img, svg, video { max-width: 100%; }
 
-::selection { background: $teal; color: $on-accent; }
+::selection { background: $teal; color: #fff; }
 
 a { color: $ocean; }
 
