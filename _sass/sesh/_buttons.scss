@@ -45,7 +45,7 @@
   border-color: $ink;
   color: var(--surface);
 
-  &:hover { background: $teal; border-color: $teal; color: $on-accent; }
+  &:hover { background: $teal; border-color: $teal; color: #fff; }
 }
 
 .sesh__btn.alert-red { border-color: $red; color: $red; }
