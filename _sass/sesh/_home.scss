@@ -1,11 +1,51 @@
 // Home: title band with the three-step summary, then the index of every section
 
 .home-head {
+  position: relative;
+  overflow: hidden;
   background: var(--surface);
   border-bottom: 1px solid $line;
+
+  // Wash over the DNA video so the heading stays readable in every theme
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: $bg;
+    opacity: .45;
+  }
+}
+
+// Background DNA video
+.dna {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .4;
+}
+
+// Dimmer on every dark theme, not only "dark"
+@each $name, $theme in $themes {
+  @if nth($theme, 2) == dark {
+    [data-theme="#{$name}"] .dna { opacity: .3; }
+  }
+}
+
+// Respect "Animations: Off" in Settings and the OS reduced-motion setting
+html[data-motion="off"] .dna { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .dna { display: none; }
 }
 
 .home-head__inner {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   gap: 32px;

@@ -576,6 +576,7 @@
     /** Select a language after the asynchronously-created Google widget is ready. */
     static _selectLanguage(langCode, attempts = 0) {
       if (attempts > 100) return;
+      // Wait until Google creates the hidden language selector.
       const attemptTranslation = () => {
         const select = document.querySelector('.goog-te-combo');
         if (select) {
