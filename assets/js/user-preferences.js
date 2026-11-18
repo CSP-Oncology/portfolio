@@ -515,18 +515,25 @@
     static apply(langCode) {
       document.documentElement.setAttribute('data-translate-lang', langCode);
       TranslationLanguageManager._injectHideCSS();
-      TranslationLanguageManager.clearCookies();
 
       if (!langCode) {
         TranslationLanguageManager._removeTranslation();
         return;
       }
 
+      const currentLanguage = document.cookie.match(/(?:^|;\s*)googtrans=\/en\/([^;]+)/)?.[1] || '';
+      const isTranslated = document.documentElement.classList.contains('translated-ltr')
+        || document.documentElement.classList.contains('translated-rtl');
+
+      if ((currentLanguage && currentLanguage !== langCode) || (isTranslated && currentLanguage !== langCode)) {
+        TranslationLanguageManager.clearCookies();
+        TranslationLanguageManager._setCookie(langCode);
+        window.location.reload();
+        return;
+      }
+
       // Set cookies for the desired language
-      const domain = window.location.hostname;
-      document.cookie = `googtrans=/en/${langCode}; path=/`;
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${domain}`;
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=.${domain}`;
+      TranslationLanguageManager._setCookie(langCode);
 
       // Initialise Google Translate element (once)
       if (!window.googleTranslateElementInit) {
@@ -557,6 +564,13 @@
       }
 
       TranslationLanguageManager._selectLanguage(langCode);
+    }
+
+    static _setCookie(langCode) {
+      const domain = window.location.hostname;
+      document.cookie = `googtrans=/en/${langCode}; path=/`;
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${domain}`;
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=.${domain}`;
     }
 
     /** Select a language after the asynchronously-created Google widget is ready. */
