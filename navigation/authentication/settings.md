@@ -60,10 +60,9 @@ search_exclude: true
           </fieldset>
           <fieldset class="setting">
             <legend>Language</legend>
-            <div class="segmented">
-              <label><input type="radio" name="language" value="en"><span>English</span></label>
-              <label><input type="radio" name="language" value="es"><span>Español</span></label>
-            </div>
+            <select class="input" name="language" id="settings-language" aria-label="Language">
+              <option value="en">English</option>
+            </select>
           </fieldset>
         </div>
       </section>
@@ -102,8 +101,19 @@ search_exclude: true
     document.getElementById('settings-page').hidden = false;
     let saved = { ...DEFAULTS, ...loadLocal(), ...(user.preferences || {}) };
 
+    const languageSelect = form.elements.language;
+    const languages = window.SitePreferences?.LANGUAGES || {};
+    for (const [code, language] of Object.entries(languages)) {
+      if (!code || languageSelect.querySelector(`option[value="${code}"]`)) continue;
+      languageSelect.add(new Option(language.name, code));
+    }
+
     const current = () => Object.fromEntries(Object.keys(DEFAULTS).map(key => [key, form.elements[key].value || DEFAULTS[key]]));
-    const fill = prefs => { for (const key of Object.keys(DEFAULTS)) form.elements[key].value = prefs[key]; };
+    const fill = prefs => {
+      for (const key of Object.keys(DEFAULTS)) {
+        form.elements[key].value = key === 'language' ? (prefs[key] || 'en') : prefs[key];
+      }
+    };
 
     // WCAG contrast ratio between two computed CSS colors
     function luminance(color) {
