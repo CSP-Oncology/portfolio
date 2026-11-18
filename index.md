@@ -12,8 +12,8 @@ title: Home
   <div class="wrap home-head__inner">
     <div>
       <span class="home-head__kicker">Precision immuno-oncology</span>
-      <h1>How a blood test can guide cancer treatment</h1>
-      <p>A student capstone about liquid biopsy, biomarkers and Sesh's RELOAD test.</p>
+      <h1>Improving Treatment Outcomes for Cancer Patients</h1>
+      <p>Pioneering liquid biopsy technology to select the correct personalized immunotherapy treatment.</p>
     </div>
     <ol class="steps">
       <li><div><strong>Non-invasive collection</strong><span>A blood draw replaces a tissue biopsy</span></div></li>
