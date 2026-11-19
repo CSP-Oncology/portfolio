@@ -711,11 +711,18 @@
 
     /** Clear all googtrans cookie variations */
     static clearCookies() {
-      const domain = window.location.hostname;
-      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}`;
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain}`;
-      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.localhost';
+      const host = window.location.hostname;
+      const labels = host.split('.');
+      const domains = [host, `.${host}`];
+      for (let index = 1; index < labels.length - 1; index += 1) {
+        domains.push(`.${labels.slice(index).join('.')}`);
+      }
+      if (host === 'localhost') domains.push('.localhost');
+
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0; path=/;';
+      domains.forEach(domain => {
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0; path=/; domain=${domain};`;
+      });
     }
 
     /** Attempt to revert Google Translate to the original page language */
@@ -759,10 +766,16 @@
       }
 
       // Set cookies for the desired language
-      const domain = window.location.hostname;
-      document.cookie = `googtrans=/en/${langCode}; path=/`;
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${domain}`;
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=.${domain}`;
+      const host = window.location.hostname;
+      const labels = host.split('.');
+      const domains = [host];
+      for (let index = 1; index < labels.length - 1; index += 1) {
+        domains.push(labels.slice(index).join('.'));
+      }
+      document.cookie = `googtrans=/en/${langCode}; path=/;`;
+      domains.forEach(domain => {
+        document.cookie = `googtrans=/en/${langCode}; path=/; domain=${domain};`;
+      });
 
       // Initialise Google Translate element (once)
       if (!window.googleTranslateElementInit) {
