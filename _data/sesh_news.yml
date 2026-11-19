@@ -1,29 +1,40 @@
 # Summarized from https://www.oncologysesh.com/news (checked November 16, 2026).
+# headline is Sesh's own title; image is Sesh's picture for the story, saved in images/news/.
 # Dates follow the official site; month-only dates retain their original precision.
 - title: SDAC investment
+  headline: "Sesh Wins 2026 SDSU San Diego Angel Conference, Secures $200,000 Investment"
+  image: /images/news/sdac-angel-conference.png
   date: June 4, 2026
   datetime: '2026-06-04'
   category: Funding
   summary: Sesh won the SDSU San Diego Angel Conference and received a $200,000 investment.
 - title: Golden Ticket recognition
+  headline: "Sesh Wins Golden Ticket Award at SDIC Showcase"
+  image: /images/news/connect-cool-companies.png
   date: June 2026
   datetime: '2026-06'
-  category: News
+  category: Award
   summary: Sesh received the Golden Ticket award at the SDIC Showcase.
 - title: SDAC finalist selection
+  headline: "Sesh Selected as One of the Final 6 for SDAC VIII Due Diligence"
+  image: /images/news/sdac-finalists.png
   date: May 7, 2026
   datetime: '2026-05-07'
-  category: News
+  category: Milestone
   summary: Sesh advanced to investor due diligence as one of six SDAC VIII finalists.
 - title: CONNECT recognition
+  headline: "Sesh Selected as a CONNECT Cool Company"
+  image: /images/news/connect-cool-companies.png
   date: March 17, 2026
   datetime: '2026-03-17'
-  category: News
+  category: Recognition
   summary: Sesh joined the 2026 CONNECT Cool Companies cohort.
 - title: Joining EvoNexus
+  headline: "Sesh joins EvoNexus Incubator"
+  image: /images/news/evonexus.png
   date: December 23, 2025
   datetime: '2025-12-23'
-  category: News
+  category: Partnership
   summary: Sesh joined the incubator to help bring RELOAD to market.
 - title: SBIR support
   date: November 8, 2025

@@ -1,31 +1,11 @@
 <footer class="site-footer">
-  <div class="wrap">
-    <div class="site-footer__grid">
-      <section class="site-footer__intro" aria-labelledby="footer-about">
-        <h2 id="footer-about">Sesh<span aria-hidden="true">.</span></h2>
-        <p>Explore precision cancer care, liquid biopsy and the science behind Sesh's RELOAD test.</p>
-        <a href="{{ '/sesh/background' | relative_url }}">Get to know Sesh <span aria-hidden="true">→</span></a>
-      </section>
-      <section aria-labelledby="footer-collaborators">
-        <h2 id="footer-collaborators">Collaborators</h2>
-        <ul>
-          {%- for c in site.data.sesh_collaborators %}
-          <li><a href="{{ c.url }}" target="_blank" rel="noopener noreferrer">{{ c.name }} ↗</a></li>
-          {%- endfor %}
-        </ul>
-      </section>
-      <section aria-labelledby="footer-connect">
-        <h2 id="footer-connect">Connect with Sesh</h2>
-        <p>For company and RELOAD inquiries, visit Sesh's official website.</p>
-        <ul>
-          <li><a href="https://www.oncologysesh.com/" target="_blank" rel="noopener noreferrer">Official Sesh website ↗</a></li>
-          <li><a href="{{ '/sesh/about' | relative_url }}#company-contact">Contact Sesh</a></li>
-        </ul>
-      </section>
-    </div>
-    <div class="site-footer__row">
-      <p>This is an independent educational site, not affiliated with the company and not medical advice.</p>
+  <div class="wrap site-footer__inner">
+    <p class="site-footer__brand"><strong>Sesh<span aria-hidden="true">.</span></strong> Precision cancer care through liquid biopsy.</p>
+    <nav aria-label="Footer">
+      <a href="{{ '/sesh/news' | relative_url }}">News</a>
+      <a href="{{ '/sesh/about' | relative_url }}">About &amp; Contact</a>
+      <a href="https://www.oncologysesh.com/" target="_blank" rel="noopener noreferrer">Official Sesh site ↗</a>
       <a href="#main">Back to top ↑</a>
-    </div>
+    </nav>
   </div>
 </footer>

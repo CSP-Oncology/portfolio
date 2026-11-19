@@ -15,7 +15,7 @@ permalink: /sesh/about
     <details><summary>What is immunotherapy?</summary><p>A cancer treatment that helps the patient's own immune system find and attack cancer cells.</p></details>
     <details><summary>What is the process for testing a patient with RELOAD?</summary><p>A blood sample is drawn, the lab sequences the cell-free DNA in it, and a report goes back to the care team.</p></details>
     <details><summary>How is a liquid biopsy different from a tissue biopsy?</summary><p>A tissue biopsy removes a piece of the tumor. A liquid biopsy uses a blood draw and reads tumor DNA in the blood.</p></details>
-    <details><summary>Is this Sesh's website?</summary><p>No. This is an independent educational site about Sesh's work, and not medical advice. For the company itself, visit <a href="https://www.oncologysesh.com/">Sesh's official website</a>.</p></details>
+    <details><summary>Who is RELOAD for?</summary><p>RELOAD is being developed first for non-small cell lung cancer, where HLA loss is common, to help oncologists predict whether immunotherapy is likely to work before treatment begins.</p></details>
   </div>
 </section>
 
@@ -39,7 +39,7 @@ permalink: /sesh/about
       </section>
       <div class="section">
       <div class="card">
-        <h2>Contact the student team</h2>
+        <h2>Send us a message</h2>
           <form class="form" id="contact-form">
             <div class="field-pair">
               <label class="field">Name<input name="name" required autocomplete="name"></label>
@@ -60,10 +60,10 @@ permalink: /sesh/about
     </div>
     <aside class="sidebar">
       <div class="note">
-        <h2>About this site</h2>
-        <p>Sesh explains precision cancer care, liquid biopsy and Sesh's RELOAD test, with games and a quiz to learn the key ideas.</p>
+        <h2>About Sesh</h2>
+        <p>Sesh is a San Diego precision-oncology company developing RELOAD, a liquid biopsy that helps oncologists choose the right immunotherapy.</p>
       </div>
-      <a class="sesh__btn block" href="{{ '/sesh/background' | relative_url }}">About Sesh <span aria-hidden="true">→</span></a>
+      <a class="sesh__btn block" href="{{ '/sesh/background' | relative_url }}">Our story <span aria-hidden="true">→</span></a>
       <a class="sesh__btn block" href="{{ '/sesh/news' | relative_url }}">News <span aria-hidden="true">→</span></a>
     </aside>
   </div>

@@ -67,7 +67,18 @@ async function fillNewsPage(list) {
   }
 }
 
-// Home page: the featured story large, the next few as rows beside it
+// Home page: the featured story large, with the next few as "More news" beside it
+function picture(url, className) {
+  const box = el(className === 'home-news__thumb' ? 'span' : 'div', className);
+  const img = el('img');
+  img.src = url;
+  img.alt = '';
+  img.loading = 'lazy';
+  img.addEventListener('error', () => box.remove());  // Sesh moved or removed the picture
+  box.append(img);
+  return box;
+}
+
 async function fillHome(list) {
   const { articles } = await getNews(Number(list.dataset.limit) || 5);
   const [featured, ...rest] = articles;
@@ -84,27 +95,19 @@ async function fillHome(list) {
     actions.append(more);
     if (featured.url) actions.append(sourceLink(featured, 'sesh__btn accent'));
     body.append(meta, el('h3', '', featured.title), el('p', '', featured.excerpt), actions);
-    const parts = [];
-    if (featured.image_url) {
-      const figure = el('div', 'home-news__image');
-      const img = el('img');
-      img.src = featured.image_url;
-      img.alt = '';
-      img.loading = 'lazy';
-      img.addEventListener('error', () => figure.remove());  // Sesh moved or removed the picture
-      figure.append(img);
-      parts.push(figure);
-    }
-    card.replaceChildren(...parts, body);
+    card.replaceChildren(...(featured.image_url ? [picture(featured.image_url, 'home-news__image')] : []), body);
   }
 
   list.replaceChildren(...rest.map(article => {
     const item = el('li');
     const row = el('a', 'home-news__row');
     row.href = link(article);
+    if (article.image_url) row.append(picture(article.image_url, 'home-news__thumb'));
+    const text = el('span', 'home-news__text');
     const tag = el('span', 'home-news__tag', `${article.category} · `);
     tag.append(time(article));
-    row.append(tag, el('span', 'home-news__title', article.title));
+    text.append(tag, el('span', 'home-news__title', article.title));
+    row.append(text);
     item.append(row);
     return item;
   }));
