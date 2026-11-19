@@ -2,9 +2,7 @@
 ---
 // Site-wide behavior: mobile menu and "Log in" → "My profile" when logged in
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
-import { loadLocal, apply, syncFromAccount } from '{{ site.baseurl }}/assets/js/sesh/settings.js';
-
-apply(loadLocal());
+import { syncFromAccount } from '{{ site.baseurl }}/assets/js/sesh/settings.js';
 
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.getElementById('site-nav');
@@ -16,7 +14,7 @@ if (toggle && nav) {
   });
 }
 
-// Logged in (CSP-Oncology/flask: GET /api/id)? Point the account links at the profile
+// Logged in (GET /api/id)? Point the account links at the profile
 fetch(pythonURI + '/api/id', { ...fetchOptions, cache: 'no-store' })
   .then(response => response.ok ? response.json() : null)
   .then(user => {

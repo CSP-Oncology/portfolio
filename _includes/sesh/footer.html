@@ -9,11 +9,9 @@
       <section aria-labelledby="footer-collaborators">
         <h2 id="footer-collaborators">Collaborators</h2>
         <ul>
-          <li><a href="https://evonexus.org/" target="_blank" rel="noopener noreferrer">EvoNexus ↗</a></li>
-          <li><a href="https://my.clevelandclinic.org/" target="_blank" rel="noopener noreferrer">Cleveland Clinic ↗</a></li>
-          <li><a href="https://www.udel.edu/" target="_blank" rel="noopener noreferrer">University of Delaware ↗</a></li>
-          <li><a href="https://www.providence.org/" target="_blank" rel="noopener noreferrer">Providence ↗</a></li>
-          <li><a href="https://frederick.cancer.gov/" target="_blank" rel="noopener noreferrer">Frederick National Laboratory ↗</a></li>
+          {%- for c in site.data.sesh_collaborators %}
+          <li><a href="{{ c.url }}" target="_blank" rel="noopener noreferrer">{{ c.name }} ↗</a></li>
+          {%- endfor %}
         </ul>
       </section>
       <section aria-labelledby="footer-connect">
@@ -22,12 +20,11 @@
         <ul>
           <li><a href="https://www.oncologysesh.com/" target="_blank" rel="noopener noreferrer">Official Sesh website ↗</a></li>
           <li><a href="https://www.oncologysesh.com/#contact" target="_blank" rel="noopener noreferrer">Contact Sesh ↗</a></li>
-          <li><a href="https://github.com/CSP-Oncology" target="_blank" rel="noopener noreferrer">Our project on GitHub ↗</a></li>
         </ul>
       </section>
     </div>
     <div class="site-footer__row">
-      <p>Oncology Sesh is a student CSP capstone. Not affiliated with Sesh. Not medical advice.</p>
+      <p>Oncology Sesh is an independent educational site. Not affiliated with Sesh. Not medical advice.</p>
       <a href="#main">Back to top ↑</a>
     </div>
   </div>

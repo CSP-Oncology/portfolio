@@ -1,0 +1,8 @@
+# The Sesh look, as the "Site Default" theme on the Settings page (OCS preferences format).
+# Read by _layouts/sesh.html (window.SITE_THEME_DEFAULT) and navigation/authentication/settings.html.
+# Keep these in step with the light palette in _sass/sesh/_tokens.scss.
+bg: "#f5f9fc"
+text: "#141821"
+accent: "#005d96"   # 5.3:1 on cards; the lighter teal (#0074b9) is only 3.8:1 there
+font: "'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif"
+size: 16

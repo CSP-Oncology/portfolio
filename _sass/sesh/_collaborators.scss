@@ -1,0 +1,83 @@
+// "Our Collaborators" on About & Contact (_includes/sesh/collaborators.html): logo cards sliding
+// across inside the page width, as in the Poway Recovery Center programs strip.
+
+$collab-gap: 16px;
+$collab-width: 220px;
+$collab-height: 112px;
+// Logos are made for a white background, so their cards stay white in every theme
+$collab-card: #ffffff;
+
+.collaborators {
+  padding-top: 28px;
+  text-align: center;
+
+  h2 { @include display-font; font-size: 1.6rem; margin: 0 0 6px; }
+  p { color: $muted; margin: 0 auto 18px; max-width: 560px; }
+}
+
+.collaborators__viewport {
+  overflow: hidden;
+  padding: 4px 0 8px; // room for the focus ring
+  // Cards fade in and out at the edges of the page width instead of being cut off
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+
+  &:hover .collaborators__track,
+  &:has(:focus-visible) .collaborators__track { animation-play-state: paused; }
+}
+
+// Holds the cards twice, so sliding it by half loops seamlessly
+.collaborators__track {
+  display: flex;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: collaborators-scroll 36s linear infinite;
+}
+
+.collaborators__card {
+  flex: 0 0 $collab-width;
+  margin-right: $collab-gap;
+
+  @include sm { flex-basis: 170px; }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: $collab-height;
+    padding: 18px 22px;
+    background: $collab-card;
+    border: 1px solid $line;
+    border-radius: 12px;
+    color: #141821; // on the white card
+    text-decoration: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+
+    @include sm { height: 92px; padding: 14px 16px; }
+
+    &:hover, &:focus-visible { border-color: $teal; box-shadow: 0 4px 14px rgba(20, 24, 33, .12); }
+    &:focus-visible { outline: 2px solid $teal; outline-offset: 2px; }
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+.collaborators__name { @include display-font; font-size: 1.1rem; text-align: center; }
+
+@keyframes collaborators-scroll {
+  to { transform: translateX(-50%); }
+}
+
+// No motion: the cards sit still, wrapped into centered rows
+@media (prefers-reduced-motion: reduce) {
+  .collaborators__viewport { mask-image: none; }
+  .collaborators__track { flex-wrap: wrap; justify-content: center; gap: $collab-gap; width: auto; animation: none; }
+  .collaborators__card { margin-right: 0; }
+  .collaborators__dup { display: none; }
+}

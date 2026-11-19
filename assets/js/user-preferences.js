@@ -9,9 +9,12 @@
  * Each class has exactly one job (SRP) so that bugs and feature changes
  * stay isolated to a single area:
  *
- *   ColorUtils                      – Pure color math (hex → rgb, luminance, lighten/darken).
- *                                     Stateless. Used to derive panel/border/muted colors
- *                                     from the user's chosen background.
+ *   ColorUtils                      – Pure color math (hex → rgb, luminance, lighten/darken,
+ *                                     mixing, WCAG contrast). Stateless. Used to derive
+ *                                     panel/border/muted colors from the user's chosen background.
+ *
+ *   RetiredThemeColors              – Swaps a theme saved with a preset's old colors for the
+ *                                     preset's current ones (the presets were made readable).
  *
  *   TailwindOverrideStyleSheetInjector         – Builds and injects a single <style> block that
  *                                     overrides Tailwind utility classes (bg-neutral-800,
@@ -33,10 +36,6 @@
  *   LocalStoragePreferencesStore    – Read-only adapter over localStorage. Returns the
  *                                     preferences object stored under 'sitePreferences'.
  *                                     (The dashboard module owns writes; this file only reads.)
- *
- *   GlobalNodCursor              – Optional accessibility feature: uses MediaPipe + webcam
- *                                     to drive the cursor with head movement on non-dashboard
- *                                     pages (the dashboard owns its own toggle UI).
  *
  *   SitePreferences (window global) – Public API surface. Thin facade that delegates to the
  *                                     classes above. Consumed by dashboard.html and any page
@@ -71,7 +70,9 @@
     'fa': { name: 'Persian (Farsi)', code: 'fa' },
   };
 
-  const SITE_DEFAULT = {
+  // Sesh: a site can set window.SITE_THEME_DEFAULT (before this script) to make "Site Default"
+  // its own look; the Sesh layout does (_layouts/sesh.html).
+  const SITE_DEFAULT = window.SITE_THEME_DEFAULT || {
     bg: '#121212',
     text: '#F0F0F0',
     font: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
@@ -79,39 +80,72 @@
     accent: '#4CAFEF',
   };
 
+  // Every preset keeps 4.5:1 (WCAG AA) for its text and its accent on the page and on --panel,
+  // and for page-colored text on an accent fill. tests/theme_contrast.test.mjs checks it.
   const PRESETS = {
     'Site Default': SITE_DEFAULT,
     Midnight: {
       bg: '#0b1220', text: '#e6eef8',
       font: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
-      size: 14, accent: '#3b82f6',
+      size: 14, accent: '#5392f7',
     },
     Light: {
-      bg: '#ffffff', text: '#FF80AA',
+      bg: '#ffffff', text: '#9d174d',
       font: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
-      size: 14, accent: '#2563eb',
+      size: 14, accent: '#1759ea',
     },
     Green: {
       bg: '#154734', text: '#e6f6ef',
       font: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
-      size: 14, accent: '#10b981',
+      size: 14, accent: '#16eba4',
     },
     Sepia: {
-      bg: '#f4ecd8', text: '#A52A2A',
+      bg: '#f4ecd8', text: '#8b1e1e',
       font: "Georgia, 'Times New Roman', Times, serif",
-      size: 14, accent: '#b45309',
+      size: 14, accent: '#924307',
     },
     Cyberpunk: {
       bg: '#0a0a0f', text: '#f0f0f0',
       font: "'Source Code Pro', monospace",
-      size: 14, accent: '#f72585',
+      size: 14, accent: '#f84396',
     },
     Ocean: {
       bg: '#0c1929', text: '#e0f2fe',
       font: "'Open Sans', Arial, sans-serif",
       size: 15, accent: '#06b6d4',
     },
+    Sunset: {
+      bg: '#2a1433', text: '#fbe7d4',
+      font: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
+      size: 14, accent: '#ff7f6b',
+    },
   };
+
+  // Built-in holiday palettes. The dashboard's AI theme offers the holidays as suggestions
+  // and uses these when the AI can't answer, so a holiday theme always works.
+  const SEASONAL_THEMES = {
+    halloween: { label: 'Halloween', bg: '#1a0f1f', text: '#f5e6d3', accent: '#ff7518', decor: ['🎃', '🦇', '👻'] },
+    thanksgiving: { label: 'Thanksgiving', bg: '#2b1d0e', text: '#f3e3c3', accent: '#e58e4d', decor: ['🍂', '🦃', '🥧'] },
+    christmas: { label: 'Christmas', bg: '#0f2a1d', text: '#f8f8f8', accent: '#ff8591', decor: ['❄️', '🎄', '🎁'] },
+    valentines: { label: "Valentine's", bg: '#fff0f5', text: '#5a1030', accent: '#b41655', decor: ['💕', '💘', '🌹'] },
+  };
+
+  // The colors these themes had before they were raised to 4.5:1. A student's saved preferences
+  // keep the colors they picked, so a theme saved with old colors is drawn with its new ones.
+  const RETIRED_THEME_COLORS = [
+    { was: { bg: '#0b1220', text: '#e6eef8', accent: '#3b82f6' }, now: PRESETS.Midnight },
+    { was: { bg: '#ffffff', text: '#FF80AA', accent: '#2563eb' }, now: PRESETS.Light },
+    { was: { bg: '#154734', text: '#e6f6ef', accent: '#10b981' }, now: PRESETS.Green },
+    { was: { bg: '#f4ecd8', text: '#A52A2A', accent: '#b45309' }, now: PRESETS.Sepia },
+    { was: { bg: '#0a0a0f', text: '#f0f0f0', accent: '#f72585' }, now: PRESETS.Cyberpunk },
+    { was: { bg: '#2b1d0e', text: '#f3e3c3', accent: '#e07a2e' }, now: SEASONAL_THEMES.thanksgiving },
+    { was: { bg: '#0f2a1d', text: '#f8f8f8', accent: '#ff4d5e' }, now: SEASONAL_THEMES.christmas },
+    { was: { bg: '#fff0f5', text: '#5a1030', accent: '#c2185b' }, now: SEASONAL_THEMES.valentines },
+  ];
+
+  // Sesh: pages whose <html> has data-theme-engine="sass" style themes in their Sass from the
+  // CSS variables set here, so no override <style> is injected (see _sass/sesh/_theme.scss).
+  const SASS_MODE = document.documentElement.dataset.themeEngine === 'sass';
 
   // ============================================
   // RESPONSIBILITY: Pure color math utilities
@@ -141,19 +175,67 @@
       return ColorUtils.getLuminance(hex) > 0.5;
     }
 
+    /** Convert 0-255 channels (clamped, rounded) to a hex string */
+    static rgbToHex(r, g, b) {
+      const clamp = v => Math.round(Math.max(0, Math.min(255, v)));
+      return '#' + [r, g, b].map(v => clamp(v).toString(16).padStart(2, '0')).join('');
+    }
+
     /** Shift every channel by amt (positive = lighten, negative = darken) */
     static adjustColor(hex, amt) {
       const { r, g, b } = ColorUtils.hexToRgb(hex);
-      const clamp = v => Math.max(0, Math.min(255, v));
-      return (
-        '#' +
-        [clamp(r + amt), clamp(g + amt), clamp(b + amt)]
-          .map(v => {
-            const h = v.toString(16);
-            return h.length === 1 ? '0' + h : h;
-          })
-          .join('')
-      );
+      return ColorUtils.rgbToHex(r + amt, g + amt, b + amt);
+    }
+
+    /** Mix two colors like CSS color-mix(in srgb): share is a's part, 0-1 */
+    static mix(a, b, share) {
+      const x = ColorUtils.hexToRgb(a);
+      const y = ColorUtils.hexToRgb(b);
+      const part = k => x[k] * share + y[k] * (1 - share);
+      return ColorUtils.rgbToHex(part('r'), part('g'), part('b'));
+    }
+
+    /** WCAG relative luminance 0-1, the input to contrast ratios (getLuminance is perceived brightness) */
+    static relativeLuminance(hex) {
+      const { r, g, b } = ColorUtils.hexToRgb(hex);
+      const channel = v => {
+        const s = v / 255;
+        return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      };
+      return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+    }
+
+    /** WCAG contrast ratio of two colors, from 1 (the same) to 21 (black on white) */
+    static contrastRatio(a, b) {
+      const [light, dark] = [ColorUtils.relativeLuminance(a), ColorUtils.relativeLuminance(b)].sort((x, y) => y - x);
+      return (light + 0.05) / (dark + 0.05);
+    }
+
+    /**
+     * Fade color toward target in 5% steps, at most maxShare of the way, and keep the last step
+     * that still has minRatio against every surface. A color that already fails stays as it is.
+     */
+    static fadeWithin(color, target, surfaces, minRatio, maxShare) {
+      let kept = color;
+      for (let step = 1; step * 0.05 <= maxShare + 1e-9; step += 1) {
+        const faded = ColorUtils.mix(target, color, step * 0.05);
+        if (!surfaces.every(surface => ColorUtils.contrastRatio(faded, surface) >= minRatio)) break;
+        kept = faded;
+      }
+      return kept;
+    }
+  }
+
+  // ============================================
+  // RESPONSIBILITY: Draw a theme saved with retired colors in its current ones
+  // ============================================
+  class RetiredThemeColors {
+    /** prefs, with text and accent replaced when bg, text and accent are a retired theme's */
+    static upgrade(prefs) {
+      if (!prefs) return prefs;
+      const same = (a, b) => String(a).toLowerCase() === String(b).toLowerCase();
+      const match = RETIRED_THEME_COLORS.find(({ was }) => ['bg', 'text', 'accent'].every(k => same(was[k], prefs[k])));
+      return match ? { ...prefs, text: match.now.text, accent: match.now.accent } : prefs;
     }
   }
 
@@ -168,7 +250,7 @@
      * theme classes when the user theme is active.
      */
     static inject(opts) {
-      const { bg, text, font, size, accent, panel, uiBorder, textMuted,
+      const { bg, text, font, size, accent, panel, uiBorder, textMuted, fieldBorder,
               selectionColor, buttonStyle } = opts;
 
       let style = document.getElementById(TailwindOverrideStyleSheetInjector.STYLE_ID);
@@ -181,6 +263,15 @@
       let btnRadius = '0.375rem';
       if (buttonStyle === 'square') btnRadius = '0';
       else if (buttonStyle === 'pill') btnRadius = '9999px';
+      // 'default' leaves ocs__btn its own shapes (pill tabs, round small buttons), and so does
+      // the 'rounded' saved before Default existed, which behaved the same way. A shape the
+      // student picks reaches every button, links styled as ocs__btn included, so one row of
+      // buttons never mixes shapes.
+      const pickedShape = ['rounded-all', 'square', 'pill'].includes(buttonStyle);
+      const button = pickedShape ? 'button' : 'button:where(:not(.ocs__btn))';
+      const shaped = [button, '.btn', `[class*="rounded"] ${button}`, ...(pickedShape ? ['.ocs__btn'] : []),
+        'input[type="submit"]', 'input[type="button"]']
+        .map(selector => `html.user-theme-active ${selector}`).join(',\n        ');
 
       style.textContent = `
         html.user-theme-active,
@@ -198,11 +289,7 @@
           background-color: ${selectionColor} !important;
           color: white !important;
         }
-        html.user-theme-active button,
-        html.user-theme-active .btn,
-        html.user-theme-active [class*="rounded"] button,
-        html.user-theme-active input[type="submit"],
-        html.user-theme-active input[type="button"] {
+        ${shaped} {
           border-radius: ${btnRadius} !important;
         }
         html.user-theme-active .bg-neutral-900,
@@ -253,7 +340,14 @@
         html.user-theme-active textarea {
           background-color: ${panel} !important;
           color: ${text} !important;
-          border-color: ${uiBorder} !important;
+          border-color: ${fieldBorder} !important;
+        }
+        html.user-theme-active input:focus-visible,
+        html.user-theme-active select:focus-visible,
+        html.user-theme-active textarea:focus-visible {
+          border-color: ${accent} !important;
+          outline: 2px solid ${accent};
+          outline-offset: 2px;
         }
         html.user-theme-active .lesson-player {
           background-color: ${bg} !important;
@@ -265,8 +359,7 @@
         html.user-theme-active .lesson-sidebar,
         html.user-theme-active .sidebar-header,
         html.user-theme-active .sprint-nav,
-        html.user-theme-active .sprint-section,
-        html.user-theme-active .lesson-item {
+        html.user-theme-active .sprint-section {
           background-color: ${panel} !important;
           color: ${text} !important;
         }
@@ -329,7 +422,12 @@
      * Apply a preferences object to the document via CSS custom properties,
      * priority-color tokens, and the override stylesheet.
      */
-    static apply(prefs) {
+    static apply(prefs, applyLanguage = true) {
+      // The wallpaper is matched by the colors as saved, so look it up before the upgrade.
+      const decor = ThemeDecorStore.decorFor(prefs);
+      prefs = RetiredThemeColors.upgrade(prefs);
+      ThemeDecorLayer.render(decor && { decor, accent: prefs.accent || SITE_DEFAULT.accent });
+
       const base = SITE_DEFAULT;
       const bg = prefs?.bg || base.bg;
       const text = prefs?.text || base.text;
@@ -337,7 +435,7 @@
       const size = prefs?.size || base.size;
       const accent = prefs?.accent || base.accent;
       const selectionColor = prefs?.selectionColor || accent;
-      const buttonStyle = prefs?.buttonStyle || 'rounded';
+      const buttonStyle = prefs?.buttonStyle || 'default';
 
       const root = document.documentElement;
       const set = (name, value) => root.style.setProperty(name, value);
@@ -375,9 +473,16 @@
       set('--ui-bg', uiBg);
       set('--ui-border', uiBorder);
 
-      // Muted text
-      const textMuted = lightBg ? '#6b7280' : ColorUtils.adjustColor(text, -60);
+      // Muted text: the text faded toward the page color, as far as it keeps 4.5:1 (WCAG AA) on
+      // every surface muted text sits on, the accent tint of a selected card included.
+      const textMuted = ColorUtils.fadeWithin(text, bg,
+        [bg, uiBg, panel, panelMid, ColorUtils.mix(accent, panel, 0.12)], 4.5, 0.25);
       set('--text-muted', textMuted);
+
+      // A field's frame: the text faded toward the panel, as far as it keeps 3:1 (WCAG non-text
+      // contrast) on the panel and on the page, so an empty field shows on both.
+      const fieldBorder = ColorUtils.fadeWithin(text, panel, [panel, bg], 3, 0.8);
+      set('--field-border', fieldBorder);
 
       // Priority / semantic colours
       if (lightBg) {
@@ -421,21 +526,37 @@
       // Activate the theme class
       root.classList.add('user-theme-active');
 
-      // Inject Tailwind override stylesheet
-      TailwindOverrideStyleSheetInjector.inject({
-        bg, text, font, size, accent, panel, uiBorder, textMuted,
-        selectionColor, buttonStyle,
-      });
+      if (SASS_MODE) {
+        // Sesh: the few values Sass can't work out on its own; every one is a CSS variable,
+        // so a preview's snapshot (the style attribute) undoes it exactly.
+        const readableOn = color => ColorUtils.contrastRatio(color, '#ffffff') >= 4.5 ? '#ffffff' : '#111111';
+        set('--on-accent', readableOn(accent));
+        set('--on-selection', readableOn(selectionColor));
+        set('--pref-color-scheme', lightBg ? 'light' : 'dark');
+        root.classList.toggle('pref-dark', !lightBg);
+        const radius = { 'rounded-all': '0.375rem', square: '0', pill: '9999px' }[buttonStyle];
+        if (radius) set('--pref-button-radius', radius);
+        else root.style.removeProperty('--pref-button-radius');
+        root.classList.toggle('pref-button-shape', Boolean(radius));
+        // Headings keep the site's display font unless another font is picked
+        if (font !== SITE_DEFAULT.font) set('--display-font', font);
+        else root.style.removeProperty('--display-font');
+      } else {
+        // Inject Tailwind override stylesheet
+        TailwindOverrideStyleSheetInjector.inject({
+          bg, text, font, size, accent, panel, uiBorder, textMuted, fieldBorder,
+          selectionColor, buttonStyle,
+        });
+      }
 
-      // Apply language translation if set
-      const lang = prefs?.language || '';
-      TranslationLanguageManager.apply(lang);
+      // Apply language translation if set (a preview leaves the language alone)
+      if (prefs && applyLanguage) TranslationLanguageManager.apply(prefs.language || '');
     }
 
     /** Remove all user-theme CSS custom properties and the override sheet */
     static reset() {
       const root = document.documentElement;
-      root.classList.remove('user-theme-active');
+      root.classList.remove('user-theme-active', 'pref-button-shape', 'pref-dark');
       TailwindOverrideStyleSheetInjector.remove();
 
       const props = [
@@ -444,13 +565,127 @@
         '--pref-cursor-style', '--background',
         '--bg-0', '--bg-1', '--bg-2', '--bg-3',
         '--text', '--text-strong', '--text-muted', '--white1',
-        '--panel', '--panel-mid', '--ui-bg', '--ui-border',
+        '--panel', '--panel-mid', '--ui-bg', '--ui-border', '--field-border',
         '--ocs-game-panel-bg', '--ocs-game-accent', '--ocs-game-text',
         '--ocs-game-muted', '--ocs-game-surface-alt', '--ocs-game-surface-contrast',
         '--ocs-game-overlay', '--ocs-game-panel-selected-bg', '--ocs-game-selected-border',
         '--ocs-game-score-accent',
+        '--on-accent', '--on-selection', '--pref-color-scheme', '--pref-button-radius', '--display-font',
       ];
       props.forEach(name => root.style.removeProperty(name));
+      ThemeDecorLayer.render(null);
+    }
+  }
+
+  // ============================================
+  // RESPONSIBILITY: Which emoji wallpaper goes with the active colors
+  // ============================================
+  class ThemeDecorStore {
+    // The last theme kept or picked, as { bg, text, accent, decor } (decor [] = wallpaper off). Matched by color
+    // rather than stored in the prefs: Spring's preferences have no field for it, and picking
+    // any theme with other colors (a preset, Reset, Save) then drops the wallpaper by itself.
+    static KEY = 'siteThemeDecor';
+
+    static get() {
+      try {
+        return JSON.parse(window.localStorage.getItem(ThemeDecorStore.KEY)) || null;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    /** Remember theme's wallpaper choice (prefs-shaped: bg, text, accent, decor; no decor = off); null forgets it */
+    static set(theme) {
+      try {
+        if (theme) {
+          const { bg, text, accent, decor = [] } = theme;
+          window.localStorage.setItem(ThemeDecorStore.KEY, JSON.stringify({ bg, text, accent, decor }));
+        } else {
+          window.localStorage.removeItem(ThemeDecorStore.KEY);
+        }
+      } catch (_) { /* storage blocked: the wallpaper still shows on this page */ }
+    }
+
+    /** The emoji for prefs: its own decor ([] = wallpaper turned off), the kept theme's, or a saved custom theme's with the same colors */
+    static decorFor(prefs) {
+      if (!prefs) return null;
+      if (Array.isArray(prefs.decor)) return prefs.decor.length ? prefs.decor : null;
+      const same = t => t && ['bg', 'text', 'accent'].every(k => String(t[k]).toLowerCase() === String(prefs[k]).toLowerCase());
+      // The theme the student kept or picked wins, even when they chose no wallpaper.
+      const kept = ThemeDecorStore.get();
+      if (same(kept)) return kept.decor?.length ? kept.decor : null;
+      const match = Object.values(prefs.customThemes || {}).find(t => t?.decor?.length && same(t));
+      return match ? match.decor : null;
+    }
+  }
+
+  // ============================================
+  // RESPONSIBILITY: Remember the page's theme before a preview, to undo it exactly
+  // (inline CSS variables, classes, wallpaper attribute and the override sheet)
+  // ============================================
+  class PreviewSnapshot {
+    static saved = null;
+
+    static take() {
+      if (PreviewSnapshot.saved) return;
+      const root = document.documentElement;
+      const sheet = document.getElementById(TailwindOverrideStyleSheetInjector.STYLE_ID);
+      PreviewSnapshot.saved = {
+        style: root.getAttribute('style'),
+        className: root.className,
+        decor: root.dataset.themeDecor,
+        sheet: sheet ? sheet.textContent : null,
+      };
+    }
+
+    static restore() {
+      const saved = PreviewSnapshot.saved;
+      if (!saved) return;
+      PreviewSnapshot.saved = null;
+      const root = document.documentElement;
+      if (saved.style == null) root.removeAttribute('style');
+      else root.setAttribute('style', saved.style);
+      root.className = saved.className;
+      if (saved.decor == null) delete root.dataset.themeDecor;
+      else root.dataset.themeDecor = saved.decor;
+      if (saved.sheet == null) TailwindOverrideStyleSheetInjector.remove();
+      else document.getElementById(TailwindOverrideStyleSheetInjector.STYLE_ID).textContent = saved.sheet;
+    }
+
+    static drop() {
+      PreviewSnapshot.saved = null;
+    }
+  }
+
+  // ============================================
+  // RESPONSIBILITY: Theme decorations (a scattered emoji wallpaper)
+  // ============================================
+  class ThemeDecorLayer {
+    // One 280px tile, repeated: [x, y, size, rotation] per emoji, then [x, y] per dot.
+    // Hand-placed so neighbouring tiles don't line up into rows.
+    static EMOJI_SPOTS = [[40, 50, 34, -18], [175, 30, 28, 14], [110, 125, 38, 8], [235, 145, 30, -10], [30, 210, 30, 20], [160, 240, 34, -6]];
+    static DOT_SPOTS = [[95, 40], [250, 85], [60, 140], [200, 195], [105, 265], [265, 260]];
+
+    /** Set the wallpaper for { decor, accent }, or clear it when null */
+    static render(theme) {
+      const root = document.documentElement;
+      if (!theme) {
+        delete root.dataset.themeDecor;
+        root.style.removeProperty('--theme-decor-pattern');
+        return;
+      }
+      root.dataset.themeDecor = '';
+      root.style.setProperty('--theme-decor-pattern', `url("data:image/svg+xml,${encodeURIComponent(ThemeDecorLayer.tile(theme))}")`);
+    }
+
+    /** The SVG tile: faint emoji plus small accent-colored dots */
+    static tile({ decor, accent }) {
+      // Escaped: decor can come from an AI answer or a synced custom theme.
+      const esc = v => String(v).replace(/[&<>"]/g, c => `&#${c.charCodeAt(0)};`);
+      const emoji = ThemeDecorLayer.EMOJI_SPOTS.map(([x, y, size, turn], i) =>
+        `<text x="${x}" y="${y}" font-size="${size}" text-anchor="middle" dominant-baseline="central" transform="rotate(${turn} ${x} ${y})">${esc(decor[i % decor.length])}</text>`).join('');
+      const dots = ThemeDecorLayer.DOT_SPOTS.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3"/>`).join('');
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280"><g opacity="0.22">${emoji}</g><g fill="${esc(accent)}" opacity="0.35">${dots}</g></svg>`;
     }
   }
 
@@ -460,7 +695,8 @@
   class TranslationLanguageManager {
     /** Inject the CSS that hides the Google Translate toolbar */
     static _injectHideCSS() {
-      if (document.getElementById('google-translate-hide-css')) return;
+      // Sesh: hidden by _sass/sesh/_translate.scss instead
+      if (SASS_MODE || document.getElementById('google-translate-hide-css')) return;
       const style = document.createElement('style');
       style.id = 'google-translate-hide-css';
       style.textContent = `
@@ -515,13 +751,13 @@
     static apply(langCode) {
       document.documentElement.setAttribute('data-translate-lang', langCode);
       TranslationLanguageManager._injectHideCSS();
+      TranslationLanguageManager.clearCookies();
 
       if (!langCode) {
         TranslationLanguageManager._removeTranslation();
         return;
       }
 
-      TranslationLanguageManager.clearCookies();
       // Set cookies for the desired language
       const domain = window.location.hostname;
       document.cookie = `googtrans=/en/${langCode}; path=/`;
@@ -648,292 +884,6 @@
     }
   }
 
-  // ============================================
-  // RESPONSIBILITY: Site-wide head-tracking runner
-  // ============================================
-  /** Handles the site-wide nod-based cursor functionality on all pages, independent of the dashboard settings page. */
-class GlobalNodCursor {
-    static STORAGE_KEY = 'headTrackingPreferences';
-    static CALIBRATION_KEY = 'headTrackingCalibration';
-    static state = {
-      enabled: false,
-      sensitivity: 0.45,
-    };
-    static calibration = {
-      centerX: 0.5,
-      centerY: 0.5,
-      leftX: 0.3,
-      rightX: 0.7,
-      upY: 0.3,
-      downY: 0.7,
-      calibrated: false,
-    };
-
-    static stream = null;
-    static video = null;
-    static cursorEl = null;
-    static rafId = null;
-    static faceLandmarker = null;
-    static visionModule = null;
-    static lastPoint = null;
-    /** Executes the static init() { functionality for this class. */
-    static init() {
-      // Dashboard owns the toggle UI and tracking lifecycle there.
-      if (document.getElementById('pref-head-tracking-enabled')) return;
-
-      GlobalNodCursor._loadState();
-      GlobalNodCursor._loadCalibration();
-      if (!GlobalNodCursor.state.enabled) return;
-
-      GlobalNodCursor._createCursor();
-      GlobalNodCursor._startTracking();
-
-      window.addEventListener('beforeunload', () => {
-        GlobalNodCursor._stopTracking();
-      });
-    }
-    /** Executes the static _loadState() { functionality for this class. */
-    static _loadState() {
-      try {
-        const raw = localStorage.getItem(GlobalNodCursor.STORAGE_KEY);
-        if (!raw) return;
-        const parsed = JSON.parse(raw);
-        GlobalNodCursor.state.enabled = !!parsed.enabled;
-        const incomingSensitivity = Number(parsed.sensitivity);
-        if (Number.isFinite(incomingSensitivity)) {
-          GlobalNodCursor.state.sensitivity = Math.min(0.9, Math.max(0.1, incomingSensitivity));
-        }
-      } catch (e) {
-        console.error('global head tracking load state error', e);
-      }
-    }
-    /** Executes the static _saveState() { functionality for this class. */
-    static _saveState() {
-      try {
-        localStorage.setItem(GlobalNodCursor.STORAGE_KEY, JSON.stringify(GlobalNodCursor.state));
-      } catch (e) {
-        console.error('global head tracking save state error', e);
-      }
-    }
-    /** Executes the static _loadCalibration() { functionality for this class. */
-    static _loadCalibration() {
-      try {
-        const raw = localStorage.getItem(GlobalNodCursor.CALIBRATION_KEY);
-        if (!raw) return;
-        const parsed = JSON.parse(raw);
-        const asNum = (v, fallback) => {
-          const n = Number(v);
-          if (!Number.isFinite(n)) return fallback;
-          return Math.max(0, Math.min(1, n));
-        };
-        GlobalNodCursor.calibration = {
-          centerX: asNum(parsed?.centerX, 0.5),
-          centerY: asNum(parsed?.centerY, 0.5),
-          leftX: asNum(parsed?.leftX, 0.3),
-          rightX: asNum(parsed?.rightX, 0.7),
-          upY: asNum(parsed?.upY, 0.3),
-          downY: asNum(parsed?.downY, 0.7),
-          calibrated: !!parsed?.calibrated,
-        };
-      } catch (e) {
-        console.error('global head tracking load calibration error', e);
-      }
-    }
-    /** Executes the static _mapRawToViewport(rawX, rawY) { functionality for this class. */
-    static _mapRawToViewport(rawX, rawY) {
-      const x = Math.max(0, Math.min(1, rawX));
-      const y = Math.max(0, Math.min(1, rawY));
-      const c = GlobalNodCursor.calibration;
-
-      if (!c?.calibrated) {
-        return { x, y };
-      }
-
-      const normalize = (value, min, max) => {
-        if (!Number.isFinite(min) || !Number.isFinite(max) || Math.abs(max - min) < 0.001) {
-          return 0.5;
-        }
-        return (value - min) / (max - min);
-      };
-
-      return {
-        x: Math.max(0, Math.min(1, normalize(x, c.leftX, c.rightX))),
-        y: Math.max(0, Math.min(1, normalize(y, c.upY, c.downY))),
-      };
-    }
-    /** Executes the static _createCursor() { functionality for this class. */
-    static _createCursor() {
-      if (GlobalNodCursor.cursorEl) return;
-
-      let el = document.getElementById('head-tracking-cursor');
-      if (!el) {
-        el = document.createElement('div');
-        el.id = 'head-tracking-cursor';
-        el.style.position = 'fixed';
-        el.style.width = '18px';
-        el.style.height = '18px';
-        el.style.border = '2px solid #22d3ee';
-        el.style.borderRadius = '9999px';
-        el.style.background = 'rgba(34, 211, 238, 0.15)';
-        el.style.pointerEvents = 'none';
-        el.style.zIndex = '99999';
-        el.style.transform = 'translate(-9999px, -9999px)';
-        el.style.boxShadow = '0 0 12px rgba(34, 211, 238, 0.5)';
-        document.body.appendChild(el);
-      }
-
-      GlobalNodCursor.cursorEl = el;
-    }
-    /** Executes the static _showCursor(x, y) { functionality for this class. */
-    static _showCursor(x, y) {
-      if (!GlobalNodCursor.cursorEl) return;
-      GlobalNodCursor.cursorEl.style.transform = `translate(${Math.round(x - 9)}px, ${Math.round(y - 9)}px)`;
-    }
-    /** Executes the static _hideCursor() { functionality for this class. */
-    static _hideCursor() {
-      if (!GlobalNodCursor.cursorEl) return;
-      GlobalNodCursor.cursorEl.style.transform = 'translate(-9999px, -9999px)';
-    }
-
-    static async _startTracking() {
-      if (GlobalNodCursor.stream) return;
-
-      if (!navigator.mediaDevices?.getUserMedia) {
-        GlobalNodCursor.state.enabled = false;
-        GlobalNodCursor._saveState();
-        return;
-      }
-
-      try {
-        if (!GlobalNodCursor.visionModule) {
-          GlobalNodCursor.visionModule = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm');
-        }
-
-        if (!GlobalNodCursor.faceLandmarker) {
-          const fileset = await GlobalNodCursor.visionModule.FilesetResolver.forVisionTasks(
-            'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm'
-          );
-          GlobalNodCursor.faceLandmarker = await GlobalNodCursor.visionModule.FaceLandmarker.createFromOptions(fileset, {
-            baseOptions: {
-              modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',
-            },
-            runningMode: 'VIDEO',
-            numFaces: 1,
-          });
-        }
-
-        GlobalNodCursor.stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            width: { ideal: 640 },
-            height: { ideal: 480 },
-            facingMode: 'user',
-          },
-          audio: false,
-        });
-
-        if (!GlobalNodCursor.video) {
-          const v = document.createElement('video');
-          v.autoplay = true;
-          v.muted = true;
-          v.playsInline = true;
-          v.style.position = 'fixed';
-          v.style.width = '1px';
-          v.style.height = '1px';
-          v.style.opacity = '0';
-          v.style.pointerEvents = 'none';
-          v.style.left = '-9999px';
-          document.body.appendChild(v);
-          GlobalNodCursor.video = v;
-        }
-
-        GlobalNodCursor.video.srcObject = GlobalNodCursor.stream;
-        await GlobalNodCursor.video.play();
-
-        GlobalNodCursor.lastPoint = null;
-        GlobalNodCursor._runLoop();
-      } catch (e) {
-        console.error('global head tracking start error', e);
-        GlobalNodCursor.state.enabled = false;
-        GlobalNodCursor._saveState();
-        GlobalNodCursor._stopTracking();
-      }
-    }
-    /** Executes the static _runLoop() { functionality for this class. */
-    static _runLoop() {
-      if (!GlobalNodCursor.state.enabled || !GlobalNodCursor.faceLandmarker || !GlobalNodCursor.video) {
-        return;
-      }
-
-      const tick = () => {
-        if (!GlobalNodCursor.state.enabled || !GlobalNodCursor.faceLandmarker || !GlobalNodCursor.video) {
-          return;
-        }
-
-        if (GlobalNodCursor.video.readyState >= 2) {
-          const result = GlobalNodCursor.faceLandmarker.detectForVideo(GlobalNodCursor.video, performance.now());
-          const landmarks = result?.faceLandmarks?.[0];
-          const nose = landmarks?.[1];
-
-          if (nose) {
-            const rawX = 1 - nose.x;
-            const rawY = nose.y;
-            const mapped = GlobalNodCursor._mapRawToViewport(rawX, rawY);
-            const targetX = mapped.x * window.innerWidth;
-            const targetY = mapped.y * window.innerHeight;
-
-            const alpha = Math.min(0.9, Math.max(0.1, GlobalNodCursor.state.sensitivity));
-            if (!GlobalNodCursor.lastPoint) {
-              GlobalNodCursor.lastPoint = { x: targetX, y: targetY };
-            } else {
-              GlobalNodCursor.lastPoint.x += (targetX - GlobalNodCursor.lastPoint.x) * alpha;
-              GlobalNodCursor.lastPoint.y += (targetY - GlobalNodCursor.lastPoint.y) * alpha;
-            }
-
-            const x = Math.max(0, Math.min(window.innerWidth - 1, GlobalNodCursor.lastPoint.x));
-            const y = Math.max(0, Math.min(window.innerHeight - 1, GlobalNodCursor.lastPoint.y));
-
-            GlobalNodCursor._showCursor(x, y);
-
-            const moveEvent = new MouseEvent('mousemove', {
-              bubbles: true,
-              cancelable: true,
-              view: window,
-              clientX: x,
-              clientY: y,
-            });
-            window.dispatchEvent(moveEvent);
-            const target = document.elementFromPoint(x, y);
-            if (target) target.dispatchEvent(moveEvent);
-          }
-        }
-
-        GlobalNodCursor.rafId = requestAnimationFrame(tick);
-      };
-
-      GlobalNodCursor.rafId = requestAnimationFrame(tick);
-    }
-    /** Executes the static _stopTracking() { functionality for this class. */
-    static _stopTracking() {
-      if (GlobalNodCursor.rafId) {
-        cancelAnimationFrame(GlobalNodCursor.rafId);
-        GlobalNodCursor.rafId = null;
-      }
-
-      if (GlobalNodCursor.stream) {
-        GlobalNodCursor.stream.getTracks().forEach(track => track.stop());
-        GlobalNodCursor.stream = null;
-      }
-
-      if (GlobalNodCursor.video) {
-        GlobalNodCursor.video.pause();
-        GlobalNodCursor.video.srcObject = null;
-      }
-
-      GlobalNodCursor.lastPoint = null;
-      GlobalNodCursor._hideCursor();
-    }
-  }
-
   // ============================================================================
   // ORCHESTRATOR
   // ----------------------------------------------------------------------------
@@ -953,9 +903,6 @@ class GlobalNodCursor {
    *   3. Read the saved preferences from localStorage and, if any exist, apply
    *      them via ThemePreferencesEngine (sets CSS variables, injects override
    *      stylesheet, switches Google Translate language).
-   *   4. Re-arm the optional global head-tracking feature on non-dashboard pages.
-   *      The dashboard owns its own toggle UI, so we skip there to avoid two
-   *      controllers fighting over the webcam stream.
    */
   function init() {
     // (1) Guard: bail out cleanly if loaded outside a browser (e.g. node tests).
@@ -963,17 +910,20 @@ class GlobalNodCursor {
 
     // (2) Honor the dashboard's explicit "Reset to site defaults" action.
     //     Set by the preferences panel; presence overrides any saved theme.
-    const wasReset = window.localStorage.getItem('preferencesReset');
-    if (wasReset === 'true') return;
+    const wasReset = window.localStorage.getItem('preferencesReset') === 'true';
 
     // (3) Restore the user's saved theme (background, text color, font, accent,
-    //     selection color, button shape, language, etc.). No-op for guests.
+    //     selection color, button shape, language, emoji wallpaper, etc.).
+    //     No-op for guests with none.
+    if (wasReset) return;
     const prefs = LocalStoragePreferencesStore.get();
     if (prefs) ThemePreferencesEngine.apply(prefs);
 
-    // (4) Restart head-tracking on every navigation if the user has it enabled,
-    //     but only on pages that don't already render the dashboard's own toggle.
-    GlobalNodCursor.init();
+    // Sesh: head tracking was removed from this site; clear anything a past visit left behind.
+    try {
+      localStorage.removeItem('headTrackingPreferences');
+      localStorage.removeItem('headTrackingCalibration');
+    } catch (e) { /* storage blocked */ }
   }
 
   // ----------------------------------------------------------------------------
@@ -997,6 +947,20 @@ class GlobalNodCursor {
     // ── Read-only constants exposed for the dashboard's preset/lang menus ──
     PRESETS,    // Built-in named themes (Site Default, Midnight, Light, ...)
     LANGUAGES,  // Supported translation language codes for the dropdown.
+
+    // ── Theme preview & emoji wallpaper (dashboard's AI theme) ─────────────
+    SEASONAL_THEMES, // Holiday palettes, the AI theme's fallback for its holiday suggestions.
+    /** Show prefs (colors, font, optional decor emoji) on this page only: no save, no reload. */
+    preview: prefs => {
+      PreviewSnapshot.take();
+      ThemePreferencesEngine.apply(prefs, false);
+    },
+    /** Undo preview(): put the page back exactly as it was before the first preview(). */
+    cancelPreview: () => PreviewSnapshot.restore(),
+    /** The previewed theme was kept, so the next preview() starts from it. */
+    keepPreview: () => PreviewSnapshot.drop(),
+    /** Keep theme's decor emoji as the wallpaper whenever its colors are the active ones. */
+    setThemeDecor: theme => ThemeDecorStore.set(theme),
 
     // ── Text-to-Speech ─────────────────────────────────────────────────────
     /** Speak arbitrary text using the user's saved TTS voice/rate/pitch. */

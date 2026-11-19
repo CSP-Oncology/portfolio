@@ -1,0 +1,270 @@
+---
+layout: sesh
+title: Settings
+heading: Settings
+intro: Theme, language and voice. Saved to your account when you're logged in, so they follow you to your phone.
+permalink: /settings
+search_exclude: true
+---
+{%- comment -%}
+  Preferences, as on the Open Coding Society dashboard (_layouts/dashboard-v2.html there):
+  markup from that page; behavior from assets/js/pages/dashboard/preferences.js,
+  and preferences-layout.js; styles in _sass/sesh/_preferences.scss.
+  Saved to the Flask backend (/api/user/preferences) when logged in, else in this browser.
+{%- endcomment -%}
+{%- assign site_font = site.data.sesh_theme.font -%}
+<section class="section wrap">
+<p class="ocs__text ocs__dashboard-fineprint" id="settings-guest-note" hidden>You're not logged in, so these are saved in this browser only. <a href="{{ '/login' | relative_url }}">Log in</a> to keep them on every device.</p>
+
+<div class="ocs__tabs ocs__tabs--cards">
+    <div class="ocs__tabs-list" id="tab-bar" role="tablist" aria-label="Settings">
+        <button type="button" role="tab" id="tab-appearance" class="tab-btn ocs__tabs-btn" aria-selected="true" aria-controls="tab-content-appearance">Appearance</button>
+        <button type="button" role="tab" id="tab-voice" class="tab-btn ocs__tabs-btn" aria-selected="false" aria-controls="tab-content-voice" tabindex="-1">Language &amp; voice</button>
+    </div>
+</div>
+
+<div id="tab-content-preferences" class="ocs__prefs">
+
+    <!-- ===== Appearance ===== -->
+    <div id="tab-content-appearance" role="tabpanel" aria-labelledby="tab-appearance" class="tab-content ocs__tabs-panel ocs__dashboard-tab-content">
+        <div class="ocs__prefs-layout">
+            <div class="ocs__prefs-main">
+
+                <!-- Step 1: pick a starting point -->
+                <section class="ocs__card ocs__prefs-card">
+                    <div class="ocs__prefs-step">
+                        <span class="ocs__prefs-step-num" aria-hidden="true">1</span>
+                        <h3 class="ocs__dashboard-card-title">Pick a starting point</h3>
+                    </div>
+
+                    <div class="ocs__tabs">
+                        <div class="ocs__tabs-list" role="tablist" aria-label="Theme source">
+                            <button type="button" role="tab" class="ocs__tabs-btn ocs__prefs-segment" data-source="presets" aria-selected="true">Presets</button>
+                            <button type="button" role="tab" class="ocs__tabs-btn ocs__prefs-segment" data-source="mine" aria-selected="false">My themes</button>
+                        </div>
+                    </div>
+
+                    <div data-source-pane="presets">
+                        <!-- data-mode="fill": clicking a preset fills step 2 instead of saving -->
+                        <div class="ocs__grid ocs__grid--standard cols-4" id="preset-themes" data-mode="fill"></div>
+                    </div>
+
+                    <div data-source-pane="mine" hidden>
+                        <div id="custom-themes" class="ocs__dashboard-column" data-mode="fill"></div>
+                        <div class="ocs__prefs-save-theme">
+                            <div class="ocs__prefs-grow">
+                                <input id="new-theme-name" class="ocs__input ocs__dashboard-full-width" placeholder="Theme name" aria-label="Theme name" maxlength="30" />
+                            </div>
+                            <button id="save-theme-btn" type="button" class="ocs__btn small">Add to my themes</button>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- Step 2: fine-tune -->
+                <section class="ocs__card ocs__prefs-card">
+                    <div class="ocs__prefs-step">
+                        <span class="ocs__prefs-step-num" aria-hidden="true">2</span>
+                        <h3 class="ocs__dashboard-card-title">Fine-tune</h3>
+                    </div>
+
+                    <p class="ocs__prefs-group-title">Colors</p>
+                    <div class="ocs__prefs-colors">
+                        <label class="ocs__prefs-color" for="pref-bg-color">
+                            <span>Background</span>
+                            <span class="ocs__prefs-color-row"><input type="color" id="pref-bg-color" value="#121212" /><code data-hex-for="pref-bg-color"></code></span>
+                        </label>
+                        <label class="ocs__prefs-color" for="pref-text-color">
+                            <span>Text</span>
+                            <span class="ocs__prefs-color-row"><input type="color" id="pref-text-color" value="#F0F0F0" /><code data-hex-for="pref-text-color"></code></span>
+                        </label>
+                        <label class="ocs__prefs-color" for="pref-accent-color">
+                            <span>Accent</span>
+                            <span class="ocs__prefs-color-row"><input type="color" id="pref-accent-color" value="#4CAFEF" /><code data-hex-for="pref-accent-color"></code></span>
+                        </label>
+                        <label class="ocs__prefs-color" for="pref-selection-color">
+                            <span>Selection</span>
+                            <span class="ocs__prefs-color-row"><input type="color" id="pref-selection-color" value="#4CAFEF" /><code data-hex-for="pref-selection-color"></code></span>
+                        </label>
+                    </div>
+
+                    <p class="ocs__prefs-group-title">Text and buttons</p>
+                    <div class="ocs__prefs-fields">
+                        <div>
+                            <label for="pref-font-family" class="ocs__label">Font</label>
+                            <select id="pref-font-family" class="ocs__input ocs__dashboard-full-width">
+                                    <option value="{{ site_font }}">IBM Plex Sans</option>
+                                <option value="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial">Inter / System</option>
+                                <option value="Roboto, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial">Roboto</option>
+                                <option value="'Open Sans', Arial, sans-serif">Open Sans</option>
+                                <option value="Lato, Arial, sans-serif">Lato</option>
+                                <option value="Montserrat, Arial, sans-serif">Montserrat</option>
+                                <option value="Georgia, 'Times New Roman', Times, serif">Georgia (Serif)</option>
+                                <option value="'Source Code Pro', monospace">Source Code Pro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="pref-font-size" class="ocs__label">Size: <span id="font-size-label">14</span>px</label>
+                            <input type="range" id="pref-font-size" min="12" max="22" value="14" class="ocs__dashboard-full-width" />
+                        </div>
+                        <div>
+                            <label for="pref-button-style" class="ocs__label">Button style</label>
+                            <select id="pref-button-style" class="ocs__input ocs__dashboard-full-width">
+                                <option value="default">Default</option>
+                                <option value="rounded-all">Rounded</option>
+                                <option value="square">Square</option>
+                                <option value="pill">Pill</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Live preview + the one Save -->
+            <aside class="ocs__card ocs__prefs-card ocs__prefs-aside" aria-label="Live preview">
+                <h3 class="ocs__dashboard-card-title">Live preview</h3>
+                <div id="prefs-preview" class="ocs__prefs-preview">
+                    <div class="ocs__prefs-preview-bar"></div>
+                    <div class="ocs__prefs-preview-body">
+                        <h4>Liquid biopsy</h4>
+                        <p>A <span data-preview="selection">blood draw</span> can find tumor DNA. See the <span data-preview="link">biomarker notes</span> before the quiz.</p>
+                        <div class="ocs__prefs-preview-buttons">
+                            <span data-preview="button">Start quiz</span>
+                            <span data-preview="ghost">Next topic</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ocs__prefs-checks">
+                    <div class="ocs__prefs-check"><span>Text is readable</span><strong id="prefs-check-text"></strong></div>
+                    <div class="ocs__prefs-check"><span>Links and buttons stand out</span><strong id="prefs-check-accent"></strong></div>
+                </div>
+                <div class="ocs__prefs-actions">
+                    <button id="save-preferences" type="button" class="ocs__btn accent fill medium ocs__prefs-grow">Save</button>
+                    <button id="restore-styles" type="button" class="ocs__btn medium">Reset</button>
+                </div>
+                <p id="preferences-status" class="ocs__text ocs__dashboard-fineprint" role="status" aria-live="polite"></p>
+            </aside>
+        </div>
+    </div>
+
+    <!-- ===== Language & voice ===== -->
+    <div id="tab-content-voice" role="tabpanel" aria-labelledby="tab-voice" hidden class="tab-content ocs__tabs-panel ocs__dashboard-tab-content">
+        <!-- Language/Translation Section -->
+        <div class="ocs__card">
+            <div class="ocs__card-header">
+                <h3 class="ocs__dashboard-card-title">🌐 Language Translation</h3>
+            </div>
+            <div class="ocs__dashboard-column">
+                <div>
+                    <label class="ocs__label">Site Language</label>
+                    <select id="pref-language" class="ocs__input ocs__dashboard-full-width">
+                        <option value="">Default (English - No Translation)</option>
+                        <option value="es">🇪🇸 Spanish (Español)</option>
+                        <option value="fr">🇫🇷 French (Français)</option>
+                        <option value="de">🇩🇪 German (Deutsch)</option>
+                        <option value="it">🇮🇹 Italian (Italiano)</option>
+                        <option value="pt">🇵🇹 Portuguese (Português)</option>
+                        <option value="ru">🇷🇺 Russian (Русский)</option>
+                        <option value="zh-CN">🇨🇳 Chinese Simplified (简体中文)</option>
+                        <option value="zh-TW">🇹🇼 Chinese Traditional (繁體中文)</option>
+                        <option value="ja">🇯🇵 Japanese (日本語)</option>
+                        <option value="ko">🇰🇷 Korean (한국어)</option>
+                        <option value="ar">🇸🇦 Arabic (العربية)</option>
+                        <option value="hi">🇮🇳 Hindi (हिन्दी)</option>
+                        <option value="vi">🇻🇳 Vietnamese (Tiếng Việt)</option>
+                        <option value="th">🇹🇭 Thai (ไทย)</option>
+                        <option value="nl">🇳🇱 Dutch (Nederlands)</option>
+                        <option value="pl">🇵🇱 Polish (Polski)</option>
+                        <option value="tr">🇹🇷 Turkish (Türkçe)</option>
+                        <option value="uk">🇺🇦 Ukrainian (Українська)</option>
+                        <option value="he">🇮🇱 Hebrew (עברית)</option>
+                        <option value="fa">🇮🇷 Persian (فارسی)</option>
+                    </select>
+                </div>
+                <p class="ocs__text ocs__dashboard-fineprint">Translation powered by Google Translate.</p>
+            </div>
+        </div>
+        <!-- Text-to-Speech Section -->
+        <div class="ocs__card">
+            <div class="ocs__card-header">
+                <h3 class="ocs__dashboard-card-title">Text-to-Speech</h3>
+                <div class="ocs__links">
+                    <button type="button" id="tts-test-btn" class="ocs__btn accent small">Test Voice</button>
+                </div>
+            </div>
+            <div class="ocs__grid--col2">
+                <div>
+                    <label class="ocs__label">Voice</label>
+                    <select id="pref-tts-voice" class="ocs__input ocs__dashboard-full-width">
+                        <option value="">Loading voices...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="ocs__label">Speed: <span id="tts-rate-label">1.0</span>x</label>
+                    <input type="range" id="pref-tts-rate" min="0.5" max="2" step="0.1" value="1" class="ocs__dashboard-full-width" />
+                </div>
+                <div>
+                    <label class="ocs__label">Pitch: <span id="tts-pitch-label">1.0</span></label>
+                    <input type="range" id="pref-tts-pitch" min="0.5" max="2" step="0.1" value="1" class="ocs__dashboard-full-width" />
+                </div>
+                <div>
+                    <label class="ocs__label">Volume: <span id="tts-volume-label">100</span>%</label>
+                    <input type="range" id="pref-tts-volume" min="0" max="1" step="0.1" value="1" class="ocs__dashboard-full-width" />
+                </div>
+            </div>
+            <div class="ocs__dashboard-card-spaced">
+                <label class="ocs__label">Test Text</label>
+                <input type="text" id="tts-test-text" class="ocs__input ocs__dashboard-full-width" value="Hello! This is a test of the text-to-speech feature." placeholder="Enter text to test..." />
+            </div>
+            <p class="ocs__text ocs__dashboard-fineprint ocs__dashboard-card-spaced-sm">Uses your browser's built-in speech synthesis. Available voices depend on your operating system.</p>
+        </div>
+        <div class="ocs__card ocs__prefs-actions">
+            <button type="button" data-save-all class="ocs__btn accent fill medium">Save</button>
+        </div>
+    </div>
+
+</section>
+
+<script type="module">
+import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+import { initializePreferences, PreferencesAPI } from '{{ site.baseurl }}/assets/js/pages/dashboard/preferences.js';
+import { initPreferencesLayout } from '{{ site.baseurl }}/assets/js/pages/dashboard/preferences-layout.js';
+
+// Same calls as the OCS dashboard; this site's backend is Flask (pythonURI), which serves
+// the endpoints the dashboard expects (flask/api/preferences.py).
+initializePreferences(pythonURI, fetchOptions);
+initPreferencesLayout();
+
+// Appearance / Language & voice tabs (arrow keys move between them)
+const tabs = [...document.querySelectorAll('#tab-bar [role="tab"]')];
+function selectTab(tab, focus = false) {
+    tabs.forEach(t => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        t.classList.toggle('active', on);
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+}
+tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => selectTab(tab));
+    tab.addEventListener('keydown', e => {
+        const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (step) selectTab(tabs[(i + step + tabs.length) % tabs.length], true);
+    });
+});
+
+// Show each color's hex value next to its picker
+const showHex = () => document.querySelectorAll('[data-hex-for]').forEach(code => {
+    code.textContent = document.getElementById(code.dataset.hexFor)?.value.toUpperCase() || '';
+});
+document.querySelectorAll('.ocs__prefs-color input[type="color"]').forEach(input => input.addEventListener('input', showHex));
+['prefs:loaded', 'prefs:filled'].forEach(name => document.addEventListener(name, showHex));
+showHex();
+
+// Tell guests their settings stay in this browser
+PreferencesAPI.checkLogin().then(loggedIn => {
+    document.getElementById('settings-guest-note').hidden = loggedIn;
+});
+</script>
