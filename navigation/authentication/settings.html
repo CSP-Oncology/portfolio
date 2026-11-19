@@ -2,14 +2,14 @@
 layout: sesh
 title: Settings
 heading: Settings
-intro: Theme, language, voice and head tracking. Saved to your account when you're logged in, so they follow you to your phone.
+intro: Theme, language and voice. Saved to your account when you're logged in, so they follow you to your phone.
 permalink: /settings
 search_exclude: true
 ---
 {%- comment -%}
   Preferences, as on the Open Coding Society dashboard (_layouts/dashboard-v2.html there):
   markup from that page; behavior from assets/js/pages/dashboard/preferences.js,
-  preferences-layout.js and ai-theme.js; styles in _sass/sesh/_preferences.scss.
+  and preferences-layout.js; styles in _sass/sesh/_preferences.scss.
   Saved to the Flask backend (/api/user/preferences) when logged in, else in this browser.
 {%- endcomment -%}
 {%- assign site_font = site.data.sesh_theme.font -%}
@@ -20,7 +20,6 @@ search_exclude: true
     <div class="ocs__tabs-list" id="tab-bar" role="tablist" aria-label="Settings">
         <button type="button" role="tab" id="tab-appearance" class="tab-btn ocs__tabs-btn" aria-selected="true" aria-controls="tab-content-appearance">Appearance</button>
         <button type="button" role="tab" id="tab-voice" class="tab-btn ocs__tabs-btn" aria-selected="false" aria-controls="tab-content-voice" tabindex="-1">Language &amp; voice</button>
-        <button type="button" role="tab" id="tab-tracking" class="tab-btn ocs__tabs-btn" aria-selected="false" aria-controls="tab-content-tracking" tabindex="-1">Head tracking</button>
     </div>
 </div>
 
@@ -42,7 +41,6 @@ search_exclude: true
                         <div class="ocs__tabs-list" role="tablist" aria-label="Theme source">
                             <button type="button" role="tab" class="ocs__tabs-btn ocs__prefs-segment" data-source="presets" aria-selected="true">Presets</button>
                             <button type="button" role="tab" class="ocs__tabs-btn ocs__prefs-segment" data-source="mine" aria-selected="false">My themes</button>
-                            <button type="button" role="tab" class="ocs__tabs-btn ocs__prefs-segment" data-source="ai" aria-selected="false">Create with AI <span class="ocs__status-pill ocs__prefs-new-badge">New</span></button>
                         </div>
                     </div>
 
@@ -61,42 +59,6 @@ search_exclude: true
                         </div>
                     </div>
 
-                    <!-- AI Theme: assets/js/pages/dashboard/ai-theme.js -->
-                    <div data-source-pane="ai" id="ai-theme-panel" hidden>
-                        <form id="ai-theme-form" novalidate>
-                            <div id="ai-theme-chips" class="ocs__links" role="group" aria-label="Suggestions"></div>
-                            <textarea id="ai-theme-prompt" maxlength="200" rows="2" class="ocs__input ocs__dashboard-full-width ocs__dashboard-textarea ocs__dashboard-card-spaced-sm"
-                                placeholder="Describe a look" aria-label="Describe a look"></textarea>
-                            <div class="ocs__links ocs__dashboard-card-spaced-sm">
-                                <button type="submit" id="ai-theme-generate" class="ocs__btn accent fill small">Generate</button>
-                                <label class="ocs__text ocs__dashboard-fineprint"><input type="checkbox" id="ai-theme-wallpaper" checked> Emoji wallpaper</label>
-                                <span id="ai-theme-status" class="ocs__text ocs__dashboard-fineprint" role="status" aria-live="polite"></span>
-                            </div>
-                        </form>
-
-                        <div id="ai-theme-result" class="ocs__dashboard-card-spaced-sm" hidden>
-                            <!-- Drawn in the theme's own colors and font by ai-theme.js -->
-                            <div id="ai-theme-preview" class="ocs__prefs-ai-card">
-                                <div class="ocs__prefs-ai-head">
-                                    <h4 id="ai-theme-title"></h4>
-                                    <span id="ai-theme-emoji" aria-hidden="true"></span>
-                                </div>
-                                <p id="ai-theme-description"></p>
-                                <div class="ocs__prefs-ai-row">
-                                    <span id="ai-theme-sample-btn" class="ocs__prefs-ai-sample">Sample button</span>
-                                    <span id="ai-theme-swatches" class="ocs__prefs-ai-row"></span>
-                                    <span id="ai-theme-badge"></span>
-                                </div>
-                            </div>
-                            <div class="ocs__links ocs__dashboard-card-spaced-sm">
-                                <button type="button" id="ai-theme-regenerate" class="ocs__btn small">Regenerate</button>
-                                <button type="button" id="ai-theme-try" class="ocs__btn small">Try it on the whole page</button>
-                                <label for="ai-theme-name" class="ocs__dashboard-sr-only">Custom theme name</label>
-                                <input id="ai-theme-name" maxlength="30" class="ocs__input" />
-                                <button type="button" id="ai-theme-save" class="ocs__btn small">Add to my themes</button>
-                            </div>
-                        </div>
-                    </div>
                 </section>
 
                 <!-- Step 2: fine-tune -->
@@ -261,65 +223,19 @@ search_exclude: true
         </div>
     </div>
 
-    <!-- ===== Head tracking ===== -->
-    <div id="tab-content-tracking" role="tabpanel" aria-labelledby="tab-tracking" hidden class="tab-content ocs__tabs-panel ocs__dashboard-tab-content">
-        <!-- Head Tracking Cursor Section -->
-        <div class="ocs__card">
-            <div class="ocs__card-header">
-                <h3 class="ocs__dashboard-card-title">Head Tracking Cursor</h3>
-                <label class="ocs__dashboard-toggle-label">
-                    <input id="pref-head-tracking-enabled" type="checkbox" class="ocs__dashboard-sr-only" />
-                    <div id="head-tracking-toggle-track" class="ocs__dashboard-toggle-track">
-                        <div id="head-tracking-toggle-dot" class="ocs__dashboard-toggle-dot"></div>
-                    </div>
-                    <span class="ocs__dashboard-toggle-text">Enable</span>
-                </label>
-            </div>
-
-            <p class="ocs__text ocs__dashboard-card-desc">Use your webcam and head movement to drive an on-screen cursor, from <a href="https://aadibhat09.github.io/NodCursor/" target="_blank" rel="noopener noreferrer" class="ocs__dashboard-link">NodCursor</a>. This uses MediaPipe from CDN.</p>
-
-            <div>
-                <label class="ocs__label">Sensitivity: <span id="head-tracking-sensitivity-label">0.45</span></label>
-                <input type="range" id="pref-head-tracking-sensitivity" min="0.10" max="0.90" step="0.05" value="0.45" class="ocs__dashboard-full-width" />
-            </div>
-
-            <div class="ocs__dashboard-card-spaced">
-                <p class="ocs__dashboard-calibration-title">Calibration</p>
-                <p class="ocs__text ocs__dashboard-fineprint ocs__dashboard-card-spaced-sm">Capture center, left, right, up, and down while head tracking is active.</p>
-                <div class="ocs__dashboard-calibration-grid">
-                    <button type="button" id="head-calibrate-center" class="ocs__btn small">Capture Center</button>
-                    <button type="button" id="head-calibrate-left" class="ocs__btn small">Capture Left</button>
-                    <button type="button" id="head-calibrate-right" class="ocs__btn small">Capture Right</button>
-                    <button type="button" id="head-calibrate-up" class="ocs__btn small">Capture Up</button>
-                    <button type="button" id="head-calibrate-down" class="ocs__btn small">Capture Down</button>
-                </div>
-                <div class="ocs__links ocs__dashboard-card-spaced-sm">
-                    <button type="button" id="head-calibration-save" class="ocs__btn accent fill small">Save Calibration</button>
-                    <button type="button" id="head-calibration-load" class="ocs__btn accent small">Load Calibration</button>
-                    <button type="button" id="head-calibration-reset" class="ocs__btn small">Reset Calibration</button>
-                </div>
-                <p id="head-calibration-status" class="ocs__text ocs__dashboard-fineprint ocs__dashboard-card-spaced-sm"></p>
-            </div>
-
-            <p id="head-tracking-status" class="ocs__text ocs__dashboard-card-spaced-sm"></p>
-        </div>
-    </div>
-
 </section>
 
 <script type="module">
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 import { initializePreferences, PreferencesAPI } from '{{ site.baseurl }}/assets/js/pages/dashboard/preferences.js';
-import { initAiTheme } from '{{ site.baseurl }}/assets/js/pages/dashboard/ai-theme.js';
 import { initPreferencesLayout } from '{{ site.baseurl }}/assets/js/pages/dashboard/preferences-layout.js';
 
 // Same calls as the OCS dashboard; this site's backend is Flask (pythonURI), which serves
 // the endpoints the dashboard expects (flask/api/preferences.py).
 initializePreferences(pythonURI, fetchOptions);
-initAiTheme({ javaURI: pythonURI, fetchOptions });
 initPreferencesLayout();
 
-// Appearance / Language & voice / Head tracking tabs (arrow keys move between them)
+// Appearance / Language & voice tabs (arrow keys move between them)
 const tabs = [...document.querySelectorAll('#tab-bar [role="tab"]')];
 function selectTab(tab, focus = false) {
     tabs.forEach(t => {

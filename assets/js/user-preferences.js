@@ -37,10 +37,6 @@
  *                                     preferences object stored under 'sitePreferences'.
  *                                     (The dashboard module owns writes; this file only reads.)
  *
- *   GlobalNodCursor              – Optional accessibility feature: uses MediaPipe + webcam
- *                                     to drive the cursor with head movement on non-dashboard
- *                                     pages (the dashboard owns its own toggle UI).
- *
  *   SitePreferences (window global) – Public API surface. Thin facade that delegates to the
  *                                     classes above. Consumed by dashboard.html and any page
  *                                     that needs to apply / reset / translate / speak.
@@ -537,6 +533,7 @@
         set('--on-accent', readableOn(accent));
         set('--on-selection', readableOn(selectionColor));
         set('--pref-color-scheme', lightBg ? 'light' : 'dark');
+        root.classList.toggle('pref-dark', !lightBg);
         const radius = { 'rounded-all': '0.375rem', square: '0', pill: '9999px' }[buttonStyle];
         if (radius) set('--pref-button-radius', radius);
         else root.style.removeProperty('--pref-button-radius');
@@ -559,7 +556,7 @@
     /** Remove all user-theme CSS custom properties and the override sheet */
     static reset() {
       const root = document.documentElement;
-      root.classList.remove('user-theme-active', 'pref-button-shape');
+      root.classList.remove('user-theme-active', 'pref-button-shape', 'pref-dark');
       TailwindOverrideStyleSheetInjector.remove();
 
       const props = [
@@ -887,292 +884,6 @@
     }
   }
 
-  // ============================================
-  // RESPONSIBILITY: Site-wide head-tracking runner
-  // ============================================
-  /** Handles the site-wide nod-based cursor functionality on all pages, independent of the dashboard settings page. */
-class GlobalNodCursor {
-    static STORAGE_KEY = 'headTrackingPreferences';
-    static CALIBRATION_KEY = 'headTrackingCalibration';
-    static state = {
-      enabled: false,
-      sensitivity: 0.45,
-    };
-    static calibration = {
-      centerX: 0.5,
-      centerY: 0.5,
-      leftX: 0.3,
-      rightX: 0.7,
-      upY: 0.3,
-      downY: 0.7,
-      calibrated: false,
-    };
-
-    static stream = null;
-    static video = null;
-    static cursorEl = null;
-    static rafId = null;
-    static faceLandmarker = null;
-    static visionModule = null;
-    static lastPoint = null;
-    /** Executes the static init() { functionality for this class. */
-    static init() {
-      // Dashboard owns the toggle UI and tracking lifecycle there.
-      if (document.getElementById('pref-head-tracking-enabled')) return;
-
-      GlobalNodCursor._loadState();
-      GlobalNodCursor._loadCalibration();
-      if (!GlobalNodCursor.state.enabled) return;
-
-      GlobalNodCursor._createCursor();
-      GlobalNodCursor._startTracking();
-
-      window.addEventListener('beforeunload', () => {
-        GlobalNodCursor._stopTracking();
-      });
-    }
-    /** Executes the static _loadState() { functionality for this class. */
-    static _loadState() {
-      try {
-        const raw = localStorage.getItem(GlobalNodCursor.STORAGE_KEY);
-        if (!raw) return;
-        const parsed = JSON.parse(raw);
-        GlobalNodCursor.state.enabled = !!parsed.enabled;
-        const incomingSensitivity = Number(parsed.sensitivity);
-        if (Number.isFinite(incomingSensitivity)) {
-          GlobalNodCursor.state.sensitivity = Math.min(0.9, Math.max(0.1, incomingSensitivity));
-        }
-      } catch (e) {
-        console.error('global head tracking load state error', e);
-      }
-    }
-    /** Executes the static _saveState() { functionality for this class. */
-    static _saveState() {
-      try {
-        localStorage.setItem(GlobalNodCursor.STORAGE_KEY, JSON.stringify(GlobalNodCursor.state));
-      } catch (e) {
-        console.error('global head tracking save state error', e);
-      }
-    }
-    /** Executes the static _loadCalibration() { functionality for this class. */
-    static _loadCalibration() {
-      try {
-        const raw = localStorage.getItem(GlobalNodCursor.CALIBRATION_KEY);
-        if (!raw) return;
-        const parsed = JSON.parse(raw);
-        const asNum = (v, fallback) => {
-          const n = Number(v);
-          if (!Number.isFinite(n)) return fallback;
-          return Math.max(0, Math.min(1, n));
-        };
-        GlobalNodCursor.calibration = {
-          centerX: asNum(parsed?.centerX, 0.5),
-          centerY: asNum(parsed?.centerY, 0.5),
-          leftX: asNum(parsed?.leftX, 0.3),
-          rightX: asNum(parsed?.rightX, 0.7),
-          upY: asNum(parsed?.upY, 0.3),
-          downY: asNum(parsed?.downY, 0.7),
-          calibrated: !!parsed?.calibrated,
-        };
-      } catch (e) {
-        console.error('global head tracking load calibration error', e);
-      }
-    }
-    /** Executes the static _mapRawToViewport(rawX, rawY) { functionality for this class. */
-    static _mapRawToViewport(rawX, rawY) {
-      const x = Math.max(0, Math.min(1, rawX));
-      const y = Math.max(0, Math.min(1, rawY));
-      const c = GlobalNodCursor.calibration;
-
-      if (!c?.calibrated) {
-        return { x, y };
-      }
-
-      const normalize = (value, min, max) => {
-        if (!Number.isFinite(min) || !Number.isFinite(max) || Math.abs(max - min) < 0.001) {
-          return 0.5;
-        }
-        return (value - min) / (max - min);
-      };
-
-      return {
-        x: Math.max(0, Math.min(1, normalize(x, c.leftX, c.rightX))),
-        y: Math.max(0, Math.min(1, normalize(y, c.upY, c.downY))),
-      };
-    }
-    /** Executes the static _createCursor() { functionality for this class. */
-    static _createCursor() {
-      if (GlobalNodCursor.cursorEl) return;
-
-      let el = document.getElementById('head-tracking-cursor');
-      if (!el) {
-        el = document.createElement('div');
-        el.id = 'head-tracking-cursor';
-        el.style.position = 'fixed';
-        el.style.width = '18px';
-        el.style.height = '18px';
-        el.style.border = '2px solid #22d3ee';
-        el.style.borderRadius = '9999px';
-        el.style.background = 'rgba(34, 211, 238, 0.15)';
-        el.style.pointerEvents = 'none';
-        el.style.zIndex = '99999';
-        el.style.transform = 'translate(-9999px, -9999px)';
-        el.style.boxShadow = '0 0 12px rgba(34, 211, 238, 0.5)';
-        document.body.appendChild(el);
-      }
-
-      GlobalNodCursor.cursorEl = el;
-    }
-    /** Executes the static _showCursor(x, y) { functionality for this class. */
-    static _showCursor(x, y) {
-      if (!GlobalNodCursor.cursorEl) return;
-      GlobalNodCursor.cursorEl.style.transform = `translate(${Math.round(x - 9)}px, ${Math.round(y - 9)}px)`;
-    }
-    /** Executes the static _hideCursor() { functionality for this class. */
-    static _hideCursor() {
-      if (!GlobalNodCursor.cursorEl) return;
-      GlobalNodCursor.cursorEl.style.transform = 'translate(-9999px, -9999px)';
-    }
-
-    static async _startTracking() {
-      if (GlobalNodCursor.stream) return;
-
-      if (!navigator.mediaDevices?.getUserMedia) {
-        GlobalNodCursor.state.enabled = false;
-        GlobalNodCursor._saveState();
-        return;
-      }
-
-      try {
-        if (!GlobalNodCursor.visionModule) {
-          GlobalNodCursor.visionModule = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm');
-        }
-
-        if (!GlobalNodCursor.faceLandmarker) {
-          const fileset = await GlobalNodCursor.visionModule.FilesetResolver.forVisionTasks(
-            'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm'
-          );
-          GlobalNodCursor.faceLandmarker = await GlobalNodCursor.visionModule.FaceLandmarker.createFromOptions(fileset, {
-            baseOptions: {
-              modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',
-            },
-            runningMode: 'VIDEO',
-            numFaces: 1,
-          });
-        }
-
-        GlobalNodCursor.stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            width: { ideal: 640 },
-            height: { ideal: 480 },
-            facingMode: 'user',
-          },
-          audio: false,
-        });
-
-        if (!GlobalNodCursor.video) {
-          const v = document.createElement('video');
-          v.autoplay = true;
-          v.muted = true;
-          v.playsInline = true;
-          v.style.position = 'fixed';
-          v.style.width = '1px';
-          v.style.height = '1px';
-          v.style.opacity = '0';
-          v.style.pointerEvents = 'none';
-          v.style.left = '-9999px';
-          document.body.appendChild(v);
-          GlobalNodCursor.video = v;
-        }
-
-        GlobalNodCursor.video.srcObject = GlobalNodCursor.stream;
-        await GlobalNodCursor.video.play();
-
-        GlobalNodCursor.lastPoint = null;
-        GlobalNodCursor._runLoop();
-      } catch (e) {
-        console.error('global head tracking start error', e);
-        GlobalNodCursor.state.enabled = false;
-        GlobalNodCursor._saveState();
-        GlobalNodCursor._stopTracking();
-      }
-    }
-    /** Executes the static _runLoop() { functionality for this class. */
-    static _runLoop() {
-      if (!GlobalNodCursor.state.enabled || !GlobalNodCursor.faceLandmarker || !GlobalNodCursor.video) {
-        return;
-      }
-
-      const tick = () => {
-        if (!GlobalNodCursor.state.enabled || !GlobalNodCursor.faceLandmarker || !GlobalNodCursor.video) {
-          return;
-        }
-
-        if (GlobalNodCursor.video.readyState >= 2) {
-          const result = GlobalNodCursor.faceLandmarker.detectForVideo(GlobalNodCursor.video, performance.now());
-          const landmarks = result?.faceLandmarks?.[0];
-          const nose = landmarks?.[1];
-
-          if (nose) {
-            const rawX = 1 - nose.x;
-            const rawY = nose.y;
-            const mapped = GlobalNodCursor._mapRawToViewport(rawX, rawY);
-            const targetX = mapped.x * window.innerWidth;
-            const targetY = mapped.y * window.innerHeight;
-
-            const alpha = Math.min(0.9, Math.max(0.1, GlobalNodCursor.state.sensitivity));
-            if (!GlobalNodCursor.lastPoint) {
-              GlobalNodCursor.lastPoint = { x: targetX, y: targetY };
-            } else {
-              GlobalNodCursor.lastPoint.x += (targetX - GlobalNodCursor.lastPoint.x) * alpha;
-              GlobalNodCursor.lastPoint.y += (targetY - GlobalNodCursor.lastPoint.y) * alpha;
-            }
-
-            const x = Math.max(0, Math.min(window.innerWidth - 1, GlobalNodCursor.lastPoint.x));
-            const y = Math.max(0, Math.min(window.innerHeight - 1, GlobalNodCursor.lastPoint.y));
-
-            GlobalNodCursor._showCursor(x, y);
-
-            const moveEvent = new MouseEvent('mousemove', {
-              bubbles: true,
-              cancelable: true,
-              view: window,
-              clientX: x,
-              clientY: y,
-            });
-            window.dispatchEvent(moveEvent);
-            const target = document.elementFromPoint(x, y);
-            if (target) target.dispatchEvent(moveEvent);
-          }
-        }
-
-        GlobalNodCursor.rafId = requestAnimationFrame(tick);
-      };
-
-      GlobalNodCursor.rafId = requestAnimationFrame(tick);
-    }
-    /** Executes the static _stopTracking() { functionality for this class. */
-    static _stopTracking() {
-      if (GlobalNodCursor.rafId) {
-        cancelAnimationFrame(GlobalNodCursor.rafId);
-        GlobalNodCursor.rafId = null;
-      }
-
-      if (GlobalNodCursor.stream) {
-        GlobalNodCursor.stream.getTracks().forEach(track => track.stop());
-        GlobalNodCursor.stream = null;
-      }
-
-      if (GlobalNodCursor.video) {
-        GlobalNodCursor.video.pause();
-        GlobalNodCursor.video.srcObject = null;
-      }
-
-      GlobalNodCursor.lastPoint = null;
-      GlobalNodCursor._hideCursor();
-    }
-  }
-
   // ============================================================================
   // ORCHESTRATOR
   // ----------------------------------------------------------------------------
@@ -1192,9 +903,6 @@ class GlobalNodCursor {
    *   3. Read the saved preferences from localStorage and, if any exist, apply
    *      them via ThemePreferencesEngine (sets CSS variables, injects override
    *      stylesheet, switches Google Translate language).
-   *   4. Re-arm the optional global head-tracking feature on non-dashboard pages.
-   *      The dashboard owns its own toggle UI, so we skip there to avoid two
-   *      controllers fighting over the webcam stream.
    */
   function init() {
     // (1) Guard: bail out cleanly if loaded outside a browser (e.g. node tests).
@@ -1211,9 +919,11 @@ class GlobalNodCursor {
     const prefs = LocalStoragePreferencesStore.get();
     if (prefs) ThemePreferencesEngine.apply(prefs);
 
-    // (4) Restart head-tracking on every navigation if the user has it enabled,
-    //     but only on pages that don't already render the dashboard's own toggle.
-    GlobalNodCursor.init();
+    // Sesh: head tracking was removed from this site; clear anything a past visit left behind.
+    try {
+      localStorage.removeItem('headTrackingPreferences');
+      localStorage.removeItem('headTrackingCalibration');
+    } catch (e) { /* storage blocked */ }
   }
 
   // ----------------------------------------------------------------------------

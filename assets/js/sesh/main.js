@@ -14,7 +14,7 @@ if (toggle && nav) {
   });
 }
 
-// Logged in (CSP-Oncology/flask: GET /api/id)? Point the account links at the profile
+// Logged in (GET /api/id)? Point the account links at the profile
 fetch(pythonURI + '/api/id', { ...fetchOptions, cache: 'no-store' })
   .then(response => response.ok ? response.json() : null)
   .then(user => {

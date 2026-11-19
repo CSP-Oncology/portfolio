@@ -3,11 +3,25 @@ layout: sesh
 title: Home
 ---
 <section class="home-head">
-  <video class="dna" autoplay muted loop playsinline aria-hidden="true" tabindex="-1">
+  <video class="dna" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
     <source src="{{ site.baseurl }}/images/webdev/dna.mp4" type="video/mp4">
   </video>
   <script>
-    document.querySelector('.dna').playbackRate = 0.75;
+    // Start the DNA video as soon as it can play, and again when you come back to the page
+    // (Back button, another tab), so it never sits on a blank frame until a reload
+    (function () {
+      var video = document.querySelector('.dna');
+      if (!video) return;
+      var play = function () {
+        video.defaultPlaybackRate = video.playbackRate = 0.75;
+        var started = video.play();
+        if (started && started.catch) started.catch(function () {});
+      };
+      play();
+      video.addEventListener('loadeddata', play);
+      window.addEventListener('pageshow', play);
+      document.addEventListener('visibilitychange', function () { if (!document.hidden) play(); });
+    })();
   </script>
   <div class="wrap home-head__inner">
     <div>
@@ -70,7 +84,7 @@ title: Home
   <li><a href="{{ '/sesh/about' | relative_url }}">
     <span class="index-grid__num">08</span>
     <span class="index-grid__title">About & Contact</span>
-    <span class="index-grid__text">Our team, send a message</span>
+    <span class="index-grid__text">Send us a message</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
 </ul>

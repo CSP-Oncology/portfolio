@@ -8,7 +8,7 @@ export function initPreferencesLayout() {
     const $ = (selector) => root.querySelector(selector);
     const $$ = (selector) => [...root.querySelectorAll(selector)];
 
-    // Appearance / Language & voice / Head tracking are the page's top tabs (dashboard-v2.html).
+    // Appearance / Language & voice are the page's top tabs (dashboard-v2.html).
 
     // ----------------------------------------
     // Theme source tabs: Presets, My themes, AI
@@ -74,7 +74,12 @@ export function initPreferencesLayout() {
         if (!element) return;
 
         const passed = ratio >= 4.5;
-        element.textContent = `${ratio.toFixed(2)}:1 — ${passed ? 'Good contrast' : 'Needs improvement'}`;
+        // Sesh: plain words instead of the ratio; the number stays in the hover text
+        const isText = element.id === 'prefs-check-text';
+        element.textContent = passed
+            ? (isText ? '✓ Easy to read' : '✓ Easy to see')
+            : '✗ Too faint, pick a darker or lighter color';
+        element.title = `Contrast ${ratio.toFixed(1)} to 1 (4.5 or more is easy to read)`;
         element.dataset.status = passed ? 'pass' : 'warning';
         element.setAttribute('aria-label',
             `Contrast ratio ${ratio.toFixed(2)} to 1. ${passed ? 'Passes' : 'Below'} the recommended 4.5 to 1 text contrast.`);
@@ -169,23 +174,6 @@ export function initPreferencesLayout() {
             const selected = button.dataset.theme === event.detail?.name;
             button.setAttribute('aria-pressed', String(selected));
         });
-
-        updatePreview();
-    });
-
-    // Selecting a generated AI theme should open the AI source and refresh preview.
-    document.addEventListener('ai-theme:shown', (event) => {
-        selectSource('ai');
-
-        if (event.detail?.prefs) {
-            // Only the theme's own look. A theme with no size or button style (a built-in holiday
-            // palette) leaves the student's unsaved ones in the form.
-            const { bg, text, accent, selectionColor, font, decor, size, buttonStyle } = event.detail.prefs;
-            ThemeRenderer.fill(event.detail.name || 'AI theme', {
-                bg, text, accent, selectionColor, font, decor,
-                ...(event.detail.restyle ? { size, buttonStyle } : {}),
-            });
-        }
 
         updatePreview();
     });

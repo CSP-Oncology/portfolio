@@ -4,7 +4,7 @@ title: Create an account
 permalink: /signup
 search_exclude: true
 ---
-<!-- Same as Poway Recovery Center's signup.html; creates the account in the backend, CSP-Oncology/flask (POST /api/user) -->
+<!-- Creates the account in the backend (POST /api/user) -->
 <section class="auth">
   <div class="auth__card card">
     <h1>Create an account</h1>

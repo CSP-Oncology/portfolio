@@ -5,8 +5,8 @@ permalink: /profile
 search_exclude: true
 show_reading_time: false
 ---
-<!-- Same profile page as the Poway Recovery Center site: your details are read from and saved to
-     the backend database (CSP-Oncology/flask, PUT /api/user). Admins also see every account. -->
+<!-- Your details are read from and saved to
+     the backend database (PUT /api/user). Admins also see every account. -->
 <div id="profile-page" hidden>
   <section class="page-head">
     <div class="wrap">
@@ -71,7 +71,7 @@ show_reading_time: false
     </div>
   </section>
 
-  <!-- Admins only (same as Poway's profile page): contact messages and everyone registered in the database -->
+  <!-- Admins only: contact messages and everyone registered in the database -->
   <section class="section wrap" id="admin-messages" hidden>
     <div class="section-title"><h2>Messages <span id="messages-count"></span></h2></div>
     <div id="messages-list"></div>
