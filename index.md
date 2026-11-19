@@ -63,7 +63,7 @@ title: Home
     <span class="index-grid__text">Key terms</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
-  <li><a href="{{ '/sesh/faq' | relative_url }}">
+  <li><a href="{{ '/sesh/about' | relative_url }}#faq">
     <span class="index-grid__num">05</span>
     <span class="index-grid__title">FAQ</span>
     <span class="index-grid__text">Common questions</span>
@@ -83,7 +83,7 @@ title: Home
   </a></li>
   <li><a href="{{ '/sesh/about' | relative_url }}">
     <span class="index-grid__num">08</span>
-    <span class="index-grid__title">About & Contact</span>
+    <span class="index-grid__title">About &amp; Contact</span>
     <span class="index-grid__text">Send us a message</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
