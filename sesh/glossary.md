@@ -1,10 +1,10 @@
 ---
 layout: sesh
 title: Glossary
-nav: learn
+nav: science
 heading: Glossary
-parent: Learn
-parent_url: /sesh/learn
+parent: Science
+parent_url: /sesh/science
 permalink: /sesh/glossary
 ---
 <section class="section wrap">

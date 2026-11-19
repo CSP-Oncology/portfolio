@@ -33,4 +33,7 @@ permalink: /sesh/science
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
 </ul>
+<div class="next-link">
+  <a class="sesh__btn accent" href="{{ '/sesh/glossary' | relative_url }}">Glossary: key terms in plain words →</a>
+</div>
 </section>

@@ -2,6 +2,5 @@
 # About also holds FAQ, company contact and About Sesh (Background).
 - { key: reload, title: RELOAD, url: /sesh/reload }
 - { key: science, title: Science, url: /sesh/science }
-- { key: learn, title: Learn, url: /sesh/learn }
 - { key: news, title: News, url: /sesh/news }
-- { key: about, title: About & Contact, url: /sesh/about }
+- { key: about, title: About, url: /sesh/about }

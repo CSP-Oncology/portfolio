@@ -7,10 +7,10 @@
   title: How liquid biopsy works
   text: Cancer, biomarkers and tumor DNA in the blood, explained simply
   url: /sesh/science
-- label: Learn
-  title: Games and a quiz
-  text: Practice each idea and test what you know
-  url: /sesh/learn
+- label: Key terms
+  title: Glossary
+  text: The words behind RELOAD, in plain language
+  url: /sesh/glossary
 - label: The company
   title: Meet the team behind Sesh
   text: The founders, our collaborators, and how to reach us

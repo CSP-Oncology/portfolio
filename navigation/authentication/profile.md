@@ -59,7 +59,6 @@ show_reading_time: false
             <a class="sesh__btn block" href="{{site.baseurl}}/settings">Settings: theme, language, voice <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/reload">RELOAD <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/science">Science topics <span aria-hidden="true">→</span></a>
-            <a class="sesh__btn block" href="{{site.baseurl}}/sesh/learn">Games &amp; quizzes <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/glossary">Glossary <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/about">Contact us <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/survey">Take a quick survey <span aria-hidden="true">→</span></a>

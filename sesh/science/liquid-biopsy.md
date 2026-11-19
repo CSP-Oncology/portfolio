@@ -42,6 +42,6 @@ permalink: /sesh/science/liquid-biopsy
   </div>
   <div class="next-link">
     <a class="sesh__btn accent" href="{{ '/sesh/science/biomarkers' | relative_url }}">← Back: Biomarkers</a>
-    <a class="sesh__btn accent" href="{{ '/sesh/learn' | relative_url }}">Practice in Learn →</a>
+    <a class="sesh__btn accent" href="{{ '/sesh/glossary' | relative_url }}">Next: Glossary →</a>
   </div>
 </section>

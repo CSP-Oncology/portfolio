@@ -4,7 +4,7 @@ title: Background
 nav: about
 heading: About Sesh
 intro: A precision cancer care company and maker of RELOAD.
-parent: About & Contact
+parent: About
 parent_url: /sesh/about
 permalink: /sesh/background
 ---

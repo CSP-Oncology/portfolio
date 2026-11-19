@@ -12,6 +12,6 @@ permalink: /sesh/faq
   <link rel="canonical" href="{{ '/sesh/about' | absolute_url }}#faq">
 </head>
 <body>
-  <p>The FAQ has moved to <a href="{{ '/sesh/about' | relative_url }}#faq">About &amp; Contact</a>.</p>
+  <p>The FAQ has moved to <a href="{{ '/sesh/about' | relative_url }}#faq">About</a>.</p>
 </body>
 </html>

@@ -86,7 +86,7 @@ title: Home
 </section>
 
 <section class="wrap home-index">
-<ul class="index-grid">
+<ul class="index-grid index-grid--3">
   <li><a href="{{ '/sesh/reload' | relative_url }}">
     <span class="index-grid__num">01</span>
     <span class="index-grid__title">RELOAD</span>
@@ -99,39 +99,27 @@ title: Home
     <span class="index-grid__text">Cancer, biomarkers, liquid biopsy</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
-  <li><a href="{{ '/sesh/learn' | relative_url }}">
-    <span class="index-grid__num">03</span>
-    <span class="index-grid__title">Learn</span>
-    <span class="index-grid__text">Games and a quiz</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-  <li><a href="{{ '/sesh/glossary' | relative_url }}">
-    <span class="index-grid__num">04</span>
-    <span class="index-grid__title">Glossary</span>
-    <span class="index-grid__text">Key terms</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
   <li><a href="{{ '/sesh/about' | relative_url }}#faq">
-    <span class="index-grid__num">05</span>
+    <span class="index-grid__num">03</span>
     <span class="index-grid__title">FAQ</span>
     <span class="index-grid__text">Common questions</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
   <li><a href="{{ '/sesh/background' | relative_url }}">
-    <span class="index-grid__num">06</span>
+    <span class="index-grid__num">04</span>
     <span class="index-grid__title">Background</span>
     <span class="index-grid__text">About Sesh</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
   <li><a href="{{ '/sesh/news' | relative_url }}">
-    <span class="index-grid__num">07</span>
+    <span class="index-grid__num">05</span>
     <span class="index-grid__title">News</span>
     <span class="index-grid__text">Updates</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
   <li><a href="{{ '/sesh/about' | relative_url }}">
-    <span class="index-grid__num">08</span>
-    <span class="index-grid__title">About &amp; Contact</span>
+    <span class="index-grid__num">06</span>
+    <span class="index-grid__title">About</span>
     <span class="index-grid__text">Send us a message</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>

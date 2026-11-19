@@ -1,8 +1,8 @@
 ---
 layout: sesh
-title: About & Contact
+title: About
 nav: about
-heading: About &amp; Contact
+heading: About
 permalink: /sesh/about
 ---
 <!-- Contact form: messages are saved by the backend (POST /api/contact);
