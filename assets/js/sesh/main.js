@@ -2,7 +2,6 @@
 ---
 // Site-wide behavior: mobile menu and "Log in" → "My profile" when logged in
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
-import { syncFromAccount } from '{{ site.baseurl }}/assets/js/sesh/settings.js';
 
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.getElementById('site-nav');
@@ -19,7 +18,6 @@ fetch(pythonURI + '/api/id', { ...fetchOptions, cache: 'no-store' })
   .then(response => response.ok ? response.json() : null)
   .then(user => {
     if (!user) return;
-    syncFromAccount(user);
     document.querySelectorAll('[data-account-link]').forEach(link => {
       link.href = '{{ "/profile" | relative_url }}';
       link.textContent = 'My profile';
