@@ -10,7 +10,7 @@ search_exclude: True
 
 <script type="module">
     import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
-    // Clears the login cookie on the backend (CSP-Oncology/flask: DELETE /api/authenticate)
+    // Clears the login cookie on the backend (DELETE /api/authenticate)
     await fetch(pythonURI + '/api/authenticate', { ...fetchOptions, method: 'DELETE' }).catch(() => {});
     window.location.href = "{{site.baseurl}}/login";
 </script>

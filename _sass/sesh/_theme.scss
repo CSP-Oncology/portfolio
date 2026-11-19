@@ -1,0 +1,69 @@
+// A theme from the Settings page, drawn from its colors.
+//
+// assets/js/user-preferences.js (from Open Coding Society) puts the saved theme on <html> as CSS
+// variables and adds .user-theme-active. Because the Sesh layout sets data-theme-engine="sass",
+// it sets variables only; everything is styled here, by pointing the Sesh tokens at them:
+//
+//   --pref-bg-color, --pref-text-color, --pref-accent-color, --pref-selection-color   the 4 picked colors
+//   --pref-font-family, --pref-font-size                                               font and size
+//   --bg-1, --ui-bg, --ui-border, --panel, --text-muted, --field-border                shades it derives
+//   --priority-p0 / --priority-p3                                                      red / green for the background
+//   --on-accent, --on-selection, --pref-color-scheme, --pref-button-radius, --display-font   (Sesh additions)
+//   .pref-button-shape on <html> when a Button style other than Default is picked
+//
+// The layout's first-paint script sets only the 4 colors, font and size, so every derived
+// shade has a color-mix() fallback until user-preferences.js has run.
+
+$t-bg: var(--pref-bg-color);
+$t-text: var(--pref-text-color);
+$t-accent: var(--pref-accent-color);
+
+html.user-theme-active {
+  --bg: #{$t-bg};
+  --ink: #{$t-text};
+  --surface: var(--bg-1, color-mix(in srgb, #{$t-bg} 95%, #{$t-text}));
+  --mist: var(--ui-bg, color-mix(in srgb, #{$t-bg} 90%, #{$t-text}));
+  --line: var(--ui-border, color-mix(in srgb, #{$t-bg} 80%, #{$t-text}));
+  // Faded only as far as it stays 4.5:1 on every surface (user-preferences.js works it out)
+  --muted: var(--text-muted, color-mix(in srgb, #{$t-text} 78%, #{$t-bg}));
+  --ocean: #{$t-accent};
+  --teal: #{$t-accent};
+  --sand: #{$t-accent};
+  --red: var(--priority-p0, #b3261e);
+  --green: var(--priority-p3, #1f7a4a);
+  --red-soft: color-mix(in srgb, var(--red) 14%, #{$t-bg});
+  --green-soft: color-mix(in srgb, var(--green) 14%, #{$t-bg});
+  --header: color-mix(in srgb, #{$t-bg} 97%, transparent);
+
+  // The footer band: the page color with a touch of the accent, so it reads as its own area
+  // and the text keeps its contrast (the accent tint is one user-preferences.js checks against).
+  --footer-bg: color-mix(in srgb, #{$t-accent} 12%, var(--panel, #{$t-bg}));
+  --footer-ink: #{$t-text};
+  --footer-muted: var(--muted);
+  --footer-line: var(--line);
+  --footer-accent: #{$t-accent};
+
+  color-scheme: var(--pref-color-scheme, normal);
+  // The picked size is the root size, so everything sized in rem follows it
+  font-size: var(--pref-font-size);
+}
+
+// Button style: Default keeps each button's own corners; Rounded / Square / Pill reach every button
+// (theme swatches and tabs aren't buttons to the eye, so they keep theirs)
+html.pref-button-shape :is(.sesh__btn, .ocs__btn, button):not(.ocs__prefs-swatch, .ocs__prefs-segment, .ocs__tabs-btn) {
+  border-radius: var(--pref-button-radius);
+}
+
+// ---------- Emoji wallpaper (an AI or holiday theme), as OCS _sass/open-coding/theme/seasonal.scss ----------
+// user-preferences.js sets <html data-theme-decor> and --theme-decor-pattern (an SVG tile).
+// Cards keep their solid color, so text on them stays readable.
+
+html[data-theme-decor] body {
+  background-image: var(--theme-decor-pattern);
+  background-attachment: fixed;
+  background-repeat: repeat;
+}
+
+@media print {
+  html[data-theme-decor] * { background-image: none !important; }
+}

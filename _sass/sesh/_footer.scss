@@ -1,8 +1,6 @@
 // Shared footer: always-visible content at the bottom of every Sesh page.
 .site-footer {
-  // --footer-bg, --footer-muted and --footer-line come from the theme maps in _tokens.scss
-  --footer-ink: #{map-get($light, "surface")};
-  --footer-accent: #{map-get($dark, "sand")};
+  // --footer-* colors: the Sesh palette (_tokens.scss), or the Settings theme (_theme.scss)
   flex-shrink: 0;
   margin-top: 48px;
   padding: 44px 0 20px;

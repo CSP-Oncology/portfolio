@@ -1,8 +1,8 @@
 ---
 layout: sesh
-title: Precision oncology
+title: Precision cancer care
 nav: science
-heading: Precision oncology
+heading: Precision cancer care
 intro: Matching treatment to the specific changes in a patient's tumor.
 parent: Science
 parent_url: /sesh/science
@@ -14,7 +14,7 @@ permalink: /sesh/science/precision-oncology
       <h2>The idea</h2>
       <ul>
         <li>Two patients with the "same" cancer can have very different tumors.</li>
-        <li>Precision oncology tests each tumor and picks treatment based on what it finds.</li>
+        <li>Precision cancer care tests each tumor and picks treatment based on what it finds.</li>
       </ul>
     </div>
     <div class="card">
@@ -25,7 +25,7 @@ permalink: /sesh/science/precision-oncology
       </ul>
     </div>
     <div class="card">
-      <h2>Precision immuno-oncology</h2>
+      <h2>Precision immunotherapy</h2>
       <ul>
         <li>Focuses on immunotherapy.</li>
         <li>Asks: will this patient's immune system be able to see the tumor?</li>
@@ -41,5 +41,8 @@ permalink: /sesh/science/precision-oncology
       </ul>
     </div>
   </div>
-  <div class="next-link"><a class="sesh__btn accent" href="{{ '/sesh/science/biomarkers' | relative_url }}">Next: Biomarkers →</a></div>
+  <div class="next-link">
+    <a class="sesh__btn accent" href="{{ '/sesh/science/cancer-biology' | relative_url }}">← Back: Cancer biology</a>
+    <a class="sesh__btn accent" href="{{ '/sesh/science/biomarkers' | relative_url }}">Next: Biomarkers →</a>
+  </div>
 </section>

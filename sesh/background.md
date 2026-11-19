@@ -3,14 +3,14 @@ layout: sesh
 title: Background
 nav: about
 heading: About Sesh
-intro: Precision immuno-oncology company and maker of RELOAD.
+intro: A precision cancer care company and maker of RELOAD.
 parent: About & Contact
 parent_url: /sesh/about
 permalink: /sesh/background
 ---
 <section class="section wrap">
   <div class="note">
-    <p>Sesh works to advance precision immuno-oncology through diagnostic tests that enable personalized cancer care.</p>
+    <p>Sesh works to advance precision cancer care through diagnostic tests that enable personalized treatment.</p>
   </div>
 </section>
 

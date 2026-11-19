@@ -4,7 +4,7 @@ title: Log in
 permalink: /login
 search_exclude: true
 ---
-<!-- Same as Poway Recovery Center's login.html; logs in with the backend, CSP-Oncology/flask (POST /api/authenticate) -->
+<!-- Logs in with the backend (POST /api/authenticate) -->
 <section class="auth">
   <div class="auth__card card">
     <h1>Log in</h1>

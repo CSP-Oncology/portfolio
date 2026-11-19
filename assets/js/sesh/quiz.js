@@ -26,7 +26,7 @@ const QUESTIONS = [
 
 const TOPICS = {
   'cancer-biology': 'Cancer biology',
-  'precision-oncology': 'Precision oncology',
+  'precision-oncology': 'Precision cancer care',
   'biomarkers': 'Biomarkers',
   'liquid-biopsy': 'Liquid biopsy'
 };

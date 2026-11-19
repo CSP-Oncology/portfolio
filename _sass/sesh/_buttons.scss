@@ -36,7 +36,7 @@
 
 // Outline in the accent color
 .sesh__btn.accent { border-color: $teal; color: $teal; }
-.sesh__btn.accent:hover { background: $teal; color: var(--surface); }
+.sesh__btn.accent:hover { background: $teal; color: $on-accent; }
 
 // Solid: the one main action on a screen
 .sesh__btn.accent.fill,

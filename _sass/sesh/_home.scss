@@ -6,19 +6,25 @@
   background: var(--surface);
   border-bottom: 1px solid $line;
 
-  // Wash over the DNA video so the heading stays readable in every theme
+  // A light wash of the page color over the DNA video, strongest behind the heading,
+  // so the text reads while the strands stay clearly visible on the right
   &::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background: $bg;
-    opacity: .45;
+    background: linear-gradient(90deg,
+      color-mix(in srgb, #{$bg} 70%, transparent) 0%,
+      color-mix(in srgb, #{$bg} 45%, transparent) 55%,
+      color-mix(in srgb, #{$bg} 25%, transparent) 100%);
   }
 }
 
-// Background DNA video
+// Background DNA video, the way it looks in Ocean: clear strands on the page color.
+// The video itself is dark, so light themes show it inverted (pale backdrop, blue strands)
+// instead of a grey haze. html.pref-dark is set for dark backgrounds (user-preferences.js
+// and the layout's first-paint script).
 .dna {
   position: absolute;
   inset: 0;
@@ -27,20 +33,17 @@
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
-  opacity: .4;
-}
+  opacity: .35;
+  filter: invert(1) hue-rotate(180deg) saturate(1.3);
+  mix-blend-mode: multiply;
 
-// Dimmer on every dark theme, not only "dark"
-@each $name, $theme in $themes {
-  @if nth($theme, 2) == dark {
-    [data-theme="#{$name}"] .dna { opacity: .3; }
+  html.pref-dark & {
+    opacity: .45;
+    filter: saturate(1.2);
+    mix-blend-mode: screen;
   }
-}
 
-// Respect "Animations: Off" in Settings and the OS reduced-motion setting
-html[data-motion="off"] .dna { display: none; }
-@media (prefers-reduced-motion: reduce) {
-  .dna { display: none; }
+  @media (prefers-reduced-motion: reduce) { display: none; }
 }
 
 .home-head__inner {

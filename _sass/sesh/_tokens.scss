@@ -1,5 +1,7 @@
-// Theme tokens: colors (as CSS custom properties, so Settings can swap themes), type, sizes, breakpoints
+// Theme tokens: colors (as CSS custom properties, so a Settings theme can replace them), type, sizes, breakpoints
 
+// The Sesh look (the Settings page's "Site Default" theme; same colors as _data/sesh_theme.yml).
+// Any other theme is picked on the Settings page and drawn from its colors by _theme.scss.
 $light: (
   "bg": #f5f9fc,
   "surface": #ffffff,
@@ -17,101 +19,10 @@ $light: (
   "header": rgba(255, 255, 255, .98),
   "on-accent": #ffffff,
   "footer-bg": #0065a3,
+  "footer-ink": #ffffff,
   "footer-muted": #e1f1ff,
-  "footer-line": rgba(255, 255, 255, .27)
-);
-
-$dark: (
-  "bg": #0b1420,
-  "surface": #111f30,
-  "ink": #e9eaee,
-  "muted": #a0a6b2,
-  "mist": #192c40,
-  "line": #2b4158,
-  "ocean": #91d1ff,
-  "teal": #6bc4ff,
-  "sand": #fff000,
-  "red": #ff8a80,
-  "red-soft": #3a1d1c,
-  "green": #6fd49a,
-  "green-soft": #16301f,
-  "header": rgba(17, 31, 48, .98),
-  "on-accent": #0b1420,
-  "footer-bg": #092c49,
-  "footer-muted": #c1daee,
-  "footer-line": rgba(141, 191, 227, .27)
-);
-
-$sepia: (
-  "bg": #f4ecd8,
-  "surface": #fbf6e9,
-  "ink": #3b2f20,
-  "muted": #6e5d45,
-  "mist": #efe3c6,
-  "line": #dfd0ad,
-  "ocean": #7a4b16,
-  "teal": #8a5a1c,
-  "sand": #c99a3a,
-  "red": #a23a2a,
-  "red-soft": #f6e3d8,
-  "green": #4f6b22,
-  "green-soft": #e9eccf,
-  "header": rgba(251, 246, 233, .97),
-  "on-accent": #ffffff,
-  "footer-bg": #5a3a12,
-  "footer-muted": #f1e2c6,
-  "footer-line": rgba(255, 255, 255, .27)
-);
-
-$ocean: (
-  "bg": #0b1730,
-  "surface": #12213f,
-  "ink": #e2ebff,
-  "muted": #a3b5d8,
-  "mist": #1a2c50,
-  "line": #2a416d,
-  "ocean": #9cc8ff,
-  "teal": #74b4ff,
-  "sand": #ffd27a,
-  "red": #ff9a8d,
-  "red-soft": #3a1f2a,
-  "green": #7fd6a0,
-  "green-soft": #173a33,
-  "header": rgba(18, 33, 63, .97),
-  "on-accent": #0b1730,
-  "footer-bg": #092c49,
-  "footer-muted": #c1daee,
-  "footer-line": rgba(141, 191, 227, .27)
-);
-
-$contrast: (
-  "bg": #000000,
-  "surface": #000000,
-  "ink": #ffffff,
-  "muted": #e8e8e8,
-  "mist": #1c1c1c,
-  "line": #ffffff,
-  "ocean": #ffe14d,
-  "teal": #ffe14d,
-  "sand": #ffe14d,
-  "red": #ff7b7b,
-  "red-soft": #2a0000,
-  "green": #7dff9e,
-  "green-soft": #002a10,
-  "header": rgba(0, 0, 0, .98),
-  "on-accent": #000000,
-  "footer-bg": #000000,
-  "footer-muted": #ffffff,
-  "footer-line": #ffffff
-);
-
-// Each theme: [palette, color-scheme]
-$themes: (
-  "light": ($light, light),
-  "dark": ($dark, dark),
-  "sepia": ($sepia, light),
-  "ocean": ($ocean, dark),
-  "contrast": ($contrast, dark)
+  "footer-line": rgba(255, 255, 255, .27),
+  "footer-accent": #fff000
 );
 
 @mixin theme($palette) {

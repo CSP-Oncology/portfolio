@@ -7,6 +7,8 @@ permalink: /sesh/about
 ---
 <!-- Contact form: messages are saved by the backend (POST /api/contact);
      admins read them on their profile page and at Data -> Contact Messages in the backend -->
+{% include sesh/collaborators.html %}
+
 <section class="section wrap">
   <div class="with-sidebar">
     <div class="card">
@@ -29,18 +31,9 @@ permalink: /sesh/about
     </div>
     <aside class="sidebar">
       <div class="note">
-        <h2>The project</h2>
-        <p>A CSP capstone about precision oncology, built by the CSP-Oncology team.</p>
+        <h2>About this site</h2>
+        <p>Sesh explains precision cancer care, liquid biopsy and Sesh's RELOAD test, with games and a quiz to learn the key ideas.</p>
       </div>
-      <div class="note">
-  <h2>Team</h2>
-  <ul>
-    <li>Salma Zaghloul · Scrum Master · zaghloulsalma@hotmail.com</li>
-    <li>Anika Seksaria · Product Owner · anika.seksaria@gmail.com</li>
-    <li>Aashi Hegu · System Architect · aashihegu1@gmail.com</li>
-    <li>Jailene Tang · Education Liaison · tangjailene@gmail.com</li>
-  </ul>
-</div>
       <a class="sesh__btn block" href="{{ '/sesh/background' | relative_url }}">About Sesh <span aria-hidden="true">→</span></a>
       <a class="sesh__btn block" href="{{ '/sesh/news' | relative_url }}">News <span aria-hidden="true">→</span></a>
     </aside>

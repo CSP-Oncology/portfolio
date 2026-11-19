@@ -16,7 +16,7 @@ permalink: /sesh/science
   </a></li>
   <li><a href="{{ '/sesh/science/precision-oncology' | relative_url }}">
     <span class="index-grid__num">02</span>
-    <span class="index-grid__title">Precision oncology</span>
+    <span class="index-grid__title">Precision cancer care</span>
     <span class="index-grid__text">Matching treatment to the tumor</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>

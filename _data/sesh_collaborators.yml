@@ -1,0 +1,20 @@
+# Collaborators: the logo strip on About & Contact (_includes/sesh/collaborators.html) and the
+# footer list. Logos are in images/collaborators/ (from oncologysesh.com's collaborators section).
+- name: National Cancer Institute
+  url: https://www.cancer.gov/
+  logo: /images/collaborators/nci.png
+- name: EvoNexus
+  url: https://evonexus.org/
+  logo: /images/collaborators/evonexus.png
+- name: Cleveland Clinic
+  url: https://my.clevelandclinic.org/
+  logo: /images/collaborators/cleveland-clinic.svg
+- name: University of Delaware
+  url: https://www.udel.edu/
+  logo: /images/collaborators/university-of-delaware.jpg
+- name: Providence
+  url: https://www.providence.org/
+  logo: /images/collaborators/providence.svg
+- name: Frederick National Laboratory
+  url: https://frederick.cancer.gov/
+  logo: /images/collaborators/frederick-national-laboratory.svg

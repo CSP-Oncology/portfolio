@@ -5,8 +5,8 @@ permalink: /profile
 search_exclude: true
 show_reading_time: false
 ---
-<!-- Same profile page as the Poway Recovery Center site: your details are read from and saved to
-     the backend database (CSP-Oncology/flask, PUT /api/user). Admins also see every account. -->
+<!-- Your details are read from and saved to
+     the backend database (PUT /api/user). Admins also see every account. -->
 <div id="profile-page" hidden>
   <section class="page-head">
     <div class="wrap">
@@ -56,7 +56,7 @@ show_reading_time: false
         <nav class="note" aria-label="Shortcuts">
           <h2>Shortcuts</h2>
           <div class="shortcut-list">
-            <a class="sesh__btn block" href="{{site.baseurl}}/settings">Settings: theme, text size <span aria-hidden="true">→</span></a>
+            <a class="sesh__btn block" href="{{site.baseurl}}/settings">Settings: theme, language, voice <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/student/calendar">Calendar <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/reload">RELOAD <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/science">Science topics <span aria-hidden="true">→</span></a>
@@ -71,7 +71,7 @@ show_reading_time: false
     </div>
   </section>
 
-  <!-- Admins only (same as Poway's profile page): contact messages and everyone registered in the database -->
+  <!-- Admins only: contact messages and everyone registered in the database -->
   <section class="section wrap" id="admin-messages" hidden>
     <div class="section-title"><h2>Messages <span id="messages-count"></span></h2></div>
     <div id="messages-list"></div>
