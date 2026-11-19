@@ -647,7 +647,17 @@ export class TranslationHelper {
 
     /** Clear cookies then navigate to a clean URL */
     static cleanReload() {
+        let language = '';
+        try {
+            language = JSON.parse(localStorage.getItem(PreferencesConfig.LOCAL_STORAGE_KEY) || '{}').language || '';
+        } catch (_) {}
         TranslationHelper.clearCookies();
+        if (language) {
+            const domain = window.location.hostname;
+            document.cookie = `googtrans=/en/${language}; path=/;`;
+            document.cookie = `googtrans=/en/${language}; path=/; domain=${domain}`;
+            document.cookie = `googtrans=/en/${language}; path=/; domain=.${domain}`;
+        }
         window.location.href = window.location.href.split('#')[0];
     }
 }
