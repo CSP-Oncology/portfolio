@@ -37,6 +37,40 @@ title: Home
   </div>
 </section>
 
+<!-- Latest news, the main part of the page: filled from the backend by assets/js/sesh/news.js
+     (synced with Sesh's News page); the saved copy below shows until then -->
+<section class="wrap home-news" aria-labelledby="home-news-title">
+  <div class="home-news__head">
+    <div>
+      <span class="home-head__kicker">From Sesh</span>
+      <h2 id="home-news-title">Latest news</h2>
+    </div>
+    <a class="sesh__btn small" href="{{ '/sesh/news' | relative_url }}">All news</a>
+  </div>
+  <div class="home-news__grid">
+    {%- assign featured = site.data.sesh_news | first %}
+    <article class="home-news__featured" id="home-news-featured">
+      <div class="home-news__body">
+        <p class="home-news__meta">Featured · {{ featured.category }} · <time datetime="{{ featured.datetime }}">{{ featured.date }}</time></p>
+        <h3>{{ featured.title }}</h3>
+        <p>{{ featured.summary }}</p>
+        <div class="home-news__actions">
+          <a class="sesh__btn accent fill" href="{{ '/sesh/news' | relative_url }}">Read full story</a>
+          <a class="sesh__btn accent" href="https://www.oncologysesh.com/news" target="_blank" rel="noopener noreferrer">Read on Sesh's site ↗</a>
+        </div>
+      </div>
+    </article>
+    <div class="home-news__more">
+      <h3>More updates</h3>
+      <ol class="home-news__list" id="home-news" data-limit="5">
+        {%- for item in site.data.sesh_news offset: 1 limit: 4 %}
+        <li><a class="home-news__row" href="{{ '/sesh/news' | relative_url }}"><span class="home-news__tag">{{ item.category }} · <time datetime="{{ item.datetime }}">{{ item.date }}</time></span><span class="home-news__title">{{ item.title }}</span></a></li>
+        {%- endfor %}
+      </ol>
+    </div>
+  </div>
+</section>
+
 <section class="wrap home-index">
 <ul class="index-grid">
   <li><a href="{{ '/sesh/reload' | relative_url }}">
@@ -89,3 +123,4 @@ title: Home
   </a></li>
 </ul>
 </section>
+<script type="module" src="{{ '/assets/js/sesh/news.js' | relative_url }}"></script>

@@ -57,7 +57,6 @@ show_reading_time: false
           <h2>Shortcuts</h2>
           <div class="shortcut-list">
             <a class="sesh__btn block" href="{{site.baseurl}}/settings">Settings: theme, language, voice <span aria-hidden="true">→</span></a>
-            <a class="sesh__btn block" href="{{site.baseurl}}/student/calendar">Calendar <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/reload">RELOAD <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/science">Science topics <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/learn">Games &amp; quizzes <span aria-hidden="true">→</span></a>

@@ -79,10 +79,22 @@
 // Company updates reuse the site's numbered rows and compact typography.
 .news-list {
   border-top: 1px solid $line;
-  li { padding: 22px 0; }
+  li { padding: 22px 0; scroll-margin-top: $header-height + 12px; }
   article { min-width: 0; }
   h2 { font-size: 1.15rem; margin: 0 0 6px; }
   p { margin: 0; color: $muted; max-width: 760px; }
   .news-list__meta { @include label; color: $teal; margin-bottom: 8px; }
 }
 .news-source { color: $muted; font-size: .85rem; margin-top: 20px; }
+
+// "Read full story" under each story (full text from Sesh's site)
+.news-list__more {
+  margin-top: 10px;
+
+  summary { color: $teal; font-weight: 600; cursor: pointer; width: fit-content; }
+  p { margin-top: 8px; color: $ink; }
+  .news-list__author { color: $muted; font-size: .9rem; }
+}
+
+.news-list__source { display: inline-block; margin-top: 8px; color: $teal; font-weight: 600; }
+

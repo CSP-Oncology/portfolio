@@ -7,7 +7,8 @@ intro: Updates on Sesh's research, funding and company milestones.
 permalink: /sesh/news
 ---
 <section class="section wrap" aria-label="Company updates">
-  <ol class="steps news-list">
+  <!-- Filled from the backend by assets/js/sesh/news.js (synced with Sesh's News page); this saved copy shows until then -->
+  <ol class="steps news-list" id="news-list">
     {% for item in site.data.sesh_news %}
     <li>
       <article>
@@ -20,3 +21,4 @@ permalink: /sesh/news
   </ol>
   <p class="news-source">Summaries based on Sesh's official updates. <a href="https://www.oncologysesh.com/news" target="_blank" rel="noopener noreferrer">Read the original news ↗</a></p>
 </section>
+<script type="module" src="{{ '/assets/js/sesh/news.js' | relative_url }}"></script>
