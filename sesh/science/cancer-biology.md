@@ -41,5 +41,8 @@ permalink: /sesh/science/cancer-biology
       </ul>
     </div>
   </div>
-  <div class="next-link"><a class="sesh__btn accent" href="{{ '/sesh/science/precision-oncology' | relative_url }}">Next: Precision oncology →</a></div>
+  <div class="next-link">
+    <a class="sesh__btn accent" href="{{ '/sesh/science' | relative_url }}">← Back: Science</a>
+    <a class="sesh__btn accent" href="{{ '/sesh/science/precision-oncology' | relative_url }}">Next: Precision cancer care →</a>
+  </div>
 </section>

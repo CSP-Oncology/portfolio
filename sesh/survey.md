@@ -12,7 +12,7 @@ permalink: /sesh/survey
 <p class="survey__note"><span class="req">*</span> Indicates required question</p>
 <form id="survey">
   <fieldset class="q">
-    <legend>How well do you think our website fits the goals of Oncologysesh?<span class="req" aria-hidden="true"> *</span></legend>
+    <legend>How well do you think our website fits the goals of Sesh?<span class="req" aria-hidden="true"> *</span></legend>
     <label class="opt"><input type="radio" name="fit_goals" value="Very Well" required> <span>Very Well</span></label>
     <label class="opt"><input type="radio" name="fit_goals" value="Somewhat Well" required> <span>Somewhat Well</span></label>
     <label class="opt"><input type="radio" name="fit_goals" value="Neutral" required> <span>Neutral</span></label>
@@ -28,7 +28,7 @@ permalink: /sesh/survey
     <label class="opt"><input type="radio" name="easy_fun" value="Disagree" required> <span>Disagree</span></label>
   </fieldset>
   <fieldset class="q">
-    <legend>Which feature do you think best fit Oncologysesh? If you&#x27;re unsure, check more than one box.<span class="req" aria-hidden="true"> *</span></legend>
+    <legend>Which feature do you think best fits Sesh? If you&#x27;re unsure, check more than one box.<span class="req" aria-hidden="true"> *</span></legend>
     <label class="opt"><input type="checkbox" name="enjoy" value="Games"> <span>Educational Games</span></label>
     <label class="opt"><input type="checkbox" name="enjoy" value="Puzzles"> <span>Puzzles</span></label>
     <label class="opt"><input type="checkbox" name="enjoy" value="Coloring pages"> <span>Coloring pages</span></label>

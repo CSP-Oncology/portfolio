@@ -32,7 +32,7 @@ permalink: /sesh/about
     <aside class="sidebar">
       <div class="note">
         <h2>About this site</h2>
-        <p>Oncology Sesh explains precision immuno-oncology, liquid biopsy and Sesh's RELOAD test, with games and a quiz to learn the key ideas.</p>
+        <p>Sesh explains precision cancer care, liquid biopsy and Sesh's RELOAD test, with games and a quiz to learn the key ideas.</p>
       </div>
       <a class="sesh__btn block" href="{{ '/sesh/background' | relative_url }}">About Sesh <span aria-hidden="true">→</span></a>
       <a class="sesh__btn block" href="{{ '/sesh/news' | relative_url }}">News <span aria-hidden="true">→</span></a>

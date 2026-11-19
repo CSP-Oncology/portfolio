@@ -1,6 +1,6 @@
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a class="brand" href="{{ '/' | relative_url }}"><img class="brand__logo" src="{{ '/assets/images/sesh/logo.png' | relative_url }}" alt="Sesh" width="65" height="44"><span>oncology</span></a>
+    <a class="brand" href="{{ '/' | relative_url }}"><img class="brand__logo" src="{{ '/assets/images/sesh/logo.png' | relative_url }}" alt="Sesh" width="65" height="44"><span>Cancer care</span></a>
     <nav class="site-nav" id="site-nav" aria-label="Main">
       {%- for item in site.data.sesh_nav %}
       <a class="site-nav__link" href="{{ item.url | relative_url }}"{% if page.nav == item.key %} aria-current="page"{% endif %}>{{ item.title }}</a>

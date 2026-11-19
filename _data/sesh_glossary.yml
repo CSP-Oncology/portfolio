@@ -35,7 +35,7 @@
 - term: T cell
   short: Immune cell that attacks bad cells
   def: A white blood cell that checks other cells' HLA "badges" and destroys cells that look abnormal.
-- term: Precision oncology
+- term: Precision cancer care
   short: Treatment matched to the tumor
   def: Choosing cancer treatment based on the specific genes and biomarkers of a patient's tumor.
 - term: Serial monitoring

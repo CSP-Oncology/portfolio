@@ -25,7 +25,7 @@ title: Home
   </script>
   <div class="wrap home-head__inner">
     <div>
-      <span class="home-head__kicker">Precision immuno-oncology</span>
+      <span class="home-head__kicker">Precision cancer care</span>
       <h1>Improving Treatment Outcomes for Cancer Patients</h1>
       <p>Pioneering liquid biopsy technology to select the correct personalized immunotherapy treatment.</p>
     </div>
