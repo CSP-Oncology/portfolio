@@ -521,19 +521,12 @@
         return;
       }
 
-      const currentLanguage = document.cookie.match(/(?:^|;\s*)googtrans=\/en\/([^;]+)/)?.[1] || '';
-      const isTranslated = document.documentElement.classList.contains('translated-ltr')
-        || document.documentElement.classList.contains('translated-rtl');
-
-      if ((currentLanguage && currentLanguage !== langCode) || (isTranslated && currentLanguage !== langCode)) {
-        TranslationLanguageManager.clearCookies();
-        TranslationLanguageManager._setCookie(langCode);
-        window.location.reload();
-        return;
-      }
-
+      TranslationLanguageManager.clearCookies();
       // Set cookies for the desired language
-      TranslationLanguageManager._setCookie(langCode);
+      const domain = window.location.hostname;
+      document.cookie = `googtrans=/en/${langCode}; path=/`;
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${domain}`;
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=.${domain}`;
 
       // Initialise Google Translate element (once)
       if (!window.googleTranslateElementInit) {
@@ -544,7 +537,6 @@
             layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false,
           }, 'google_translate_element');
-          setTimeout(() => TranslationLanguageManager._selectLanguage(langCode), 0);
         };
       }
 
@@ -563,27 +555,15 @@
         document.head.appendChild(script);
       }
 
-      TranslationLanguageManager._selectLanguage(langCode);
-    }
-
-    static _setCookie(langCode) {
-      const domain = window.location.hostname;
-      document.cookie = `googtrans=/en/${langCode}; path=/`;
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${domain}`;
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=.${domain}`;
-    }
-
-    /** Select a language after the asynchronously-created Google widget is ready. */
-    static _selectLanguage(langCode, attempts = 0) {
-      if (attempts > 100) return;
-      // Wait until Google creates the hidden language selector.
-      const attemptTranslation = () => {
+      // Poll until the combo-box appears, then trigger the switch
+      const attemptTranslation = (attempts = 0) => {
+        if (attempts > 100) return;
         const select = document.querySelector('.goog-te-combo');
         if (select) {
           select.value = langCode;
           select.dispatchEvent(new Event('change'));
         } else {
-          setTimeout(() => TranslationLanguageManager._selectLanguage(langCode, attempts + 1), 50);
+          setTimeout(() => attemptTranslation(attempts + 1), 50);
         }
       };
       attemptTranslation();

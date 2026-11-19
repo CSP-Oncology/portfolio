@@ -5,7 +5,7 @@
 // and in the logged-in user's account (PUT /api/user { preferences }) so they follow them to other devices.
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 
-export const DEFAULTS = { theme: 'light', size: 'normal', font: 'default', spacing: 'normal', motion: 'on', language: 'en' };
+export const DEFAULTS = { theme: 'light', size: 'normal', font: 'default', spacing: 'normal', motion: 'on' };
 const KEY = 'sesh-settings';
 
 export function loadLocal() {
@@ -14,23 +14,11 @@ export function loadLocal() {
 
 export function saveLocal(prefs) {
   try { localStorage.setItem(KEY, JSON.stringify(prefs)); } catch (e) {}
-  try {
-    const shared = JSON.parse(localStorage.getItem('sitePreferences') || '{}');
-    shared.language = prefs.language === 'en' ? '' : prefs.language;
-    localStorage.setItem('sitePreferences', JSON.stringify(shared));
-  } catch (e) {}
 }
 
 export function apply(prefs, root = document.documentElement) {
   const all = { ...DEFAULTS, ...prefs };
   for (const key of Object.keys(DEFAULTS)) root.setAttribute('data-' + key, all[key]);
-  applyLanguage(all.language);
-}
-
-export function applyLanguage(language) {
-  const langCode = language === 'en' ? '' : language;
-  document.documentElement.setAttribute('lang', language || 'en');
-  window.SitePreferences?.applyLanguage(langCode);
 }
 
 export async function saveToAccount(prefs) {

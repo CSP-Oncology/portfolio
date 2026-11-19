@@ -14,7 +14,7 @@
       var root = document.documentElement;
       root.setAttribute('data-theme', prefs.theme || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
       ['size', 'font', 'spacing', 'motion'].forEach(function (key) { if (prefs[key]) root.setAttribute('data-' + key, prefs[key]); });
-      root.setAttribute('lang', prefs.language || 'en');
+      root.setAttribute('lang', 'en');
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">

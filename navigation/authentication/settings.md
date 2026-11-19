@@ -58,12 +58,6 @@ search_exclude: true
               <label><input type="radio" name="motion" value="off"><span>Off</span></label>
             </div>
           </fieldset>
-          <fieldset class="setting">
-            <legend>Language</legend>
-            <select class="input" name="language" id="settings-language" aria-label="Language">
-              <option value="en">English</option>
-            </select>
-          </fieldset>
         </div>
       </section>
 
@@ -101,19 +95,8 @@ search_exclude: true
     document.getElementById('settings-page').hidden = false;
     let saved = { ...DEFAULTS, ...loadLocal(), ...(user.preferences || {}) };
 
-    const languageSelect = form.elements.language;
-    const languages = window.SitePreferences?.LANGUAGES || {};
-    for (const [code, language] of Object.entries(languages)) {
-      if (!code || languageSelect.querySelector(`option[value="${code}"]`)) continue;
-      languageSelect.add(new Option(language.name, code));
-    }
-
     const current = () => Object.fromEntries(Object.keys(DEFAULTS).map(key => [key, form.elements[key].value || DEFAULTS[key]]));
-    const fill = prefs => {
-      for (const key of Object.keys(DEFAULTS)) {
-        form.elements[key].value = key === 'language' ? (prefs[key] || 'en') : prefs[key];
-      }
-    };
+    const fill = prefs => { for (const key of Object.keys(DEFAULTS)) form.elements[key].value = prefs[key]; };
 
     // WCAG contrast ratio between two computed CSS colors
     function luminance(color) {
@@ -145,7 +128,7 @@ search_exclude: true
 
     // Every change shows right away on the whole page; Save keeps it
     function preview() {
-      apply({ ...current(), language: saved.language });
+      apply(current());
       checkContrast();
       const changed = JSON.stringify(current()) !== JSON.stringify(saved);
       say(changed ? 'Not saved yet.' : '');
@@ -160,20 +143,13 @@ search_exclude: true
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const prefs = current();
-      const previousLanguage = loadLocal().language || 'en';
       saveLocal(prefs);
       say('Saving…');
       try {
         saved = { ...DEFAULTS, ...(await saveToAccount(prefs)) };
         say('Saved to your account.');
-        if (prefs.language !== previousLanguage) {
-          window.location.reload();
-        }
       } catch (err) {
         say(`Saved in this browser, but not to your account: ${err.message}`, true);
-        if (prefs.language !== previousLanguage) {
-          window.location.reload();
-        }
       }
     });
 
