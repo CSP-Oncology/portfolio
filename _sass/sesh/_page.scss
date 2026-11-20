@@ -108,14 +108,17 @@
 
 // Sesh's pictures are mostly logos, so they sit on white in every theme
 .news-card__media {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 170px;
   padding: 18px;
+  overflow: hidden;
   background: #ffffff;
   border-bottom: 1px solid $line;
 
-  img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  // Fit the whole picture inside the box, whatever its size
+  img { display: block; width: 100%; height: 100%; object-fit: contain; }
 }
 
 .news-card__body {
@@ -177,6 +180,7 @@
   border-top-width: 4px;
 
   .news-card__media { height: auto; min-height: 260px; padding: 28px; border-bottom: 0; border-right: 1px solid $line; }
+  .news-card__media img { height: auto; max-height: 300px; }
   .news-card__body { justify-content: center; padding: 30px 32px; }
   h2 { font-size: clamp(1.5rem, 2.8vw, 2.1rem); }
   .news-card__excerpt { font-size: 1.05rem; max-width: 60ch; }

@@ -34,12 +34,87 @@
 
 .admin-block { margin-top: 24px; }
 
+// Admin: tabs for contact messages, survey responses and members (same layout as Poway Recovery Center)
+.tabs__list {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid $line;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.tabs__tab {
+  flex: none;
+  margin-bottom: -2px;
+  padding: 12px 18px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 8px 8px 0 0;
+  background: transparent;
+  color: $muted;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover { background: $mist; color: $ink; border-bottom-color: $line; }
+  &:focus-visible { outline: 2px solid $teal; outline-offset: -2px; }
+
+  &[aria-selected="true"] {
+    color: $teal;
+    background: $white;
+    border-bottom-color: $teal;
+  }
+
+  .tabs__count {
+    margin-left: 8px;
+    padding: 1px 8px;
+    font-size: .75rem;
+    color: $muted;
+    background: $mist;
+    border-radius: 999px;
+  }
+}
+
+.tabs__panel {
+  padding-top: 24px;
+
+  &:focus-visible { outline: 2px solid $teal; outline-offset: 4px; }
+}
+
 .message {
   @include panel(18px 20px);
   margin-bottom: 12px;
 
   &.is-handled { opacity: .65; }
-  p { margin: 4px 0; white-space: pre-wrap; }
+  p { margin: 4px 0; }
+}
+
+.message__head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.message__body { white-space: pre-line; margin-bottom: 6px; }
+
+// One survey response: each question on the left, its answer on the right
+.survey-answers {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
+  margin: 0;
+  border-top: 1px solid $line;
+
+  dt, dd { margin: 0; padding: 8px 0; border-bottom: 1px solid $line; }
+  dt { @include label; color: $muted; padding-right: 16px; }
+  dd { white-space: pre-line; }
+  dt:last-of-type, dd:last-of-type { border-bottom: 0; }
+
+  @include sm {
+    grid-template-columns: 1fr;
+    dt { padding-bottom: 0; border-bottom: 0; }
+  }
 }
 
 .table-scroll { overflow-x: auto; @include panel(0); }

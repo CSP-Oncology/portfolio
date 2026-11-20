@@ -120,6 +120,7 @@ permalink: /sesh/survey
     button.disabled = true;
     status.textContent = 'Sending…';
     window.seshSaveSurvey(answers).then(function () {
+      status.textContent = '';
       form.hidden = true;
       thanks.hidden = false;
       window.scrollTo(0, 0);

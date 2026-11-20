@@ -69,31 +69,29 @@ show_reading_time: false
     </div>
   </section>
 
-  <!-- Admins only: contact messages, survey responses and everyone registered in the database -->
-  <section class="section wrap" id="admin-messages" hidden>
-    <div class="section-title"><h2>Messages <span id="messages-count"></span></h2></div>
-    <div id="messages-list"></div>
-    <p class="status-msg is-error" id="messages-message" role="status"></p>
-  </section>
-  <section class="section wrap" id="admin-surveys" hidden>
-    <div class="section-title"><h2>Survey responses <span id="surveys-count"></span></h2></div>
-    <div class="table-scroll">
-      <table class="data-table" id="surveys-table">
-        <thead></thead>
-        <tbody></tbody>
-      </table>
+  <!-- Admins only (same layout as the Poway Recovery Center profile page): contact messages,
+       survey responses and everyone registered in the database, one tab each -->
+  <section class="section wrap admin" id="admin" hidden>
+    <div class="section-title"><h2>Admin</h2></div>
+    <div class="tabs" data-tabs>
+      <div class="tabs__list" role="tablist" aria-label="Admin">
+        <button class="tabs__tab" type="button" role="tab" id="tab-messages" aria-controls="panel-messages" aria-selected="true">Contact messages <span class="tabs__count" id="messages-count">0</span></button>
+        <button class="tabs__tab" type="button" role="tab" id="tab-surveys" aria-controls="panel-surveys" aria-selected="false" tabindex="-1">Survey responses <span class="tabs__count" id="surveys-count">0</span></button>
+        <button class="tabs__tab" type="button" role="tab" id="tab-members" aria-controls="panel-members" aria-selected="false" tabindex="-1">Members <span class="tabs__count" id="members-count">0</span></button>
+      </div>
+      <div class="tabs__panel" role="tabpanel" id="panel-messages" aria-labelledby="tab-messages" tabindex="0">
+        <div id="messages-list"></div>
+        <p class="status-msg is-error" id="messages-message" role="status"></p>
+      </div>
+      <div class="tabs__panel" role="tabpanel" id="panel-surveys" aria-labelledby="tab-surveys" tabindex="0" hidden>
+        <div id="surveys-list"></div>
+        <p class="status-msg is-error" id="surveys-message" role="status"></p>
+      </div>
+      <div class="tabs__panel" role="tabpanel" id="panel-members" aria-labelledby="tab-members" tabindex="0" hidden>
+        <div class="table-scroll"><table class="data-table" id="members-table"><thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Phone</th><th>Role</th></tr></thead><tbody></tbody></table></div>
+        <p class="status-msg is-error" id="members-message" role="status"></p>
+      </div>
     </div>
-    <p class="status-msg is-error" id="surveys-message" role="status"></p>
-  </section>
-  <section class="section wrap" id="admin" hidden>
-    <div class="section-title"><h2>Members <span id="members-count"></span></h2></div>
-    <div class="table-scroll">
-      <table class="data-table" id="members-table">
-        <thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Phone</th><th>Role</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <p class="status-msg is-error" id="members-message" role="status"></p>
   </section>
 </div>
 
@@ -151,16 +149,41 @@ show_reading_time: false
             } catch (err) { say(message, err.message, true); }
         });
 
+        const el = (tag, className, text) => {
+            const node = document.createElement(tag);
+            if (className) node.className = className;
+            if (text !== undefined) node.textContent = text;
+            return node;
+        };
+        const when = iso => new Date(iso + 'Z').toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+
+        // Tabs: click or arrow keys (WAI-ARIA tabs pattern, same as Poway Recovery Center's js/tabs.js)
+        function initTabs(container) {
+            const tabs = [...container.querySelectorAll('[role=tab]')];
+            const select = (tab, focus) => {
+                tabs.forEach(t => {
+                    const on = t === tab;
+                    t.setAttribute('aria-selected', on);
+                    t.tabIndex = on ? 0 : -1;
+                    document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+                });
+                if (focus) tab.focus();
+            };
+            tabs.forEach((tab, i) => {
+                tab.addEventListener('click', () => select(tab));
+                tab.addEventListener('keydown', e => {
+                    const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+                    if (step) { e.preventDefault(); select(tabs[(i + step + tabs.length) % tabs.length], true); }
+                });
+            });
+        }
+
         async function loadMembers() {
             const members = await apiRequest('/api/user');
-            document.getElementById('members-count').textContent = `(${members.length})`;
+            document.getElementById('members-count').textContent = members.length;
             document.querySelector('#members-table tbody').replaceChildren(...members.map(m => {
-                const tr = document.createElement('tr');
-                [m.name, m.uid, m.email || '—', m.phone || '—', m.role].forEach(value => {
-                    const td = document.createElement('td');
-                    td.textContent = value;
-                    tr.append(td);
-                });
+                const tr = el('tr');
+                [m.name, m.uid, m.email || '—', m.phone || '—', m.role].forEach(value => tr.append(el('td', null, value)));
                 return tr;
             }));
         }
@@ -168,69 +191,56 @@ show_reading_time: false
         async function loadMessages() {
             const list = document.getElementById('messages-list');
             const messages = await apiRequest('/api/contact');
-            document.getElementById('messages-count').textContent = `(${messages.filter(m => !m.handled).length} new)`;
-            if (!messages.length) { list.textContent = 'No messages yet.'; return; }
+            document.getElementById('messages-count').textContent = messages.filter(m => !m.handled).length;
+            if (!messages.length) { list.replaceChildren(el('p', 'muted', 'No messages yet.')); return; }
             list.replaceChildren(...messages.map(m => {
-                const card = document.createElement('article');
-                card.className = 'message' + (m.handled ? ' is-handled' : '');
-                const meta = document.createElement('div');
-                meta.className = 'small muted';
-                meta.textContent = [m.name, m.organization, m.topic_label,
-                    new Date(m.created_at + 'Z').toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })].filter(Boolean).join(' · ');
-                const body = document.createElement('p');
-                body.textContent = m.message;
-                const reply = document.createElement('div');
-                reply.className = 'small muted';
-                reply.textContent = [m.email, m.phone].filter(Boolean).join(' · ') || 'No contact details left';
-                const toggle = document.createElement('button');
+                const card = el('article', 'message' + (m.handled ? ' is-handled' : ''));
+                const head = el('div', 'message__head');
+                head.append(el('strong', null, m.name));
+                if (m.organization) head.append(el('span', 'small muted', m.organization));
+                head.append(el('span', 'tag', m.topic_label), el('span', 'small muted', when(m.created_at)));
+                const reply = el('p', 'small muted', [m.email, m.phone].filter(Boolean).join(' · ') || 'No contact details left');
+                const toggle = el('button', 'sesh__btn small ' + (m.handled ? 'accent' : 'accent fill'), m.handled ? 'Mark as new' : 'Mark handled');
                 toggle.type = 'button';
-                toggle.className = 'sesh__btn small accent';
-                toggle.textContent = m.handled ? 'Mark as new' : 'Mark handled';
                 toggle.addEventListener('click', async () => {
                     toggle.disabled = true;
                     await apiRequest('/api/contact', 'PUT', { id: m.id, handled: !m.handled })
                         .catch(err => say(document.getElementById('messages-message'), err.message, true));
                     loadMessages();
                 });
-                card.append(meta, body, reply, toggle);
+                card.append(head, el('p', 'message__body', m.message), reply, toggle);
                 return card;
             }));
         }
 
+        // Survey responses: one card per response, each question with its answer
         async function loadSurveys() {
+            const list = document.getElementById('surveys-list');
             const { questions, responses } = await apiRequest('/api/survey');
-            document.getElementById('surveys-count').textContent = `(${responses.length})`;
-            const cell = (tag, text) => { const el = document.createElement(tag); el.textContent = text; return el; };
-            const head = document.createElement('tr');
-            head.append(cell('th', 'Received'), cell('th', 'Account'), ...questions.map(q => cell('th', q.label)));
-            document.querySelector('#surveys-table thead').replaceChildren(head);
-            const body = document.querySelector('#surveys-table tbody');
-            if (!responses.length) {
-                const td = cell('td', 'No responses yet.');
-                td.colSpan = questions.length + 2;
-                const tr = document.createElement('tr');
-                tr.append(td);
-                body.replaceChildren(tr);
-                return;
-            }
-            body.replaceChildren(...responses.map(r => {
-                const tr = document.createElement('tr');
-                const when = new Date(r.created_at + 'Z').toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-                tr.append(cell('td', when), cell('td', r.user || '—'), ...questions.map(q => {
+            document.getElementById('surveys-count').textContent = responses.length;
+            if (!responses.length) { list.replaceChildren(el('p', 'muted', 'No survey responses yet.')); return; }
+            list.replaceChildren(...responses.map((r, i) => {
+                const card = el('article', 'message');
+                const head = el('div', 'message__head');
+                head.append(el('strong', null, `Response ${responses.length - i}`),
+                    el('span', 'tag', r.user || 'Not logged in'), el('span', 'small muted', when(r.created_at)));
+                const answers = el('dl', 'survey-answers');
+                questions.forEach(q => {
                     const value = r.answers[q.key];
-                    return cell('td', Array.isArray(value) ? value.join(', ') : (value || '—'));
-                }));
-                return tr;
+                    if (!value || (Array.isArray(value) && !value.length)) return;
+                    answers.append(el('dt', null, q.label), el('dd', null, Array.isArray(value) ? value.join(', ') : value));
+                });
+                card.append(head, answers);
+                return card;
             }));
         }
 
         if (user.is_admin) {
             document.getElementById('admin').hidden = false;
-            document.getElementById('admin-messages').hidden = false;
-            document.getElementById('admin-surveys').hidden = false;
+            initTabs(document.querySelector('#admin [data-tabs]'));
+            loadMessages().catch(err => say(document.getElementById('messages-message'), err.message, true));
             loadSurveys().catch(err => say(document.getElementById('surveys-message'), err.message, true));
             loadMembers().catch(err => say(document.getElementById('members-message'), err.message, true));
-            loadMessages().catch(err => say(document.getElementById('messages-message'), err.message, true));
         }
     }
 </script>
