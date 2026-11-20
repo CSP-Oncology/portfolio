@@ -1,55 +1,36 @@
-// Shared footer: always-visible content at the bottom of every Sesh page.
+// Shared footer: one short band at the bottom of every Sesh page.
 .site-footer {
   // --footer-* colors: the Sesh palette (_tokens.scss), or the Settings theme (_theme.scss)
   flex-shrink: 0;
   margin-top: 48px;
-  padding: 44px 0 20px;
+  padding: 20px 0;
   background: var(--footer-bg);
-  color: var(--footer-ink);
-  font-size: .95rem;
+  color: var(--footer-muted);
+  font-size: .85rem;
 
-  h2 { font-size: 1.2rem; margin: 0 0 16px; color: var(--footer-ink); }
-  p { margin: 0 0 16px; color: var(--footer-muted); }
   a {
     color: var(--footer-ink);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    overflow-wrap: anywhere;
-    &:hover { color: var(--footer-accent); }
-    &:focus-visible { outline: 2px solid var(--footer-accent); outline-offset: 5px; }
-  }
-  ul { list-style: none; padding: 0; margin: 0; }
-  li + li { margin-top: 10px; }
-}
-
-.site-footer__grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
-  gap: 48px;
-  padding-bottom: 36px;
-  > section { min-width: 0; }
-  @include md { gap: 28px; }
-  @media (max-width: 720px) {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    > section + section { padding-top: 24px; border-top: 1px solid var(--footer-line); }
+    font-weight: 600;
+    text-decoration: none;
+    &:hover { color: var(--footer-accent); text-decoration: underline; text-underline-offset: 4px; }
+    &:focus-visible { outline: 2px solid var(--footer-accent); outline-offset: 4px; }
   }
 }
 
-.site-footer__intro {
-  h2 { font-size: 1.65rem; }
-  h2 span { color: var(--footer-accent); }
-  > a { font-weight: 600; }
-}
-
-.site-footer__row {
+.site-footer__inner {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  align-items: baseline;
-  gap: 12px 24px;
-  border-top: 1px solid var(--footer-line);
-  padding-top: 20px;
-  font-size: .8rem;
-  p { margin: 0; }
+  gap: 12px 32px;
+
+  nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+}
+
+.site-footer__brand {
+  margin: 0;
+  max-width: 560px;
+
+  strong { color: var(--footer-ink); font-size: 1.15rem; margin-right: 6px; }
+  strong span { color: var(--footer-accent); }
 }

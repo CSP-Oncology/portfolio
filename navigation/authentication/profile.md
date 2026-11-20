@@ -57,10 +57,8 @@ show_reading_time: false
           <h2>Shortcuts</h2>
           <div class="shortcut-list">
             <a class="sesh__btn block" href="{{site.baseurl}}/settings">Settings: theme, language, voice <span aria-hidden="true">→</span></a>
-            <a class="sesh__btn block" href="{{site.baseurl}}/student/calendar">Calendar <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/reload">RELOAD <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/science">Science topics <span aria-hidden="true">→</span></a>
-            <a class="sesh__btn block" href="{{site.baseurl}}/sesh/learn">Games &amp; quizzes <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/glossary">Glossary <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/about">Contact us <span aria-hidden="true">→</span></a>
             <a class="sesh__btn block" href="{{site.baseurl}}/sesh/survey">Take a quick survey <span aria-hidden="true">→</span></a>
@@ -71,11 +69,21 @@ show_reading_time: false
     </div>
   </section>
 
-  <!-- Admins only: contact messages and everyone registered in the database -->
+  <!-- Admins only: contact messages, survey responses and everyone registered in the database -->
   <section class="section wrap" id="admin-messages" hidden>
     <div class="section-title"><h2>Messages <span id="messages-count"></span></h2></div>
     <div id="messages-list"></div>
     <p class="status-msg is-error" id="messages-message" role="status"></p>
+  </section>
+  <section class="section wrap" id="admin-surveys" hidden>
+    <div class="section-title"><h2>Survey responses <span id="surveys-count"></span></h2></div>
+    <div class="table-scroll">
+      <table class="data-table" id="surveys-table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="status-msg is-error" id="surveys-message" role="status"></p>
   </section>
   <section class="section wrap" id="admin" hidden>
     <div class="section-title"><h2>Members <span id="members-count"></span></h2></div>
@@ -189,9 +197,38 @@ show_reading_time: false
             }));
         }
 
+        async function loadSurveys() {
+            const { questions, responses } = await apiRequest('/api/survey');
+            document.getElementById('surveys-count').textContent = `(${responses.length})`;
+            const cell = (tag, text) => { const el = document.createElement(tag); el.textContent = text; return el; };
+            const head = document.createElement('tr');
+            head.append(cell('th', 'Received'), cell('th', 'Account'), ...questions.map(q => cell('th', q.label)));
+            document.querySelector('#surveys-table thead').replaceChildren(head);
+            const body = document.querySelector('#surveys-table tbody');
+            if (!responses.length) {
+                const td = cell('td', 'No responses yet.');
+                td.colSpan = questions.length + 2;
+                const tr = document.createElement('tr');
+                tr.append(td);
+                body.replaceChildren(tr);
+                return;
+            }
+            body.replaceChildren(...responses.map(r => {
+                const tr = document.createElement('tr');
+                const when = new Date(r.created_at + 'Z').toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+                tr.append(cell('td', when), cell('td', r.user || '—'), ...questions.map(q => {
+                    const value = r.answers[q.key];
+                    return cell('td', Array.isArray(value) ? value.join(', ') : (value || '—'));
+                }));
+                return tr;
+            }));
+        }
+
         if (user.is_admin) {
             document.getElementById('admin').hidden = false;
             document.getElementById('admin-messages').hidden = false;
+            document.getElementById('admin-surveys').hidden = false;
+            loadSurveys().catch(err => say(document.getElementById('surveys-message'), err.message, true));
             loadMembers().catch(err => say(document.getElementById('members-message'), err.message, true));
             loadMessages().catch(err => say(document.getElementById('messages-message'), err.message, true));
         }

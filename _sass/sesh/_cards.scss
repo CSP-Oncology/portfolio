@@ -33,6 +33,7 @@
 }
 
 .note--sand { border-left-color: $sand; }
+.note + .index-grid { margin-top: 14px; }
 .note--alert { border-left-color: $red; background: var(--red-soft); }
 
 // The site's index: numbered cells sharing one set of borders, no gaps between them
@@ -48,6 +49,11 @@
 
   @include md { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   @include sm { grid-template-columns: 1fr; }
+
+  // Three across (the home page's six tiles fill two even rows)
+  &--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  &--3 { @include md { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  &--3 { @include sm { grid-template-columns: 1fr; } }
 
   li { display: flex; }
 

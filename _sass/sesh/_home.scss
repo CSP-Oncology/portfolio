@@ -1,4 +1,4 @@
-// Home: title band with the three-step summary, then the index of every section
+// Home: title band with Sesh's latest updates, then the index of every section
 
 .home-head {
   position: relative;
@@ -69,11 +69,135 @@
 
 .home-head p { color: $muted; font-size: 1.05rem; margin: 0; max-width: 520px; }
 
-.home-head .steps {
-  border-top: 1px solid $ink;
+// Highlights beside the heading: the most important parts of the site
+.home-updates {
+  .home-news__list { border-top: 1px solid $ink; }
+  .home-news__row { padding: 12px 0; justify-content: space-between; }
+  .home-news__list li + li { border-top: 1px solid $line; }
 }
 
-.home-index { padding-top: 24px; }
+// "Highlights" sits above the line that opens the list
+.home-updates__head { @include label; color: $teal; margin: 0; padding-bottom: 8px; font-size: .78rem; }
+.home-updates__text { color: $muted; font-size: .92rem; }
+.home-updates__go { color: $teal; font-size: 1.1rem; flex-shrink: 0; transition: transform .15s; }
+.home-news__row:hover .home-updates__go { transform: translateX(3px); }
+
+
+// Latest news, the main part of the home page: the featured story large, with Sesh's picture
+.home-news { padding-top: 32px; }
+
+.home-news__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+
+  h2 { @include display-font; font-size: clamp(1.8rem, 3.4vw, 2.4rem); margin: 0; }
+}
+
+.home-news__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+
+  @include md { grid-template-columns: 1fr; }
+}
+
+.home-news__featured {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: $white;
+  border: 1px solid $line;
+  border-top: 4px solid $teal;
+  border-radius: $radius;
+
+}
+
+// Sesh's pictures are mostly logos, so they sit on white in every theme
+.home-news__image {
+  display: grid;
+  place-items: center;
+  height: 200px;
+  padding: 20px;
+  background: #ffffff;
+  border-bottom: 1px solid $line;
+
+  img { max-width: 100%; max-height: 100%; object-fit: contain; }
+}
+
+.home-news__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 26px 28px;
+
+  h3 { @include display-font; font-size: clamp(1.4rem, 2.6vw, 2rem); margin: 0; }
+  p { margin: 0; color: $muted; font-size: 1.05rem; max-width: 60ch; }
+
+  @include sm { padding: 20px; }
+}
+
+.home-news__meta { @include label; color: $teal !important; font-size: .78rem !important; }
+.home-news__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+
+.home-news__list { margin: 0; padding: 0; list-style: none; }
+
+.home-news__row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: $ink;
+  text-decoration: none;
+
+  &:hover .home-news__title { color: $teal; text-decoration: underline; }
+  &:focus-visible { outline: 2px solid $teal; outline-offset: 2px; }
+}
+
+.home-news__more {
+  display: flex;
+  flex-direction: column;
+  background: $white;
+  border: 1px solid $line;
+  border-radius: $radius;
+
+  > h3 { @include label; color: $muted; margin: 0; padding: 14px 18px 10px; border-bottom: 1px solid $line; }
+  .home-news__row { padding: 14px 18px; }
+  .home-news__list li + li { border-top: 1px solid $line; }
+}
+
+.home-news__all {
+  margin-top: auto;
+  padding: 12px 18px;
+  border-top: 1px solid $line;
+  color: $teal;
+  font-weight: 600;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+.home-news__thumb {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 48px;
+  padding: 4px;
+  background: #ffffff;
+  border: 1px solid $line;
+  border-radius: $radius;
+
+  img { max-width: 100%; max-height: 100%; object-fit: contain; }
+}
+
+.home-news__text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.home-news__title { font-weight: 600; line-height: 1.35; }
+.home-news__tag { @include label; color: $teal; }
+
 
 // A small yellow detail echoes the cells in the Sesh logo.
 .home-head__kicker::before {

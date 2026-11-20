@@ -1,0 +1,17 @@
+# The home page's "Highlights" beside the heading: the most important parts of the site
+- label: The test
+  title: RELOAD
+  text: A blood test that shows whether a cancer is hiding from the immune system
+  url: /sesh/reload
+- label: The science
+  title: How liquid biopsy works
+  text: Cancer, biomarkers and tumor DNA in the blood, explained simply
+  url: /sesh/science
+- label: Key terms
+  title: Glossary
+  text: The words behind RELOAD, in plain language
+  url: /sesh/glossary
+- label: The company
+  title: Meet the team behind Sesh
+  text: The founders and collaborators
+  url: /sesh/about

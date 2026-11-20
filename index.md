@@ -29,63 +29,60 @@ title: Home
       <h1>Improving Treatment Outcomes for Cancer Patients</h1>
       <p>Pioneering liquid biopsy technology to select the correct personalized immunotherapy treatment.</p>
     </div>
-    <ol class="steps">
-      <li><div><strong>Non-invasive collection</strong><span>A blood draw replaces a tissue biopsy</span></div></li>
-      <li><div><strong>Advanced analysis</strong><span>Sequencing finds hard-to-detect biomarkers</span></div></li>
-      <li><div><strong>Actionable insights</strong><span>Reports guide treatment decisions</span></div></li>
-    </ol>
+    <!-- Highlights: the most important parts of the site (_data/sesh_highlights.yml) -->
+    <div class="home-updates">
+      <h2 class="home-updates__head">Highlights</h2>
+      <ol class="home-news__list">
+        {%- for item in site.data.sesh_highlights %}
+        <li><a class="home-news__row" href="{{ item.url | relative_url }}">
+          <span class="home-news__text"><span class="home-news__tag">{{ item.label }}</span><span class="home-news__title">{{ item.title }}</span><span class="home-updates__text">{{ item.text }}</span></span>
+          <span class="home-updates__go" aria-hidden="true">→</span>
+        </a></li>
+        {%- endfor %}
+      </ol>
+    </div>
   </div>
 </section>
 
-<section class="wrap home-index">
-<ul class="index-grid">
-  <li><a href="{{ '/sesh/reload' | relative_url }}">
-    <span class="index-grid__num">01</span>
-    <span class="index-grid__title">RELOAD</span>
-    <span class="index-grid__text">The liquid biopsy test</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-  <li><a href="{{ '/sesh/science' | relative_url }}">
-    <span class="index-grid__num">02</span>
-    <span class="index-grid__title">Science</span>
-    <span class="index-grid__text">Cancer, biomarkers, liquid biopsy</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-  <li><a href="{{ '/sesh/learn' | relative_url }}">
-    <span class="index-grid__num">03</span>
-    <span class="index-grid__title">Learn</span>
-    <span class="index-grid__text">Games and a quiz</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-  <li><a href="{{ '/sesh/glossary' | relative_url }}">
-    <span class="index-grid__num">04</span>
-    <span class="index-grid__title">Glossary</span>
-    <span class="index-grid__text">Key terms</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-  <li><a href="{{ '/sesh/faq' | relative_url }}">
-    <span class="index-grid__num">05</span>
-    <span class="index-grid__title">FAQ</span>
-    <span class="index-grid__text">Common questions</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-  <li><a href="{{ '/sesh/background' | relative_url }}">
-    <span class="index-grid__num">06</span>
-    <span class="index-grid__title">Background</span>
-    <span class="index-grid__text">About Sesh</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-  <li><a href="{{ '/sesh/news' | relative_url }}">
-    <span class="index-grid__num">07</span>
-    <span class="index-grid__title">News</span>
-    <span class="index-grid__text">Updates</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-  <li><a href="{{ '/sesh/about' | relative_url }}">
-    <span class="index-grid__num">08</span>
-    <span class="index-grid__title">About & Contact</span>
-    <span class="index-grid__text">Send us a message</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-</ul>
+<!-- Latest news, the main part of the page: filled from the backend by assets/js/sesh/news.js
+     (synced with Sesh's News page); the saved copy below shows until then -->
+<section class="wrap home-news" aria-labelledby="home-news-title">
+  <div class="home-news__head">
+    <div>
+      <span class="home-head__kicker">From Sesh</span>
+      <h2 id="home-news-title">Latest news</h2>
+    </div>
+    <a class="sesh__btn small" href="{{ '/sesh/news' | relative_url }}">All news</a>
+  </div>
+  <div class="home-news__grid">
+    {%- assign featured = site.data.sesh_news | first %}
+    <article class="home-news__featured" id="home-news-featured">
+      {%- if featured.image %}
+      <div class="home-news__image"><img src="{{ featured.image | relative_url }}" alt=""></div>
+      {%- endif %}
+      <div class="home-news__body">
+        <p class="home-news__meta">Featured · {{ featured.category }} · <time datetime="{{ featured.datetime }}">{{ featured.date }}</time></p>
+        <h3>{{ featured.headline | default: featured.title }}</h3>
+        <p>{{ featured.summary }}</p>
+        <div class="home-news__actions">
+          <a class="sesh__btn accent fill" href="{{ '/sesh/news' | relative_url }}">Read full story</a>
+          <a class="sesh__btn accent" href="https://www.oncologysesh.com/news" target="_blank" rel="noopener noreferrer">Read on Sesh's site ↗</a>
+        </div>
+      </div>
+    </article>
+    <aside class="home-news__more" aria-labelledby="home-news-more">
+      <h3 id="home-news-more">More news</h3>
+      <ol class="home-news__list" id="home-news" data-limit="5">
+        {%- for item in site.data.sesh_news offset: 1 limit: 4 %}
+        <li><a class="home-news__row" href="{{ '/sesh/news' | relative_url }}">
+          {%- if item.image %}<span class="home-news__thumb"><img src="{{ item.image | relative_url }}" alt="" loading="lazy"></span>{% endif -%}
+          <span class="home-news__text"><span class="home-news__tag">{{ item.category }} · <time datetime="{{ item.datetime }}">{{ item.date }}</time></span><span class="home-news__title">{{ item.headline | default: item.title }}</span></span>
+        </a></li>
+        {%- endfor %}
+      </ol>
+      <a class="home-news__all" href="{{ '/sesh/news' | relative_url }}">See all news →</a>
+    </aside>
+  </div>
 </section>
+
+<script type="module" src="{{ '/assets/js/sesh/news.js' | relative_url }}"></script>
