@@ -7,6 +7,18 @@ permalink: /sesh/about
 ---
 <!-- Contact form: messages are saved by the backend (POST /api/contact);
      admins read them on their profile page and at Data -> Contact Messages in the backend -->
+<section class="section wrap" aria-labelledby="mission-heading">
+  <h2 id="mission-heading">Our mission</h2>
+  <div class="note">
+    <p>Sesh works to advance precision cancer care through diagnostic tests that enable personalized treatment.</p>
+  </div>
+  <ul class="index-grid index-grid--3">
+    <li><div class="index-grid__cell"><span class="index-grid__num">01</span><span class="index-grid__title">Innovative technology</span><span class="index-grid__text">Liquid biopsy that detects predictive biomarkers in real time.</span></div></li>
+    <li><div class="index-grid__cell"><span class="index-grid__num">02</span><span class="index-grid__title">Clinical excellence</span><span class="index-grid__text">Rigorous scientific validation and clinical utility.</span></div></li>
+    <li><div class="index-grid__cell"><span class="index-grid__num">03</span><span class="index-grid__title">Patient impact</span><span class="index-grid__text">Non-invasive detection of genomic changes for timely treatment changes.</span></div></li>
+  </ul>
+</section>
+
 {% include sesh/collaborators.html %}
 
 <section class="section wrap" id="faq" aria-labelledby="faq-heading">
@@ -63,7 +75,6 @@ permalink: /sesh/about
         <h2>About Sesh</h2>
         <p>Sesh is a San Diego precision-oncology company developing RELOAD, a liquid biopsy that helps oncologists choose the right immunotherapy.</p>
       </div>
-      <a class="sesh__btn block" href="{{ '/sesh/background' | relative_url }}">Our story <span aria-hidden="true">→</span></a>
       <a class="sesh__btn block" href="{{ '/sesh/news' | relative_url }}">News <span aria-hidden="true">→</span></a>
     </aside>
   </div>

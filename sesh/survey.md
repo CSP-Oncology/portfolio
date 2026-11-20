@@ -72,6 +72,7 @@ permalink: /sesh/survey
     <textarea id="notes" name="notes" rows="4" required></textarea>
   </div>
   <button type="submit" class="survey__submit">Submit</button>
+  <p class="status-msg" id="survey-status" role="status"></p>
 </form>
 <div id="survey-thanks" class="survey__thanks" hidden>
   <h2>Thank you!</h2>
@@ -114,10 +115,29 @@ permalink: /sesh/survey
       else if (Array.isArray(answers[key])) answers[key].push(value);
       else answers[key] = [answers[key], value];
     });
-    console.log('Survey answers (not saved yet):', answers);
-    form.hidden = true;
-    thanks.hidden = false;
-    window.scrollTo(0, 0);
+    var button = form.querySelector('.survey__submit');
+    var status = document.getElementById('survey-status');
+    button.disabled = true;
+    status.textContent = 'Sending…';
+    window.seshSaveSurvey(answers).then(function () {
+      form.hidden = true;
+      thanks.hidden = false;
+      window.scrollTo(0, 0);
+    }).catch(function (err) {
+      status.textContent = err.message || 'Could not send your answers. Please try again.';
+    }).finally(function () { button.disabled = false; });
   });
 })();
+</script>
+<script type="module">
+  import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+  // Saves the answers in the backend (POST /api/survey); admins read them on their profile page
+  window.seshSaveSurvey = async function (answers) {
+    const response = await fetch(pythonURI + '/api/survey', {
+      ...fetchOptions, method: 'POST', cache: 'no-store', body: JSON.stringify(answers)
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.message || 'Could not send your answers. Please try again.');
+    return data;
+  };
 </script>

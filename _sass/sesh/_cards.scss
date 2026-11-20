@@ -33,6 +33,7 @@
 }
 
 .note--sand { border-left-color: $sand; }
+.note + .index-grid { margin-top: 14px; }
 .note--alert { border-left-color: $red; background: var(--red-soft); }
 
 // The site's index: numbered cells sharing one set of borders, no gaps between them
