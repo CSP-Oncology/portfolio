@@ -39,17 +39,17 @@ async function getNews(limit) {
   return data;
 }
 
-// News page: every story as a card (the first one large), with its full text under "Read full story"
+// News page: every story as a row, with its full text under "Read full story"
 async function fillNewsPage(list) {
   const { articles } = await getNews();
-  list.replaceChildren(...articles.map((article, index) => {
-    const item = el('li', index === 0 ? 'news-card is-lead' : 'news-card');
+  list.replaceChildren(...articles.map(article => {
+    const item = el('li', 'news-card');
     item.id = `news-${article.id}`;
     if (article.image_url) item.append(picture(article.image_url, 'news-card__media'));
     const story = el('article', 'news-card__body');
     const meta = el('p', 'news-card__meta');
     meta.append(el('span', 'news-card__tag', article.category));
-    if (article.featured) meta.append(el('span', 'news-card__tag is-featured', 'Featured'));
+    if (article.featured) meta.append(el('span', 'news-card__tag', 'Featured'));
     meta.append(time(article));
     story.append(meta, el('h2', '', article.title), el('p', 'news-card__excerpt', article.excerpt));
     if (article.content) {

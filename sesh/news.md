@@ -8,10 +8,10 @@ permalink: /sesh/news
 ---
 <section class="section wrap" aria-label="Company updates">
   <!-- Filled from the backend by assets/js/sesh/news.js (synced with Sesh's News page); this saved copy shows until then.
-       The first story is the large lead card; the rest sit two to a row. -->
+       One row per story, newest first. -->
   <ol class="news-feed" id="news-list">
     {% for item in site.data.sesh_news %}
-    <li class="news-card{% if forloop.first %} is-lead{% endif %}">
+    <li class="news-card">
       {% if item.image %}<div class="news-card__media"><img src="{{ item.image | relative_url }}" alt="" loading="lazy"></div>{% endif %}
       <article class="news-card__body">
         <p class="news-card__meta"><span class="news-card__tag">{{ item.category }}</span><time datetime="{{ item.datetime }}">{{ item.date }}</time></p>
