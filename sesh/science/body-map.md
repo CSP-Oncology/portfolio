@@ -24,6 +24,10 @@ permalink: /sesh/science/body-map
       <p>Each cancer is a different disease and may affect people differently.</p>
     </div>
   </div>
+  <div class="next-link">
+    <a class="sesh__btn accent" href="{{ '/sesh/science' | relative_url }}">← Back: Science</a>
+    <a class="sesh__btn accent" href="{{ '/sesh/science/cancer-cycle' | relative_url }}">Next: Cancer cycle →</a>
+  </div>
 </section>
 <script>
   const facts = {

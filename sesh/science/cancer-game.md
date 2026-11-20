@@ -18,6 +18,10 @@ permalink: /sesh/science/cancer-game
     <div class="setting-rows" id="scenario-options"></div>
     <p id="scenario-feedback" class="status-msg" role="status"></p>
   </div>
+  <div class="next-link">
+    <a class="sesh__btn accent" href="{{ '/sesh/science/cancer-cycle' | relative_url }}">← Back: Cancer cycle</a>
+    <a class="sesh__btn accent" href="{{ '/sesh/science' | relative_url }}">Next: Science →</a>
+  </div>
 </section>
 <script>
   const scenarios = [
