@@ -3,33 +3,27 @@ layout: sesh
 title: Science
 nav: science
 heading: Science
-intro: The ideas behind RELOAD, one topic per page.
+intro: Interactive games to explore cancer science.
 permalink: /sesh/science
 ---
 <section class="section wrap">
 <ul class="index-grid">
-  <li><a href="{{ '/sesh/science/cancer-biology' | relative_url }}">
+  <li><a href="{{ '/sesh/science/body-map' | relative_url }}">
     <span class="index-grid__num">01</span>
-    <span class="index-grid__title">Cancer biology</span>
-    <span class="index-grid__text">How cancer grows and hides from the immune system</span>
+    <span class="index-grid__title">Body map</span>
+    <span class="index-grid__text">Explore cancer types by body region</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
-  <li><a href="{{ '/sesh/science/precision-oncology' | relative_url }}">
+  <li><a href="{{ '/sesh/science/cancer-cycle' | relative_url }}">
     <span class="index-grid__num">02</span>
-    <span class="index-grid__title">Precision cancer care</span>
-    <span class="index-grid__text">Matching treatment to the tumor</span>
+    <span class="index-grid__title">Cancer cycle</span>
+    <span class="index-grid__text">Put the cancer-immune cycle in order</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
-  <li><a href="{{ '/sesh/science/biomarkers' | relative_url }}">
+  <li><a href="{{ '/sesh/science/cancer-game' | relative_url }}">
     <span class="index-grid__num">03</span>
-    <span class="index-grid__title">Biomarkers</span>
-    <span class="index-grid__text">Measurable signs, including HLA LOH</span>
-    <span class="index-grid__go" aria-hidden="true">→</span>
-  </a></li>
-  <li><a href="{{ '/sesh/science/liquid-biopsy' | relative_url }}">
-    <span class="index-grid__num">04</span>
-    <span class="index-grid__title">Liquid biopsy</span>
-    <span class="index-grid__text">Reading tumor DNA from blood</span>
+    <span class="index-grid__title">Cancer game</span>
+    <span class="index-grid__text">Answer scenarios and build your knowledge</span>
     <span class="index-grid__go" aria-hidden="true">→</span>
   </a></li>
 </ul>
