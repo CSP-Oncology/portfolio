@@ -9,7 +9,7 @@ export const baseurl = "{{ site.baseurl }}";
 
 export var pythonURI;
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    pythonURI = "http://localhost:8587";  // Same URI for localhost or 127.0.0.1
+    pythonURI = `http://${location.hostname}:8587`;  // Same host name as the page so the login cookie is sent (as XRCare does)
 } else {
     pythonURI = "https://oncologysesh-api.opencodingsociety.com";
 
