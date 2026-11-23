@@ -1,0 +1,13 @@
+# Account sidebar (_includes/sesh/account-nav.html), like the Open Coding Society sidebar on Grades and
+# Profile: every account page is one click away. A page sets `account_tab:` to the id to highlight.
+# `admin: true` sections show only to admins (assets/js/sesh/account.js); those pages also check the role.
+- section: Your account
+  items:
+    - { id: profile, title: Profile, url: /profile }
+    - { id: settings, title: Settings, url: /settings }
+- section: Admin
+  admin: true
+  items:
+    - { id: messages, title: Contact messages, url: /admin/messages, count: messages }
+    - { id: surveys, title: Survey responses, url: /admin/surveys, count: surveys }
+    - { id: members, title: Members, url: /admin/members, count: members }

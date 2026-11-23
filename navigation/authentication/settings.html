@@ -1,7 +1,7 @@
 ---
-layout: sesh
+layout: sesh-account
 title: Settings
-heading: Settings
+account_tab: settings
 permalink: /settings
 search_exclude: true
 ---
@@ -12,7 +12,7 @@ search_exclude: true
   Saved to the Flask backend (/api/user/preferences) when logged in, else in this browser.
 {%- endcomment -%}
 {%- assign site_font = site.data.sesh_theme.font -%}
-<section class="section wrap">
+<section>
 <p class="ocs__text ocs__dashboard-fineprint" id="settings-guest-note" hidden>You're not logged in, so these are saved in this browser only. <a href="{{ '/login' | relative_url }}">Log in</a> to keep them on every device.</p>
 
 <div class="ocs__tabs ocs__tabs--cards">

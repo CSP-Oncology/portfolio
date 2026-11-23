@@ -1,0 +1,15 @@
+<nav class="account-nav" aria-label="Account">
+  {%- for section in site.data.sesh_account_nav %}
+  <div class="account-nav__section"{% if section.admin %} data-admin-only hidden{% endif %}>
+    <p class="account-nav__heading">{{ section.section }}</p>
+    <ul>
+      {%- for item in section.items %}
+      <li><a class="account-nav__link" href="{{ item.url | relative_url }}"{% if page.account_tab == item.id %} aria-current="page"{% endif %}>
+        {{ item.title }}{% if item.count %}<span class="account-nav__count" data-count="{{ item.count }}" hidden></span>{% endif %}
+      </a></li>
+      {%- endfor %}
+    </ul>
+  </div>
+  {%- endfor %}
+  <a class="sesh__btn alert-red account-nav__logout" href="{{ '/logout' | relative_url }}" data-logged-in-only hidden>Log out</a>
+</nav>

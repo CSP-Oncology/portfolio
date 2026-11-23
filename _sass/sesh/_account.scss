@@ -1,4 +1,4 @@
-// Log in, sign up and profile pages, including the admin section (PRC pages/_account.scss)
+// Log in, sign up, profile, settings and admin pages (PRC pages/_account.scss)
 
 .auth {
   display: grid;
@@ -28,57 +28,91 @@
 .password-panel summary { cursor: pointer; font-weight: 700; color: $ocean; }
 .password-panel[open] summary { margin-bottom: 16px; }
 
-.shortcut-list { display: grid; gap: 8px; }
+// Account pages (_layouts/sesh-account.html): the account sidebar beside the page, like the Open Coding
+// Society sidebar on Grades and Profile. Becomes a row of links above the page on small screens.
+.account {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+  padding-top: 28px;
 
-#logout { width: 100%; }
-
-.admin-block { margin-top: 24px; }
-
-// Admin: tabs for contact messages, survey responses and members (same layout as Poway Recovery Center)
-.tabs__list {
-  display: flex;
-  gap: 4px;
-  border-bottom: 2px solid $line;
-  overflow-x: auto;
-  scrollbar-width: thin;
+  @include md { grid-template-columns: 1fr; gap: 16px; padding-top: 16px; }
 }
 
-.tabs__tab {
-  flex: none;
-  margin-bottom: -2px;
-  padding: 12px 18px;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  border-radius: 8px 8px 0 0;
-  background: transparent;
-  color: $muted;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
+.account__main { min-width: 0; display: grid; gap: 18px; align-content: start; }
 
-  &:hover { background: $mist; color: $ink; border-bottom-color: $line; }
-  &:focus-visible { outline: 2px solid $teal; outline-offset: -2px; }
+.account__head {
+  padding-bottom: 10px;
+  border-bottom: 1px solid $ink;
 
-  &[aria-selected="true"] {
+  h1 { @include display-font; font-size: clamp(1.6rem, 3vw, 2.1rem); margin: 0; }
+  p { color: $muted; margin: 6px 0 0; max-width: 720px; }
+}
+
+.account-nav {
+  position: sticky;
+  top: $header-height + 20px;
+  display: grid;
+  gap: 18px;
+
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+
+  @include md {
+    position: static;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid $line;
+  }
+}
+
+.account-nav__heading { @include label; color: $muted; margin: 0 0 6px; }
+
+.account-nav__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  color: $ink;
+  font-weight: 500;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  border-radius: 0 $radius $radius 0;
+
+  &:hover { background: $mist; border-left-color: $line; }
+  &:focus-visible { outline: 2px solid $teal; outline-offset: 2px; }
+
+  &[aria-current="page"] {
     color: $teal;
     background: $white;
-    border-bottom-color: $teal;
-  }
-
-  .tabs__count {
-    margin-left: 8px;
-    padding: 1px 8px;
-    font-size: .75rem;
-    color: $muted;
-    background: $mist;
-    border-radius: 999px;
+    border-left-color: $teal;
+    font-weight: 600;
   }
 }
 
-.tabs__panel {
-  padding-top: 24px;
+.account-nav__count {
+  padding: 1px 8px;
+  font-size: .75rem;
+  color: $muted;
+  background: $mist;
+  border-radius: 999px;
+}
 
-  &:focus-visible { outline: 2px solid $teal; outline-offset: 4px; }
+.account-nav__logout { width: 100%; justify-content: center; }
+
+// Members page: the role menu in each row
+.role-select {
+  font: inherit;
+  padding: 4px 8px;
+  color: $ink;
+  background: $white;
+  border: 1px solid $line;
+  border-radius: $radius;
+
+  &:focus-visible { outline: 2px solid $teal; outline-offset: 2px; }
+  &:disabled { color: $muted; cursor: not-allowed; }
 }
 
 .message {

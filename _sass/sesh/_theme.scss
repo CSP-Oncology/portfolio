@@ -35,13 +35,13 @@ html.user-theme-active {
   --green-soft: color-mix(in srgb, var(--green) 14%, #{$t-bg});
   --header: color-mix(in srgb, #{$t-bg} 97%, transparent);
 
-  // The footer band: the page color with a touch of the accent, so it reads as its own area
-  // and the text keeps its contrast (the accent tint is one user-preferences.js checks against).
-  --footer-bg: color-mix(in srgb, #{$t-accent} 12%, var(--panel, #{$t-bg}));
-  --footer-ink: #{$t-text};
-  --footer-muted: var(--muted);
-  --footer-line: var(--line);
-  --footer-accent: #{$t-accent};
+  // The footer band follows the theme the way the default one is Sesh blue: the accent color, with
+  // --on-accent text (white or near-black, whichever user-preferences.js finds readable on it)
+  --footer-bg: #{$t-accent};
+  --footer-ink: var(--on-accent);
+  --footer-muted: color-mix(in srgb, var(--on-accent) 85%, #{$t-accent});
+  --footer-line: color-mix(in srgb, var(--on-accent) 30%, #{$t-accent});
+  --footer-accent: var(--on-accent);
 
   color-scheme: var(--pref-color-scheme, normal);
   // The picked size is the root size, so everything sized in rem follows it

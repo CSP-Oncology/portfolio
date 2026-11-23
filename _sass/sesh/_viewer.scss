@@ -1,0 +1,73 @@
+// Viewer: one item at a time over the page, with Previous / Next (a native <dialog>, opened with
+// showModal so Esc and focus work). News uses it for stories; any page with cards can reuse it:
+// .viewer > .viewer__bar, .viewer__media, .viewer__body (h2 + .viewer__text), .viewer__nav
+
+.viewer {
+  width: min(760px, calc(100% - 32px));
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  color: $ink;
+  background: $white;
+  border: 1px solid $ink;
+  border-radius: $radius;
+  overflow: auto;
+
+  &::backdrop { background: rgba(10, 14, 20, .6); }
+}
+
+.viewer__bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: $white;
+  border-bottom: 1px solid $line;
+}
+
+.viewer__position { @include label; color: $muted; }
+
+// Pictures stay on white in every theme (most are logos)
+.viewer__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 340px;
+  padding: 24px;
+  background: #ffffff;
+  border-bottom: 1px solid $line;
+
+  img { display: block; max-width: 100%; max-height: 292px; object-fit: contain; }
+}
+
+.viewer__body {
+  display: grid;
+  gap: 10px;
+  padding: 22px 24px 8px;
+
+  h2 { @include display-font; font-size: clamp(1.3rem, 2.6vw, 1.7rem); margin: 0; }
+
+  @include sm { padding: 18px 16px 6px; }
+}
+
+.viewer__text {
+  p { margin: 0 0 12px; line-height: 1.65; white-space: pre-line; max-width: 70ch; }
+  .viewer__lead { font-size: 1.05rem; }
+  .viewer__author { color: $muted; font-size: .9rem; }
+}
+
+.viewer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 24px 20px;
+
+  button:disabled { opacity: .4; cursor: default; }
+
+  @include sm { padding: 12px 16px 16px; }
+}

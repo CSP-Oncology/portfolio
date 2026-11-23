@@ -1,0 +1,19 @@
+---
+layout: sesh
+---
+{%- comment -%}
+  Account pages (Profile, Settings, Admin): the account sidebar beside the page, like the Open Coding
+  Society layout for Grades and Profile. Front matter: title, account_tab (sidebar id), optional intro
+  and `admin: true` (sends anyone who isn't an admin to their profile).
+{%- endcomment -%}
+<div class="wrap account"{% if page.admin %} data-admin-page{% endif %}>
+  {% include sesh/account-nav.html %}
+  <div class="account__main">
+    <header class="account__head">
+      <h1 id="account-title">{{ page.title }}</h1>
+      {% if page.intro %}<p>{{ page.intro }}</p>{% endif %}
+    </header>
+    {{ content }}
+  </div>
+</div>
+<script type="module" src="{{ '/assets/js/sesh/account.js' | relative_url }}"></script>

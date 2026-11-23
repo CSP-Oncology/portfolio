@@ -68,6 +68,16 @@
   gap: 8px;
 }
 
+// Logged in: the account button shows your name, cut short if it is long
+[data-account-link] {
+  display: inline-block;
+  max-width: 14em;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .nav-toggle { display: none; }
 
 @include md {

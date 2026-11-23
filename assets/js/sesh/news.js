@@ -39,35 +39,133 @@ async function getNews(limit) {
   return data;
 }
 
-// News page: every story as a row, with its full text under "Read full story"
-async function fillNewsPage(list) {
-  const { articles } = await getNews();
-  list.replaceChildren(...articles.map(article => {
-    const item = el('li', 'news-card');
-    item.id = `news-${article.id}`;
-    if (article.image_url) item.append(picture(article.image_url, 'news-card__media'));
-    const story = el('article', 'news-card__body');
-    const meta = el('p', 'news-card__meta');
-    meta.append(el('span', 'news-card__tag', article.category));
-    if (article.featured) meta.append(el('span', 'news-card__tag', 'Featured'));
-    meta.append(time(article));
-    story.append(meta, el('h2', '', article.title), el('p', 'news-card__excerpt', article.excerpt));
-    if (article.content) {
-      const more = el('details', 'news-card__more');
-      more.append(el('summary', '', 'Read full story'), el('p', '', article.content));
-      if (article.author) more.append(el('p', 'news-card__author', `By ${article.author}`));
-      story.append(more);
-    }
-    if (article.url) story.append(sourceLink(article, 'news-card__source'));
-    item.append(story);
-    return item;
+// News page: every story as a card; a card opens the story in the viewer (#news-viewer).
+// Each card links to #news-<id>, so a story has its own address (the home page links to them).
+const BASEURL = '{{ site.baseurl }}';
+let stories = [];
+
+// The saved copy in the page (_data/sesh_news.yml), in the backend's format
+function savedStories() {
+  const saved = JSON.parse(document.getElementById('news-saved')?.textContent || '[]');
+  return saved.map((item, i) => ({
+    id: `saved-${i + 1}`,
+    title: item.headline || item.title,
+    excerpt: item.summary || '',
+    content: '',
+    category: item.category || 'News',
+    date: item.date || '',
+    datetime: item.datetime || '',
+    image_url: item.image ? BASEURL + item.image : '',
+    url: item.url || 'https://www.oncologysesh.com/news',
   }));
-  // Opened from the home page (/sesh/news#news-3): open that story
-  const target = location.hash && document.getElementById(location.hash.slice(1));
-  if (target) {
-    target.querySelector('details')?.setAttribute('open', '');
-    target.scrollIntoView();
+}
+
+function meta(article, className) {
+  const line = el(className === 'p' ? 'p' : 'span', 'news-tile__meta');
+  line.append(el('span', 'news-tile__tag', article.category));
+  if (article.featured) line.append(el('span', 'news-tile__tag', 'Featured'));
+  line.append(time(article));
+  return line;
+}
+
+function card(article) {
+  const item = el('li');
+  const link = el('a', 'news-tile');
+  link.href = `#news-${article.id}`;
+  const media = el('span', 'news-tile__media');
+  // No picture (or Sesh moved it): the story's topic fills the box instead
+  const noPicture = () => {
+    media.className = 'news-tile__media news-tile__media--empty';
+    media.setAttribute('aria-hidden', 'true');
+    media.replaceChildren(article.category);
+  };
+  if (article.image_url) {
+    const img = el('img');
+    img.src = article.image_url;
+    img.alt = '';
+    img.loading = 'lazy';
+    img.addEventListener('error', noPicture);
+    media.append(img);
+  } else {
+    noPicture();
   }
+  const body = el('span', 'news-tile__body');
+  body.append(meta(article), el('span', 'news-tile__title', article.title), el('span', 'news-tile__excerpt', article.excerpt));
+  link.append(media, body);
+  item.append(link);
+  return item;
+}
+
+const viewer = document.getElementById('news-viewer');
+
+function showStory(index) {
+  const article = stories[index];
+  if (!viewer || !article) return;
+  viewer.dataset.index = index;
+  document.getElementById('viewer-position').textContent = `Story ${index + 1} of ${stories.length}`;
+  const media = document.getElementById('viewer-media');
+  media.replaceChildren();
+  media.hidden = !article.image_url;
+  if (article.image_url) {
+    const img = el('img');
+    img.src = article.image_url;
+    img.alt = article.title;
+    media.append(img);
+  }
+  document.getElementById('viewer-meta').replaceWith(Object.assign(meta(article, 'p'), { id: 'viewer-meta' }));
+  document.getElementById('viewer-title').textContent = article.title;
+  const text = document.getElementById('viewer-text');
+  text.replaceChildren(el('p', 'viewer__lead', article.excerpt));
+  if (article.content && article.content !== article.excerpt) text.append(el('p', '', article.content));
+  if (article.author) text.append(el('p', 'viewer__author', `By ${article.author}`));
+  const source = document.getElementById('viewer-source');
+  source.hidden = !article.url;
+  if (article.url) source.href = article.url;
+  viewer.querySelector('[data-viewer="prev"]').disabled = index === 0;
+  viewer.querySelector('[data-viewer="next"]').disabled = index === stories.length - 1;
+  if (!viewer.open) viewer.showModal();
+}
+
+// The address names the open story: #news-3 opens story 3, no hash closes the viewer
+function syncWithAddress() {
+  const index = stories.findIndex(article => location.hash === `#news-${article.id}`);
+  if (index >= 0) showStory(index);
+  else if (viewer?.open) viewer.close();
+}
+
+function go(index) {
+  if (stories[index]) location.hash = `news-${stories[index].id}`;
+}
+
+if (viewer) {
+  viewer.addEventListener('click', event => {
+    const action = event.target.closest('[data-viewer]')?.dataset.viewer;
+    const index = Number(viewer.dataset.index);
+    if (action === 'close' || event.target === viewer) viewer.close();  // the button, or a click outside the story
+    if (action === 'prev') go(index - 1);
+    if (action === 'next') go(index + 1);
+  });
+  viewer.addEventListener('keydown', event => {
+    const step = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
+    if (step) go(Number(viewer.dataset.index) + step);
+  });
+  // Closed (button, Esc or outside click): drop the story from the address, without a page jump
+  viewer.addEventListener('close', () => {
+    if (location.hash) history.pushState(null, '', location.pathname + location.search);
+  });
+  window.addEventListener('hashchange', syncWithAddress);
+}
+
+async function fillNewsPage(list) {
+  stories = savedStories();
+  syncWithAddress();
+  try {
+    stories = (await getNews()).articles;
+    list.replaceChildren(...stories.map(card));
+  } catch (error) {
+    // Backend unreachable: keep the saved cards
+  }
+  syncWithAddress();
 }
 
 // Home page: the featured story large, with the next few as "More news" beside it
@@ -118,5 +216,5 @@ async function fillHome(list) {
 
 const newsList = document.getElementById('news-list');
 const homeList = document.getElementById('home-news');
-if (newsList) fillNewsPage(newsList).catch(() => {});
+if (newsList) fillNewsPage(newsList);
 if (homeList) fillHome(homeList).catch(() => {});
