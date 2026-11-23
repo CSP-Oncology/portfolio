@@ -9,7 +9,7 @@ parent_url: /sesh/science
 permalink: /sesh/science/cancer-game
 ---
 <section class="section wrap">
-  <div class="card" style="max-width:760px;margin-inline:auto">
+  <div class="card lab-card">
     <div class="form-row">
       <h2 id="scenario-title">Scenario</h2>
       <span class="label" id="scenario-score">Score 0</span>

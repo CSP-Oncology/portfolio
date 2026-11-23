@@ -1,0 +1,81 @@
+// Science lab pages: body map, cancer cycle and cancer game (sesh/science/)
+
+// One centered card for a lab
+.lab-card {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+// The answer card under a lab's buttons
+.lab-result { margin-top: 16px; }
+
+// A row of choice buttons that wraps on small screens
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// Cancer cycle: the animated cycle beside the phase and gene controls
+.cycle-lab {
+  display: grid;
+  grid-template-columns: minmax(260px, .9fr) minmax(320px, 1.1fr);
+  gap: 18px;
+
+  @media (max-width: 760px) { grid-template-columns: 1fr; }
+}
+
+.cycle-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: $mist;
+  border: 1px solid $line;
+}
+
+.cycle-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.gene-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: $white;
+  border: 1px solid $line;
+
+  strong { display: block; }
+  small { color: $muted; }
+}
+
+.gene-toggle { min-width: 72px; }
+
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+
+  button { min-width: 0; }
+
+  @media (max-width: 760px) { grid-template-columns: repeat(2, 1fr); }
+}
+
+.lab-status {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+
+  div {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid $line;
+  }
+
+  strong {
+    display: block;
+    font-size: 1.2rem;
+  }
+}

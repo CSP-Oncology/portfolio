@@ -8,9 +8,6 @@ parent: Science
 parent_url: /sesh/science
 permalink: /sesh/science/cancer-cycle
 ---
-<style>
-.cycle-lab{display:grid;grid-template-columns:minmax(260px,.9fr) minmax(320px,1.1fr);gap:18px}.cycle-canvas{width:100%;height:auto;display:block;background:var(--mist);border:1px solid var(--line)}.cycle-panel{display:grid;gap:12px}.gene-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--line);background:var(--surface)}.gene-row strong{display:block}.gene-row small{color:var(--muted)}.gene-toggle{min-width:72px}.phase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.phase-grid button{min-width:0}.lab-status{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.lab-status div{border:1px solid var(--line);padding:8px;text-align:center}.lab-status strong{display:block;font-size:1.2rem}@media(max-width:760px){.cycle-lab{grid-template-columns:1fr}.phase-grid{grid-template-columns:repeat(2,1fr)}}
-</style>
 <section class="section wrap">
   <div class="cycle-lab">
     <div class="card">

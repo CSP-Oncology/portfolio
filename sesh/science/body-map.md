@@ -9,9 +9,9 @@ parent_url: /sesh/science
 permalink: /sesh/science/body-map
 ---
 <section class="section wrap">
-  <div class="card" style="max-width:760px;margin-inline:auto">
+  <div class="card lab-card">
     <h2>Choose a region</h2>
-    <div class="segmented" id="body-regions" style="flex-wrap:wrap">
+    <div class="segmented" id="body-regions">
       <button type="button" class="sesh__btn accent" data-region="brain">Brain</button>
       <button type="button" class="sesh__btn accent" data-region="lung">Lungs</button>
       <button type="button" class="sesh__btn accent" data-region="blood">Blood</button>
@@ -19,7 +19,7 @@ permalink: /sesh/science/body-map
       <button type="button" class="sesh__btn accent" data-region="breast">Breast</button>
       <button type="button" class="sesh__btn accent" data-region="digestive">Digestive system</button>
     </div>
-    <div class="card" id="body-result" style="margin-top:16px" aria-live="polite">
+    <div class="card lab-result" id="body-result" aria-live="polite">
       <h3>Select a region</h3>
       <p>Each cancer is a different disease and may affect people differently.</p>
     </div>
